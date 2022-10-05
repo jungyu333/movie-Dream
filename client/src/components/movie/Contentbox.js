@@ -13,15 +13,16 @@ const CustomPaper = styled(Paper)`
   height: 400px;
   margin: 30px 10px;
   border-radius: 15px;
+  border: 1px;
   background-color: white;
 `;
 
 function ContentBox() {
   return (
     <Wrapper>
-      <CustomPaper elevation={9} className="contentbox" />
+      <CustomPaper className="contentbox" />
 
-      <CustomPaper elevation={9} className="reviewbox" />
+      <CustomPaper className="reviewbox" />
     </Wrapper>
   );
 }

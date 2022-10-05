@@ -10,6 +10,7 @@ const CustomPaper = styled(Paper)`
   height: 300px;
   margin: 30px auto;
   border-radius: 15px;
+  border: 1px;
   background-color: black;
   opacity: 0.55;
 `;
@@ -17,7 +18,7 @@ const CustomPaper = styled(Paper)`
 function Imagebox() {
   return (
     <Wrapper>
-      <CustomPaper elevation={9} />
+      <CustomPaper />
     </Wrapper>
   );
 }
