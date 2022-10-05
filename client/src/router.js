@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Movie from './routes/Movie';
 import Home from './routes/Home';
+import Search from './routes/Search';
 
 function Router() {
   return (
@@ -8,6 +9,7 @@ function Router() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/movie/:id" element={<Movie />} />
+        <Route path="/search" element={<Search />} />
       </Routes>
     </BrowserRouter>
   );
