@@ -30,6 +30,7 @@ function Home() {
         <Title>Title</Title>
         <SearchInput/>
       </Wrapper>
+      <HomeCard/>
        
     </>
   );
