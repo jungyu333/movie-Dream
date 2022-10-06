@@ -5,7 +5,6 @@ import SearchInput from '../components/main/SearchInput';
 import Layout from '../components/common/Layout';
 
 
-
 const Wrapper = styled.div`
   display: flex;
   margin: 10rem auto;
@@ -21,7 +20,8 @@ const Title = styled.h1`
 `;
 
 
-function Home() {
+
+export default function Home() {
   return (
     <>
       <Layout isNavSearch={true} isMain={true} />
@@ -30,10 +30,8 @@ function Home() {
         <Title>Title</Title>
         <SearchInput/>
       </Wrapper>
+
       <HomeCard/>
-       
     </>
   );
 }
-
-export default Home;
