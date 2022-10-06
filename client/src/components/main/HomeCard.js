@@ -49,7 +49,7 @@ export default function ActionAreaCard() {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            영화명
+            영화명.
           </Typography>
           <Typography variant="body2" color="text.secondary">
             영화줄거리
