@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Carousel from '../components/search/Carousel';
+import FloatingButton from '../components/search/FloatingButton';
 import Genre from '../components/search/Genre';
 import SearchList from '../components/search/SearchList';
 import SortBox from '../components/search/SortBox';
@@ -47,6 +48,7 @@ function Search() {
       <Carousel />
       <SortBox />
       <SearchList />
+      <FloatingButton />
     </Wrapper>
   );
 }
