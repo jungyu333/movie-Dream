@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Carousel from '../components/search/Carousel';
 import Genre from '../components/search/Genre';
 import SearchList from '../components/search/SearchList';
+import SortBox from '../components/search/SortBox';
 
 const Wrapper = styled.div`
   margin: 3rem 8rem;
@@ -16,21 +16,6 @@ const Header = styled.div`
   width: 100%;
   justify-content: space-between;
   align-items: center;
-`;
-
-const SortContainer = styled.div`
-  display: flex;
-`;
-
-const Sort = styled.div`
-  margin: 0 10px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 1rem;
-  color: lightgray;
-  &:hover {
-    color: rgba(0, 0, 0, 250);
-  }
 `;
 
 const SearchHead = styled.div`
@@ -57,15 +42,7 @@ function Search() {
           <h1>"헌트"</h1>
           <p>검색결과</p>
         </SearchHead>
-
-        <SortContainer>
-          <Link to={`/search?query=${'원피스'}&sort=${'인기순'}`}>
-            <Sort>인기순</Sort>
-          </Link>
-          <Link to={`/search?query=${'원피스'}&sort=${'평점순'}`}>
-            <Sort>평점순</Sort>
-          </Link>
-        </SortContainer>
+        <SortBox />
       </Header>
       <Genre />
       <Carousel />
