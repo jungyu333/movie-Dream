@@ -1,17 +1,19 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import ContentBox from '../components/movie/Contentbox';
+import ReviewBox from '../components/movie/Reviewbox';
 import Imagebox from '../components/movie/Imagebox';
-import Infobox from '../components/movie/Infobox';
+import WordCloudBox from '../components/movie/Wordcloudbox';
 
 function Movie() {
   //const { id } = useParams();
 
   return (
     <>
-      <Imagebox />
-      <Infobox />
-      <ContentBox />
+      <div>
+        <Imagebox />
+      </div>
+      <ReviewBox />
+      <WordCloudBox />
     </>
   );
 }
