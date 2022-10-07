@@ -42,11 +42,10 @@ function Search() {
           <h1>"헌트"</h1>
           <p>검색결과</p>
         </SearchHead>
-        <SortBox />
       </Header>
       <Genre />
       <Carousel />
-      <Carousel />
+      <SortBox />
       <SearchList />
     </Wrapper>
   );
