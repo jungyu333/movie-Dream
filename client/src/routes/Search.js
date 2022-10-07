@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Carousel from '../components/search/Carousel';
 import Genre from '../components/search/Genre';
+import SearchList from '../components/search/SearchList';
 
 const Wrapper = styled.div`
   margin: 3rem 8rem;
@@ -69,6 +70,7 @@ function Search() {
       <Genre />
       <Carousel />
       <Carousel />
+      <SearchList />
     </Wrapper>
   );
 }
