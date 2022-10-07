@@ -9,25 +9,38 @@ const Wrapper = styled.div`
   margin: 10rem auto;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
 const Title = styled.h1`
   font-size: 2rem;
   font-weight: 600;
   text-align: center;
-  margin-right: 2rem;
+  margin-right: 1rem;
 `;
 
+
+const Header = styled.div`
+  display:flex;
+  width:100%;
+  justify-content : center;
+  align-items:center;
+`
+
 function Home() {
+
   return (
     <>
       <Layout isNavSearch={true} isMain={true} />
-
       <Wrapper>
+        <Header>
         <Title>Title</Title>
-        <SearchInput />
-      </Wrapper>
-      <HomeCard />
+        <SearchInput/>
+        </Header>
+        <HomeCard/>
+        <HomeCard/>
+      </Wrapper> 
+
     </>
   );
 }
