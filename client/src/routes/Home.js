@@ -6,7 +6,7 @@ import HomeCard from '../components/main/HomeCard';
 
 const Wrapper = styled.div`
   display: flex;
-  margin: 10rem auto;
+  margin: 4rem 0 -5rem 0;
   justify-content: center;
   align-items: center;
   flex-direction: column;
