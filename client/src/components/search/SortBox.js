@@ -4,6 +4,11 @@ import styled from 'styled-components';
 
 const SortContainer = styled.div`
   display: flex;
+  justify-content: flex-end;
+  align-self: center;
+  align-items: center;
+  width: 95%;
+  margin-top: 1rem;
 `;
 
 const Sort = styled.div`

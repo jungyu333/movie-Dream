@@ -19,28 +19,25 @@ const Title = styled.h1`
   margin-right: 1rem;
 `;
 
-
 const Header = styled.div`
-  display:flex;
-  width:100%;
-  justify-content : center;
-  align-items:center;
-`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
 
 function Home() {
-
   return (
     <>
       <Layout isNavSearch={true} isMain={true} />
       <Wrapper>
         <Header>
-        <Title>Title</Title>
-        <SearchInput/>
+          <Title>Title</Title>
+          <SearchInput />
         </Header>
-        <HomeCard/>
-        <HomeCard/>
-      </Wrapper> 
-
+        <HomeCard />
+        <HomeCard />
+      </Wrapper>
     </>
   );
 }
