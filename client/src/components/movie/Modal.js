@@ -2,6 +2,8 @@ import { Box, Modal, Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import styled from 'styled-components';
 
+const actordata = ['이정재'];
+
 const CustomBox = styled(Box)`
   position: absolute;
   transform: translate(-50%, -50%);
@@ -24,7 +26,7 @@ function ActorModal() {
 
   return (
     <div>
-      <Button onClick={handleOpen}>Modal open</Button>
+      <Button onClick={handleOpen}>{actordata}</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -33,10 +35,10 @@ function ActorModal() {
       >
         <CustomBox>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Actor's Modal
+            {actordata}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            해당배우의 다른 출연작
+            {actordata}의 다른 출연작
           </Typography>
         </CustomBox>
       </Modal>

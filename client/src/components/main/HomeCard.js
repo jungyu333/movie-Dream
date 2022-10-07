@@ -1,29 +1,36 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import CardArea from './CardArea';
-import Grid from '@mui/material/Grid';
-import styled from "styled-components"
+import React, { Component } from 'react';
 
-const GridStyles = {
-  paddingBottom: 2,
-  paddingRight: 2,  
-  marginLeft: "auto",
-  marginRight: "auto",
-  display: "block"
-};
-
-const CustomBox = styled(Box)`
-  margin : 8em 0;
-`
-
- function HomeCard() {
-  return (
-    <CustomBox >
-      
-          <CardArea />
-      
-    </CustomBox>
-  );
+export default class SimpleSlider extends Component {
+  render() {
+    const settings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+    };
+    return (
+      <div>
+        <h2> Single Item</h2>
+        <div>
+          <h3>1</h3>
+        </div>
+        <div>
+          <h3>2</h3>
+        </div>
+        <div>
+          <h3>3</h3>
+        </div>
+        <div>
+          <h3>4</h3>
+        </div>
+        <div>
+          <h3>5</h3>
+        </div>
+        <div>
+          <h3>6</h3>
+        </div>
+      </div>
+    );
+  }
 }
-
-export default HomeCard
