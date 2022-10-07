@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import HomeCard from '../components/main/HomeCard';
 import SearchInput from '../components/main/SearchInput';
 import Layout from '../components/common/Layout';
-
+import HomeCard from '../components/main/HomeCard';
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,6 +19,7 @@ const Title = styled.h1`
   margin-right: 1rem;
 `;
 
+
 const Header = styled.div`
   display:flex;
   width:100%;
@@ -27,8 +27,8 @@ const Header = styled.div`
   align-items:center;
 `
 
+function Home() {
 
-export default function Home() {
   return (
     <>
       <Layout isNavSearch={true} isMain={true} />
@@ -39,9 +39,10 @@ export default function Home() {
         </Header>
         <HomeCard/>
         <HomeCard/>
-      </Wrapper>
+      </Wrapper> 
 
-      
     </>
   );
 }
+
+export default Home;
