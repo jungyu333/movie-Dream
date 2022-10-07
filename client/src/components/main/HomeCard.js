@@ -1,36 +1,21 @@
-import React, { Component } from 'react';
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import CardArea from './CardArea';
+import styled from "styled-components"
 
-export default class SimpleSlider extends Component {
-  render() {
-    const settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-    };
-    return (
-      <div>
-        <h2> Single Item</h2>
-        <div>
-          <h3>1</h3>
-        </div>
-        <div>
-          <h3>2</h3>
-        </div>
-        <div>
-          <h3>3</h3>
-        </div>
-        <div>
-          <h3>4</h3>
-        </div>
-        <div>
-          <h3>5</h3>
-        </div>
-        <div>
-          <h3>6</h3>
-        </div>
-      </div>
-    );
-  }
+
+const CustomBox = styled(Box)`
+  margin : 2em 0 -1em 0;
+`
+
+ function HomeCard() {
+  return (
+    <CustomBox >
+      <CardArea />
+    </CustomBox>
+  );
+
+
 }
+
+export default HomeCard
