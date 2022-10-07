@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Carousel from '../components/search/Carousel';
 import Genre from '../components/search/Genre';
 
 const Wrapper = styled.div`
@@ -66,6 +67,8 @@ function Search() {
         </SortContainer>
       </Header>
       <Genre />
+      <Carousel />
+      <Carousel />
     </Wrapper>
   );
 }
