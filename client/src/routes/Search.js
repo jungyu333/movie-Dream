@@ -1,6 +1,7 @@
 import { Container } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
+import Layout from '../components/common/Layout';
 import Carousel from '../components/search/Carousel';
 import FloatingButton from '../components/search/FloatingButton';
 import FloatingGenre from '../components/search/FloatingGenre';
@@ -10,7 +11,7 @@ import SortBox from '../components/search/SortBox';
 
 const Wrapper = styled(Container)`
   display: flex;
-  margin: 2rem auto;
+  margin: 5rem auto 0 auto;
   flex-direction: column;
 `;
 
@@ -39,20 +40,24 @@ const SearchHead = styled.div`
 
 function Search() {
   return (
-    <Wrapper>
-      <Header>
-        <SearchHead>
-          <h1>"헌트"</h1>
-          <p>검색결과</p>
-        </SearchHead>
-      </Header>
-      <Genre />
-      <Carousel />
-      <SortBox />
-      <SearchList />
-      <FloatingButton />
-      <FloatingGenre />
-    </Wrapper>
+    <>
+      <Layout isNavSearch={true} isMain={false}>
+        <Wrapper>
+          <Header>
+            <SearchHead>
+              <h1>"헌트"</h1>
+              <p>검색결과</p>
+            </SearchHead>
+          </Header>
+          <Genre />
+          <Carousel />
+          <SortBox />
+          <SearchList />
+          <FloatingButton />
+          <FloatingGenre />
+        </Wrapper>
+      </Layout>
+    </>
   );
 }
 
