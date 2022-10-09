@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const FilterContainer = styled.div`
-  max-width: 60%;
+  max-width: 100%;
   margin: 20px 0;
   padding: 0 10px;
   display: flex;
@@ -29,7 +29,7 @@ const FilterContainer = styled.div`
 function Genre() {
   return (
     <FilterContainer>
-      {[1, 2, 3, 4, 5].map((item, index) => (
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
         <div key={index}>{item}</div>
       ))}
     </FilterContainer>

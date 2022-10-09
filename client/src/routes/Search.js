@@ -1,3 +1,4 @@
+import { Container } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
 import Carousel from '../components/search/Carousel';
@@ -7,9 +8,9 @@ import Genre from '../components/search/Genre';
 import SearchList from '../components/search/SearchList';
 import SortBox from '../components/search/SortBox';
 
-const Wrapper = styled.div`
-  margin: 3rem 8rem;
+const Wrapper = styled(Container)`
   display: flex;
+  margin: 2rem auto;
   flex-direction: column;
 `;
 

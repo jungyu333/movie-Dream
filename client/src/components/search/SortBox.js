@@ -15,7 +15,7 @@ const Sort = styled.div`
   margin: 0 10px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: lightgray;
   &:hover {
     color: rgba(0, 0, 0, 250);

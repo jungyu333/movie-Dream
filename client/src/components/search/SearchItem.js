@@ -41,7 +41,7 @@ const CustomDivider = styled(Divider)`
 
 function SearchItem() {
   return (
-    <Grid item xl={12} sm={6}>
+    <Grid item xl={12} md={6} xs={12}>
       <CustomList>
         <Link to={'/'}>
           <CustomListItem alignItems="flex-start">

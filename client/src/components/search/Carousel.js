@@ -26,8 +26,8 @@ function Carousel() {
   const settings = {
     dots: false,
     infinite: true,
-    slidesToShow: 5,
-    slidesToScroll: 5,
+    slidesToShow: 4,
+    slidesToScroll: 4,
     autoplaySpeed: 1000,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
