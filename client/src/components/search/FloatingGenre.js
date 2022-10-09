@@ -1,9 +1,10 @@
-import { Grid } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
+const Wrapper = styled(Container)`
   width: 10vw;
+  min-width: 200px;
   height: 25vh;
   background-color: white;
   border: 1px solid lightgray;
@@ -23,6 +24,10 @@ const Wrapper = styled.div`
     props.scroll
       ? 'all 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'
       : 'all 195ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'};
+
+  @media screen and (max-width: 900px) {
+    display: none;
+  }
 `;
 
 const CustomGridContainer = styled(Grid)`
@@ -39,9 +44,10 @@ const CustomGridContainer = styled(Grid)`
 const CustomGridItem = styled(Grid)`
   width: 45%;
   height: 15%;
+  padding: 0 4px;
 `;
 
-const Sort = styled.div`
+const Genre = styled.div`
   width: 100%;
   height: 100%;
   cursor: pointer;
@@ -82,10 +88,10 @@ function FloatingGenre() {
 
   return (
     <Wrapper scroll={scroll}>
-      <CustomGridContainer container gap={2}>
+      <CustomGridContainer container spacing={1}>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => (
-          <CustomGridItem item>
-            <Sort>다큐멘터리</Sort>
+          <CustomGridItem item md={6}>
+            <Genre>다큐멘터리</Genre>
           </CustomGridItem>
         ))}
       </CustomGridContainer>
