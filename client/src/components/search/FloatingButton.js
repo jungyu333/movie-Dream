@@ -21,6 +21,7 @@ const CustomFab = styled(Fab)`
   & svg {
     width: 20px;
     height: 20px;
+    fill: white;
   }
   &:hover {
     background-color: #4869d4;
