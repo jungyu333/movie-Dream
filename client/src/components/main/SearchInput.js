@@ -28,8 +28,9 @@ const LayoutSearch = styled.form`
 const CustomInputBase = styled(InputBase)`
   color: white;
   font-size: 0.8rem;
+
   & .MuiInputBase-input {
-    padding: 1px;
+    padding: 5px;
   }
 `;
 
