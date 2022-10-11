@@ -1,5 +1,6 @@
 import { Container } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../components/common/Layout';
 import Carousel from '../components/search/Carousel';
@@ -8,6 +9,7 @@ import FloatingGenre from '../components/search/FloatingGenre';
 import Genre from '../components/search/Genre';
 import SearchList from '../components/search/SearchList';
 import SortBox from '../components/search/SortBox';
+import axios from 'axios';
 
 const Wrapper = styled(Container)`
   display: flex;
@@ -39,6 +41,31 @@ const SearchHead = styled.div`
 `;
 
 function Search() {
+  const [searchParams] = useSearchParams();
+  const [page, setPage] = useState(1);
+  const [searchData, setSearchData] = useState({
+    movieData: {
+      header: {},
+      list: {},
+    },
+    isLoading: false,
+  });
+  const query = searchParams.get('query');
+  useEffect(() => {
+    axios
+      .get(`/api/search?query=${query}&page=${page}`)
+      .then(res =>
+        setSearchData({
+          movieData: {
+            header: { ...res.data.header },
+            list: { ...res.data.list },
+          },
+          isLoading: true,
+        }),
+      )
+      .catch(err => console.error(err));
+  }, [query, page]);
+  console.log(searchData);
   return (
     <>
       <Layout isNavSearch={true} isMain={false}>
