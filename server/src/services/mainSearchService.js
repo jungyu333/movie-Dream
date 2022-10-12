@@ -9,15 +9,41 @@ export default async function getMoives(queryParams, callback) {
   let sort = queryParams.sort;
   let scroll_data = [];
 
+  //filter
+  let genreFilter = queryParams.genreFilter;
+  let nationFlag = queryParams.nationFlag;
+
   const requestBody = new esb.requestBodySearch();
-  //const queryBuilder = new esb.matchAllQuery();
-  const queryBuilder = new esb.MatchQuery("h_movie", query);
+  const boolQuery = new esb.boolQuery();
+  //genrefilter
+  if (typeof genreFilter !== "undefined") {
+    const genreBoolQuery = new esb.boolQuery();
+    let genreFilterList = genreFilter.split(",");
+    for (const genre of genreFilterList) {
+      genreBoolQuery.should(esb.matchQuery("genre", genre));
+    }
+    boolQuery.must(genreBoolQuery);
+  }
+
+  if (typeof nationFlag !== "undefined") {
+    if (nationFlag === "True") {
+      boolQuery.must(esb.matchQuery("nation", "한국"));
+    } else {
+      boolQuery.mustNot(esb.matchQuery("nation", "한국"));
+    }
+  }
+
+  //movie_query
+  //const queryBuilder = new esb.MatchQuery('h_movie', query);
+  boolQuery.must(esb.matchQuery("h_movie", query));
   const bodyData = requestBody
-    .query(queryBuilder)
+    .query(boolQuery)
     .agg(esb.termsAggregation("genre", "genre"))
     .size(10000)
     .sort(esb.sort(sort, "asc"))
     .toJSON();
+
+  console.log(JSON.stringify(bodyData));
 
   const response = await es.search({
     index: common.ES_MOVIE_INDEX,
