@@ -12,7 +12,7 @@ router.get("/", async (req, res, next) => {
       return;
     }
 
-    res.json(results);
+    res.status(200).json(results);
   });
 });
 

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const Wrapper = styled(Container)`
   width: 10vw;
   min-width: 200px;
-  height: 25vh;
+  height: fit-content;
   background-color: white;
   border: 1px solid lightgray;
   border-radius: 10px;
@@ -18,7 +18,7 @@ const Wrapper = styled(Container)`
   &:hover {
     opacity: 1;
   }
-  opacity: ${props => (props.scroll ? '0.6' : '0')};
+  opacity: ${props => (props.scroll ? '0.9' : '0')};
   visibility: ${props => (props.scroll ? '' : 'hidden')};
   transition: ${props =>
     props.scroll
@@ -44,7 +44,6 @@ const CustomGridContainer = styled(Grid)`
 const CustomGridItem = styled(Grid)`
   width: 45%;
   height: 15%;
-  padding: 0 4px;
 `;
 
 const Genre = styled.div`
@@ -67,7 +66,7 @@ const Genre = styled.div`
   }
 `;
 
-function FloatingGenre() {
+function FloatingGenre({ genre }) {
   const [scroll, setScroll] = useState(false);
 
   useEffect(() => {
@@ -88,10 +87,10 @@ function FloatingGenre() {
 
   return (
     <Wrapper scroll={scroll}>
-      <CustomGridContainer container spacing={1}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => (
-          <CustomGridItem item md={6}>
-            <Genre>다큐멘터리</Genre>
+      <CustomGridContainer container rowSpacing={1}>
+        {genre.map((item, index) => (
+          <CustomGridItem key={index} item md={12}>
+            <Genre>{item.key}</Genre>
           </CustomGridItem>
         ))}
       </CustomGridContainer>
