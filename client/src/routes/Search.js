@@ -53,7 +53,9 @@ function Search() {
   const query = searchParams.get('query');
   useEffect(() => {
     axios
-      .get(`/api/search?query=${query}&page=${page}`)
+      .get(
+        `/api/search?query=${query}&page=${page}&sort=${'score_avg'}&size=${30}`,
+      )
       .then(res =>
         setSearchData({
           movieData: {
@@ -78,7 +80,7 @@ function Search() {
           </Header>
           <Genre />
           <Carousel />
-          <SortBox />
+          <SortBox query={query} />
           <SearchList />
           <FloatingButton />
           <FloatingGenre />
