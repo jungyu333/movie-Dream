@@ -7,12 +7,12 @@ import {
   ImageList,
   ImageListItem,
 } from '@mui/material';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const actordata = ['이정재'];
-
 const CustomImageList = styled(ImageList)`
   padding: 1rem;
 `;
