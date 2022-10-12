@@ -45,8 +45,8 @@ function Search() {
   const [page, setPage] = useState(1);
   const [searchData, setSearchData] = useState({
     movieData: {
-      header: {},
-      list: {},
+      movie: [],
+      genre: [],
     },
     isLoading: false,
   });
@@ -59,15 +59,15 @@ function Search() {
       .then(res =>
         setSearchData({
           movieData: {
-            header: { ...res.data.header },
-            list: { ...res.data.list },
+            movie: [...res.data.movies],
+            genre: [...res.data.genre],
           },
           isLoading: true,
         }),
       )
       .catch(err => console.error(err));
   }, [query, page]);
-  console.log(searchData);
+
   return (
     <>
       <Layout isNavSearch={true} isMain={false}>
@@ -78,12 +78,12 @@ function Search() {
               <p>검색결과</p>
             </SearchHead>
           </Header>
-          <Genre />
+          <Genre genre={searchData.movieData.genre} />
           <Carousel />
           <SortBox query={query} />
           <SearchList />
           <FloatingButton />
-          <FloatingGenre />
+          <FloatingGenre genre={searchData.movieData.genre} />
         </Wrapper>
       </Layout>
     </>
