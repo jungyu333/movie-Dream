@@ -67,8 +67,8 @@ function Search() {
       )
       .catch(err => console.error(err));
   }, [query, page]);
-
-  return (
+  console.log(searchData);
+  return (  
     <>
       <Layout isNavSearch={true} isMain={false}>
         <Wrapper>
