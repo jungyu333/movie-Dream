@@ -13,12 +13,12 @@ const CustomGridContainer = styled(Grid)`
   width: 100%;
 `;
 
-function SearchList() {
+function SearchList({ movies }) {
   return (
     <Wrapper>
       <CustomGridContainer container spacing={{ xs: 0, sm: 2 }}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => (
-          <SearchItem key={index} />
+        {movies.map(movie => (
+          <SearchItem key={movie.movie_id} movie={movie} />
         ))}
       </CustomGridContainer>
     </Wrapper>

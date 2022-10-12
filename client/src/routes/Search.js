@@ -1,5 +1,6 @@
 import { Container } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../components/common/Layout';
 import Carousel from '../components/search/Carousel';
@@ -8,6 +9,7 @@ import FloatingGenre from '../components/search/FloatingGenre';
 import Genre from '../components/search/Genre';
 import SearchList from '../components/search/SearchList';
 import SortBox from '../components/search/SortBox';
+import axios from 'axios';
 
 const Wrapper = styled(Container)`
   display: flex;
@@ -39,22 +41,49 @@ const SearchHead = styled.div`
 `;
 
 function Search() {
+  const [searchParams] = useSearchParams();
+  const [page, setPage] = useState(1);
+  const [searchData, setSearchData] = useState({
+    movieData: {
+      movie: [],
+      genre: [],
+    },
+    isLoading: false,
+  });
+  const query = searchParams.get('query');
+  useEffect(() => {
+    axios
+      .get(
+        `/api/search?query=${query}&page=${page}&sort=${'score_avg'}&size=${30}`,
+      )
+      .then(res =>
+        setSearchData({
+          movieData: {
+            movie: [...res.data.movies],
+            genre: [...res.data.genre],
+          },
+          isLoading: true,
+        }),
+      )
+      .catch(err => console.error(err));
+  }, [query, page]);
+
   return (
     <>
       <Layout isNavSearch={true} isMain={false}>
         <Wrapper>
           <Header>
             <SearchHead>
-              <h1>"헌트"</h1>
+              <h1>"{query}"</h1>
               <p>검색결과</p>
             </SearchHead>
           </Header>
-          <Genre />
+          <Genre genre={searchData.movieData.genre} />
           <Carousel />
-          <SortBox />
-          <SearchList />
+          <SortBox query={query} />
+          <SearchList movies={searchData.movieData.movie} />
           <FloatingButton />
-          <FloatingGenre />
+          <FloatingGenre genre={searchData.movieData.genre} />
         </Wrapper>
       </Layout>
     </>
