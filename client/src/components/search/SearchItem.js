@@ -22,6 +22,7 @@ const CustomAvatarItem = styled(ListItemAvatar)`
   & div {
     width: 100%;
     height: 12vh;
+    min-height: 100px;
   }
 `;
 
@@ -29,6 +30,12 @@ const CustomListItem = styled(ListItem)`
   padding: 10px 0;
   &:hover {
     background-color: #cdcfd4;
+  }
+`;
+
+const CustomAvatar = styled(Avatar)`
+  & img {
+    max-width: 80px;
   }
 `;
 
@@ -53,7 +60,7 @@ function SearchItem({ movie }) {
         <Link to={'/'}>
           <CustomListItem alignItems="flex-start">
             <CustomAvatarItem>
-              <Avatar
+              <CustomAvatar
                 src={`${movie.movie_poster}`}
                 variant="rounded"
                 alt="movie_poster"
