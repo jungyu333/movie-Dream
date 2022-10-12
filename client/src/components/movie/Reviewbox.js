@@ -20,7 +20,7 @@ const CustomPaper = styled(Paper)`
 function ReviewBox() {
   return (
     <Wrapper>
-      <CustomPaper className="contentbox" elevation={3}>
+      <CustomPaper className="reviewbox" elevation={3}>
         <b>Review Box</b>
       </CustomPaper>
     </Wrapper>

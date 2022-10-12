@@ -1,7 +1,6 @@
-import { Container, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 import styled from 'styled-components';
 import Infotable from './Infotable';
-import ActorModal from './Modal';
 
 const CustomPaper = styled(Paper)`
   width: 550px;

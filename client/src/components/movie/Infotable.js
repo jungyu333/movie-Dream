@@ -1,7 +1,8 @@
 import { Box, List, ListItem, Button } from '@mui/material';
 import styled from 'styled-components';
-import ActorModal from './Modal';
+import ActorModal from './Actormodal';
 import { useParams } from 'react-router-dom';
+import DirectorModal from './Directormodal';
 
 const CustomBox = styled(Box)`
   width: 100%;
@@ -27,7 +28,7 @@ function Infotable() {
               <b>감독</b>
             </div>
             <div>
-              <ActorModal />
+              <DirectorModal />
             </div>
           </ListItem>
           <ListItem>

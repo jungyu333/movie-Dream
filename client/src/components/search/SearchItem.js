@@ -43,7 +43,7 @@ function SearchItem() {
   return (
     <Grid item xl={12} md={6} xs={12}>
       <CustomList>
-        <Link to={'/'}>
+        <Link to={'/movie/:id'}>
           <CustomListItem alignItems="flex-start">
             <CustomAvatarItem>
               <Avatar variant="square" alt="Remy Sharp" />

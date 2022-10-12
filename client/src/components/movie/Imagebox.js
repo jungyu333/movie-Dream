@@ -6,6 +6,7 @@ const Wrapper = styled(Container)`
   width: 1500px;
   height: 380px;
   display: flex;
+  margin: 5rem auto 0 auto;
   justify-content: center;
 `;
 const CustomPaper = styled(Paper)`
