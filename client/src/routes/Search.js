@@ -74,14 +74,14 @@ function Search() {
         <Wrapper>
           <Header>
             <SearchHead>
-              <h1>"헌트"</h1>
+              <h1>"{query}"</h1>
               <p>검색결과</p>
             </SearchHead>
           </Header>
           <Genre genre={searchData.movieData.genre} />
           <Carousel />
           <SortBox query={query} />
-          <SearchList />
+          <SearchList movies={searchData.movieData.movie} />
           <FloatingButton />
           <FloatingGenre genre={searchData.movieData.genre} />
         </Wrapper>

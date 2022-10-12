@@ -21,10 +21,7 @@ const CustomAvatarItem = styled(ListItemAvatar)`
   margin-right: 10px;
   & div {
     width: 100%;
-    height: 10vh;
-    & img {
-      object-fit: cover;
-    }
+    height: 12vh;
   }
 `;
 
@@ -39,27 +36,44 @@ const CustomDivider = styled(Divider)`
   border-color: lightgray;
 `;
 
-function SearchItem() {
+const ListGenre = styled.span`
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: flex-start;
+  & span {
+    margin: 0 2px;
+    color: gray;
+  }
+`;
+
+function SearchItem({ movie }) {
   return (
     <Grid item xl={12} md={6} xs={12}>
       <CustomList>
         <Link to={'/'}>
           <CustomListItem alignItems="flex-start">
             <CustomAvatarItem>
-              <Avatar variant="square" alt="Remy Sharp" />
+              <Avatar
+                src={`${movie.movie_poster}`}
+                variant="rounded"
+                alt="movie_poster"
+              />
             </CustomAvatarItem>
             <ListItemText
-              primary="영화이름"
+              primary={movie.h_movie}
               secondary={
                 <>
                   <Typography
                     component="span"
                     variant="body2"
                     color="text.primary"
-                  >
-                    장르
-                  </Typography>
-                  {`- 액션`}
+                  ></Typography>
+                  <ListGenre>
+                    장르 -
+                    {movie.genre.map((genre, index) => (
+                      <span key={index}>{genre}</span>
+                    ))}
+                  </ListGenre>
                 </>
               }
             />

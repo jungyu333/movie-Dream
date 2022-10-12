@@ -89,8 +89,8 @@ function FloatingGenre({ genre }) {
     <Wrapper scroll={scroll}>
       <CustomGridContainer container rowSpacing={1}>
         {genre.map((item, index) => (
-          <CustomGridItem item md={12}>
-            <Genre key={index}>{item.key}</Genre>
+          <CustomGridItem key={index} item md={12}>
+            <Genre>{item.key}</Genre>
           </CustomGridItem>
         ))}
       </CustomGridContainer>
