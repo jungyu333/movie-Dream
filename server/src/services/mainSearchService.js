@@ -1,22 +1,146 @@
-import es from "../lib/elasticsearch.js";
-import common from "../static/commonStatic.js";
+import es from '../lib/elasticsearch.js';
+import common from '../static/commonStatic.js';
 import esb from 'elastic-builder';
 
 export default async function getMoives(queryParams, callback) {
-
   let query = queryParams.query;
-  let size = queryParams.size;
-  let page = queryParams.page;
-  let sort = queryParams.sort;
-  let scroll_data = [];
+  let size = typeof queryParams.size !== 'undefined' ? queryParams.size : 10;
+  let page = typeof queryParams.page !== 'undefined' ? queryParams.page : 1;
+  let sort =
+    typeof queryParams.sort !== 'undefined' ? queryParams.sort : 'score_avg';
 
+  //return Value
+  let responseData = {};
+
+  //filter
+  let genreFilter = queryParams.genreFilter;
+  let nationFlag = queryParams.nationFlag;
+
+  //rangeFilter showtime, openingdate
+  let showTimeFitler = queryParams.showTimeFitler;
+  let openDateFilter = queryParams.openDateFilter;
+
+  //상단 영화 고정
+  const topBoolQuery = new esb.boolQuery();
+  topBoolQuery.must([esb.matchAllQuery(), esb.existsQuery('movie_poster')]);
+
+  //평점순
+  const requestTopScoreBody = new esb.requestBodySearch();
+  const topScoreData = requestTopScoreBody
+    .query(topBoolQuery)
+    .sort(esb.sort('score_avg', 'desc'))
+    .size(5)
+    .toJSON();
+
+  const topScoreResponse = await es.search({
+    index: common.ES_MOVIE_INDEX,
+    body: topScoreData
+  });
+
+  const topScoreMovies = [];
+  for (const hit of topScoreResponse.body.hits.hits) {
+    let sourceData = {};
+    sourceData['movie_id'] = hit._source.movie_id;
+    sourceData['h_movie'] = hit._source.h_movie;
+    sourceData['movie_poster'] = hit._source.movie_poster;
+    topScoreMovies.push(sourceData);
+  }
+
+  responseData['top_score_movie'] = topScoreMovies;
+
+  //개봉순
+  const requestTopOpenBody = new esb.requestBodySearch();
+  const topOpenData = requestTopOpenBody
+    .query(topBoolQuery)
+    .sort(esb.sort('opening_date', 'desc'))
+    .size(5)
+    .toJSON();
+
+  const topOpenResponse = await es.search({
+    index: common.ES_MOVIE_INDEX,
+    body: topOpenData
+  });
+
+  const topOpenMovies = [];
+  for (const hit of topOpenResponse.body.hits.hits) {
+    let sourceData = {};
+    sourceData['movie_id'] = hit._source.movie_id;
+    sourceData['h_movie'] = hit._source.h_movie;
+    sourceData['movie_poster'] = hit._source.movie_poster;
+    topOpenMovies.push(sourceData);
+  }
+
+  responseData['top_open_movie'] = topOpenMovies;
+
+  //genre 태그 고정
+  const requestSubBody = new esb.requestBodySearch();
+  const subData = requestSubBody
+    .query(esb.matchQuery('h_movie', query))
+    .agg(esb.termsAggregation('genre', 'genre'))
+    .size(0)
+    .toJSON();
+
+  const subResponse = await es.search({
+    index: common.ES_MOVIE_INDEX,
+    body: subData
+  });
+
+  //aggregation
+  let aggGenre = subResponse.body.aggregations.genre.buckets;
+  responseData['genre'] = aggGenre;
+
+  //filter Query
   const requestBody = new esb.requestBodySearch();
-  //const queryBuilder = new esb.matchAllQuery();
-  const queryBuilder = new esb.MatchQuery('h_movie', query);
-  const bodyData = requestBody.query(queryBuilder)
-                              .size(10000)
-                              .sort(esb.sort(sort, 'asc'))
-                              .toJSON();
+  const boolQuery = new esb.boolQuery();
+  //genrefilter
+  if (typeof genreFilter !== 'undefined') {
+    const genreBoolQuery = new esb.boolQuery();
+    let genreFilterList = genreFilter.split(',');
+    for (const genre of genreFilterList) {
+      genreBoolQuery.should(esb.matchQuery('genre', genre));
+    }
+    boolQuery.must(genreBoolQuery);
+  }
+
+  //nation
+  if (typeof nationFlag !== 'undefined') {
+    if (nationFlag === 'True') {
+      boolQuery.must(esb.matchQuery('nation', '한국'));
+    } else {
+      boolQuery.mustNot(esb.matchQuery('nation', '한국'));
+    }
+  }
+
+  //range showtime
+  if (typeof showTimeFitler !== 'undefined') {
+    let showTimeRange = showTimeFitler.split(',');
+    let showTimeFrom = showTimeRange[0];
+    let showTimeTo = showTimeRange[1];
+
+    boolQuery.must(
+      esb.rangeQuery('show_time').gte(showTimeFrom).lte(showTimeTo)
+    );
+  }
+
+  //range opendate
+  if (typeof openDateFilter !== 'undefined') {
+    let openDateRange = openDateFilter.split(',');
+    let openDateFrom = openDateRange[0];
+    let openDateTo = openDateRange[1];
+
+    boolQuery.must(
+      esb.rangeQuery('opening_date').gte(openDateFrom).lte(openDateTo)
+    );
+  }
+
+  //movie_query_filter적용
+  boolQuery.must(esb.matchQuery('h_movie', query));
+  const bodyData = requestBody
+    .query(boolQuery)
+    .agg(esb.termsAggregation('genre', 'genre'))
+    .size(10000)
+    .sort(esb.sort(sort, 'desc'))
+    .toJSON();
 
   const response = await es.search({
     index: common.ES_MOVIE_INDEX,
@@ -24,35 +148,37 @@ export default async function getMoives(queryParams, callback) {
     scroll: '30s'
   });
 
+  //scroll
+  let scroll_data = [];
   const responseQueue = [];
   let counter = 0;
-  
+
   responseQueue.push(response);
-  while(responseQueue.length) {
+  while (responseQueue.length) {
     const { body } = responseQueue.shift();
 
     counter += body.hits.hits.length;
-    for(const hit of body.hits.hits) {
+    for (const hit of body.hits.hits) {
       scroll_data.push(hit);
     }
 
     if (body.hits.total.value === counter) {
       break;
     }
-    
+
     responseQueue.push(
       await es.scroll({
         scrollId: body._scroll_id,
         scroll: '10s'
       })
-    )
+    );
   }
 
   let end = page * size;
   let start = end - size + 1;
   let sourceList = [];
   let no = 1;
-  
+
   for (const hit of scroll_data) {
     if (no > end) {
       break;
@@ -65,6 +191,9 @@ export default async function getMoives(queryParams, callback) {
     no++;
     sourceList.push(hit._source);
   }
+  //scroll end
 
-  callback(false, sourceList);
+  responseData['movies'] = sourceList;
+
+  callback(false, responseData);
 }
