@@ -2,11 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import SearchInput from '../components/main/SearchInput';
 import Layout from '../components/common/Layout';
-import HomeCard from '../components/main/HomeCard';
 
 const Wrapper = styled.div`
   display: flex;
-  margin: 4rem 0 -5rem 0;
+  margin: 10rem 0;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -29,15 +28,14 @@ const Header = styled.div`
 function Home() {
   return (
     <>
-      <Layout isNavSearch={true} isMain={true} />
-      <Wrapper>
-        <Header>
-          <Title>Title</Title>
-          <SearchInput />
-        </Header>
-        <HomeCard />
-        <HomeCard />
-      </Wrapper>
+      <Layout isNavSearch={true} isMain={true}>
+        <Wrapper>
+          <Header>
+            <Title>Title</Title>
+            <SearchInput />
+          </Header>
+        </Wrapper>
+      </Layout>
     </>
   );
 }
