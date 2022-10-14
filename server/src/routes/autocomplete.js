@@ -1,18 +1,18 @@
 import express from 'express';
-import getMoives from '../services/mainSearchService.js';
+import getMovieNamesAuto from '../services/autocompleteService.js';
 
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
   var queryParams = req.query;
 
-  await getMoives(queryParams, function (err, results) {
+  await getMovieNamesAuto(queryParams, function (err, results) {
     if (err) {
       res.send(500, 'server Error');
       return;
     }
 
-    res.status(200).json(results);
+    res.json(results);
   });
 });
 
