@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
+import NationButton from './NationButton';
 
 const SortContainer = styled.div`
   display: flex;
@@ -37,29 +38,29 @@ function SortBox({ query }) {
   const [searchParams] = useSearchParams();
   const sort = searchParams.get('sort');
   const nationFlag = searchParams.get('nationFlag');
-  console.log(sort, nationFlag);
+
   return (
     <SortContainer>
       <Link
-        to={`/search?query=${query}&page=${1}&sort=${'opening_date'}&size=${30}`}
+        to={
+          nationFlag
+            ? `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sort}&size=${30} `
+            : `/search?query=${query}&page=${1}&sort=${'opening_date'}&size=${30} `
+        }
       >
         <OpeningSort sort={sort}>최신순</OpeningSort>
       </Link>
       <Link
-        to={`/search?query=${query}&page=${1}&sort=${'score_avg'}&size=${30}`}
+        to={
+          nationFlag
+            ? `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sort}&size=${30}`
+            : `/search?query=${query}&page=${1}&sort=${'score_avg'}&size=${30} `
+        }
       >
         <ScoreSort sort={sort}>평점순</ScoreSort>
       </Link>
-      {/* <Link
-        to={`/search?query=${query}&page=${1}&nationFlag=${'True'}&sort=${'opening_date'}&size=${30}`}
-      >
-        <OpeningSort>국내영화</OpeningSort>
-      </Link>
-      <Link
-        to={`/search?query=${query}&page=${1}&nationFlag=${'False'}&sort=${'opening_date'}&size=${30}`}
-      >
-        <OpeningSort>해외영화</OpeningSort>
-      </Link> */}
+
+      <NationButton />
     </SortContainer>
   );
 }

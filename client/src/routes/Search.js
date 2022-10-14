@@ -54,7 +54,6 @@ function Search() {
   const sortType = searchParams.get('sort');
   const nationFlag = searchParams.get('nationFlag');
   useEffect(() => {
-    console.log(nationFlag);
     if (nationFlag !== null) {
       axios
         .get(
