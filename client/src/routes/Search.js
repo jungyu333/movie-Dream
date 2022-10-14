@@ -51,24 +51,44 @@ function Search() {
     isLoading: false,
   });
   const query = searchParams.get('query');
+  const sortType = searchParams.get('sort');
+  const nationFlag = searchParams.get('nationFlag');
   useEffect(() => {
-    axios
-      .get(
-        `/api/search?query=${query}&page=${page}&sort=${'score_avg'}&size=${30}`,
-      )
-      .then(res =>
-        setSearchData({
-          movieData: {
-            movie: [...res.data.movies],
-            genre: [...res.data.genre],
-          },
-          isLoading: true,
-        }),
-      )
-      .catch(err => console.error(err));
-  }, [query, page]);
+    console.log(nationFlag);
+    if (nationFlag !== null) {
+      axios
+        .get(
+          `/api/search?query=${query}&page=${page}&nationFlag=${nationFlag}&sort=${sortType}&size=${30}`,
+        )
+        .then(res =>
+          setSearchData({
+            movieData: {
+              movie: [...res.data.movies],
+              genre: [...res.data.genre],
+            },
+            isLoading: true,
+          }),
+        )
+        .catch(err => console.error(err));
+    } else {
+      axios
+        .get(
+          `/api/search?query=${query}&page=${page}&sort=${sortType}&size=${30}`,
+        )
+        .then(res =>
+          setSearchData({
+            movieData: {
+              movie: [...res.data.movies],
+              genre: [...res.data.genre],
+            },
+            isLoading: true,
+          }),
+        )
+        .catch(err => console.error(err));
+    }
+  }, [query, page, sortType, nationFlag]);
   console.log(searchData);
-  return (  
+  return (
     <>
       <Layout isNavSearch={true} isMain={false}>
         <Wrapper>
