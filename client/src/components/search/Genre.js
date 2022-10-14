@@ -26,11 +26,11 @@ const FilterContainer = styled.div`
   }
 `;
 
-function Genre() {
+function Genre({ genre }) {
   return (
     <FilterContainer>
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
-        <div key={index}>{item}</div>
+      {genre.map((item, index) => (
+        <div key={index}>{item.key}</div>
       ))}
     </FilterContainer>
   );

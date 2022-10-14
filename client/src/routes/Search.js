@@ -45,20 +45,22 @@ function Search() {
   const [page, setPage] = useState(1);
   const [searchData, setSearchData] = useState({
     movieData: {
-      header: {},
-      list: {},
+      movie: [],
+      genre: [],
     },
     isLoading: false,
   });
   const query = searchParams.get('query');
   useEffect(() => {
     axios
-      .get(`/api/search?query=${query}&page=${page}`)
+      .get(
+        `/api/search?query=${query}&page=${page}&sort=${'score_avg'}&size=${30}`,
+      )
       .then(res =>
         setSearchData({
           movieData: {
-            header: { ...res.data.header },
-            list: { ...res.data.list },
+            movie: [...res.data.movies],
+            genre: [...res.data.genre],
           },
           isLoading: true,
         }),
@@ -66,22 +68,22 @@ function Search() {
       .catch(err => console.error(err));
   }, [query, page]);
   console.log(searchData);
-  return (
+  return (  
     <>
       <Layout isNavSearch={true} isMain={false}>
         <Wrapper>
           <Header>
             <SearchHead>
-              <h1>"헌트"</h1>
+              <h1>"{query}"</h1>
               <p>검색결과</p>
             </SearchHead>
           </Header>
-          <Genre />
+          <Genre genre={searchData.movieData.genre} />
           <Carousel />
-          <SortBox />
-          <SearchList />
+          <SortBox query={query} />
+          <SearchList movies={searchData.movieData.movie} />
           <FloatingButton />
-          <FloatingGenre />
+          <FloatingGenre genre={searchData.movieData.genre} />
         </Wrapper>
       </Layout>
     </>

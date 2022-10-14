@@ -22,19 +22,27 @@ const Sort = styled.div`
   }
 `;
 
-function SortBox() {
+function SortBox({ query }) {
   return (
     <SortContainer>
-      <Link to={`/search?query=${'원피스'}&sort=${'최신순'}`}>
+      <Link
+        to={`/search?query=${query}&page=${1}&sort=${'opening_date'}&size=${30}`}
+      >
         <Sort>최신순</Sort>
       </Link>
-      <Link to={`/search?query=${'원피스'}&sort=${'평점순'}`}>
+      <Link
+        to={`/search?query=${query}&page=${1}&sort=${'score_avg'}&size=${30}`}
+      >
         <Sort>평점순</Sort>
       </Link>
-      <Link to={`/search?query=${'원피스'}&sort=${'국내영화'}`}>
+      <Link
+        to={`/search?query=${query}&page=${1}&sort=${'국내영화'}&size=${30}`}
+      >
         <Sort>국내영화</Sort>
       </Link>
-      <Link to={`/search?query=${'원피스'}&sort=${'해외영화'}`}>
+      <Link
+        to={`/search?query=${query}&page=${1}&sort=${'해외영화'}&size=${30}`}
+      >
         <Sort>해외영화</Sort>
       </Link>
     </SortContainer>

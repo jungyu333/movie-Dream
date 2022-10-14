@@ -1,27 +1,14 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import client from "./connection.js";
-import SearchRouter from "./routes/search.js";
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import SearchRouter from './routes/search.js';
+import AutoSearchRouter from './routes/autocomplete.js';
 
 dotenv.config();
 
 const app = express();
 
-app.set("etag", false);
-
-/*
-async function bootstrap() {
-  try {
-    client.ping();
-    console.log("elasticsearch connected");
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-bootstrap();
-*/
+app.set('etag', false);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -29,16 +16,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
-    credentials: true,
+    credentials: true
   })
 );
 
-app.use("/api/search", SearchRouter);
+app.use('/api/search', SearchRouter);
+app.use('/api/auto', AutoSearchRouter);
 
-app.get("/", (req, res) => {
-  res.send("Hello express!");
+app.get('/', (req, res) => {
+  res.send('Hello express!');
 });
 
-app.listen(4000, () => {
-  console.log(`server is open on port ${4000}!`);
+app.listen(process.env.PORT, () => {
+  console.log(`server is open on port ${process.env.PORT}!`);
 });
