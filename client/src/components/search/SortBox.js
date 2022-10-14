@@ -44,7 +44,7 @@ function SortBox({ query }) {
       <Link
         to={
           nationFlag
-            ? `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sort}&size=${30} `
+            ? `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${'opening_date'}&size=${30} `
             : `/search?query=${query}&page=${1}&sort=${'opening_date'}&size=${30} `
         }
       >
@@ -53,7 +53,7 @@ function SortBox({ query }) {
       <Link
         to={
           nationFlag
-            ? `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sort}&size=${30}`
+            ? `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${'score_avg'}&size=${30}`
             : `/search?query=${query}&page=${1}&sort=${'score_avg'}&size=${30} `
         }
       >
