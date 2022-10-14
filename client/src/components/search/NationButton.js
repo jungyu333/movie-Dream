@@ -10,6 +10,7 @@ import {
   Popper,
 } from '@mui/material';
 import styled from 'styled-components';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const CustomButton = styled(Button)`
   background-color: #6459e7;
@@ -30,14 +31,28 @@ const CustomGrow = styled(Grow)`
 `;
 
 function NationButton() {
+  const [searchParams] = useSearchParams();
+  const navigation = useNavigate();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const options = ['국내영화', '해외영화'];
+
+  const options = ['전체영화', '국내영화', '해외영화'];
+  const query = searchParams.get('query');
+  const sortType = searchParams.get('sort');
+  let nationFlag = searchParams.get('nationFlag');
 
   const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
     setOpen(false);
+    if (event.target.innerText === '전체영화') {
+      navigation(
+        `/search?query=${query}&page=${1}&sort=${sortType}&size=${30}`,
+      );
+    } else {
+      nationFlag = event.target.innerText === '국내영화' ? 'True' : 'False';
+      navigation(
+        `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sortType}&size=${30}`,
+      );
+    }
   };
 
   const handleToggle = () => {
@@ -59,7 +74,11 @@ function NationButton() {
         aria-label="split button"
       >
         <CustomButton onClick={handleToggle}>
-          {options[selectedIndex]}
+          {!nationFlag
+            ? '전체영화'
+            : nationFlag === 'True'
+            ? '국내영화'
+            : '해외영화'}
         </CustomButton>
       </ButtonGroup>
       <CustomPopper
@@ -76,7 +95,6 @@ function NationButton() {
                   {options.map((option, index) => (
                     <MenuItem
                       key={option}
-                      selected={index === selectedIndex}
                       onClick={event => handleMenuItemClick(event, index)}
                     >
                       {option}
