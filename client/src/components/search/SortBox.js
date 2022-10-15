@@ -34,28 +34,23 @@ const ScoreSort = styled.div`
   }
 `;
 
-function SortBox({ query }) {
+function SortBox() {
   const [searchParams] = useSearchParams();
   const sort = searchParams.get('sort');
   const nationFlag = searchParams.get('nationFlag');
+  const query = searchParams.get('query');
+  const genreFilter = searchParams.get('genreFilter');
+  const showTimeFilter = searchParams.get('showTimeFilter');
 
   return (
     <SortContainer>
       <Link
-        to={
-          nationFlag
-            ? `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${'opening_date'}&size=${30} `
-            : `/search?query=${query}&page=${1}&sort=${'opening_date'}&size=${30} `
-        }
+        to={`/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${'opening_date'}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&size=${30} `}
       >
         <OpeningSort sort={sort}>최신순</OpeningSort>
       </Link>
       <Link
-        to={
-          nationFlag
-            ? `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${'score_avg'}&size=${30}`
-            : `/search?query=${query}&page=${1}&sort=${'score_avg'}&size=${30} `
-        }
+        to={`/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${'score_avg'}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&size=${30} `}
       >
         <ScoreSort sort={sort}>평점순</ScoreSort>
       </Link>
