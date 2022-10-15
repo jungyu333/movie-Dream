@@ -39,18 +39,19 @@ function NationButton() {
   const options = ['전체영화', '국내영화', '해외영화'];
   const query = searchParams.get('query');
   const sortType = searchParams.get('sort');
+  const genreFilter = searchParams.get('genreFilter');
   let nationFlag = searchParams.get('nationFlag');
-
+  console.log(nationFlag);
   const handleMenuItemClick = (event, index) => {
     setOpen(false);
     if (event.target.innerText === '전체영화') {
       navigation(
-        `/search?query=${query}&page=${1}&sort=${sortType}&size=${30}`,
+        `/search?query=${query}&page=${1}&nationFlag=${'null'}&sort=${sortType}&genreFilter=${genreFilter}&size=${30}`,
       );
     } else {
       nationFlag = event.target.innerText === '국내영화' ? 'True' : 'False';
       navigation(
-        `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sortType}&size=${30}`,
+        `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&size=${30}`,
       );
     }
   };
@@ -74,7 +75,7 @@ function NationButton() {
         aria-label="split button"
       >
         <CustomButton onClick={handleToggle}>
-          {!nationFlag
+          {nationFlag === null || nationFlag === 'null'
             ? '전체영화'
             : nationFlag === 'True'
             ? '국내영화'
