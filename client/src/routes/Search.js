@@ -53,40 +53,25 @@ function Search() {
   const query = searchParams.get('query');
   const sortType = searchParams.get('sort');
   const nationFlag = searchParams.get('nationFlag');
+  const genreFilter = searchParams.get('genreFilter');
+
   useEffect(() => {
-    if (nationFlag !== null) {
-      axios
-        .get(
-          `/api/search?query=${query}&page=${page}&nationFlag=${nationFlag}&sort=${sortType}&size=${30}`,
-        )
-        .then(res =>
-          setSearchData({
-            movieData: {
-              movie: [...res.data.movies],
-              genre: [...res.data.genre],
-            },
-            isLoading: true,
-          }),
-        )
-        .catch(err => console.error(err));
-    } else {
-      axios
-        .get(
-          `/api/search?query=${query}&page=${page}&sort=${sortType}&size=${30}`,
-        )
-        .then(res =>
-          setSearchData({
-            movieData: {
-              movie: [...res.data.movies],
-              genre: [...res.data.genre],
-            },
-            isLoading: true,
-          }),
-        )
-        .catch(err => console.error(err));
-    }
-  }, [query, page, sortType, nationFlag]);
-  console.log(searchData);
+    axios
+      .get(
+        `/api/search?query=${query}&page=${page}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&size=${30}`,
+      )
+      .then(res =>
+        setSearchData({
+          movieData: {
+            movie: [...res.data.movies],
+            genre: [...res.data.genre],
+          },
+          isLoading: true,
+        }),
+      )
+      .catch(err => console.error(err));
+  }, [query, page, sortType, nationFlag, genreFilter]);
+
   return (
     <>
       <Layout isNavSearch={true} isMain={false}>

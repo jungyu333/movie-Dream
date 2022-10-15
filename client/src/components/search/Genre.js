@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import GenreButton from './GenreButton';
 
 const FilterContainer = styled.div`
   max-width: 100%;
@@ -27,10 +28,17 @@ const FilterContainer = styled.div`
 `;
 
 function Genre({ genre }) {
+  const [clickedGenre, setClickedGenre] = useState([]);
+
   return (
     <FilterContainer>
       {genre.map((item, index) => (
-        <div key={index}>{item.key}</div>
+        <GenreButton
+          clickedGenre={clickedGenre}
+          setClickedGenre={setClickedGenre}
+          key={index}
+          item={item.key}
+        />
       ))}
     </FilterContainer>
   );
