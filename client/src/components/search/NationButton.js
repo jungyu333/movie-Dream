@@ -41,17 +41,18 @@ function NationButton() {
   const sortType = searchParams.get('sort');
   const genreFilter = searchParams.get('genreFilter');
   let nationFlag = searchParams.get('nationFlag');
-  console.log(nationFlag);
-  const handleMenuItemClick = (event, index) => {
+  const showTimeFilter = searchParams.get('showTimeFilter');
+
+  const handleMenuItemClick = event => {
     setOpen(false);
     if (event.target.innerText === '전체영화') {
       navigation(
-        `/search?query=${query}&page=${1}&nationFlag=${'null'}&sort=${sortType}&genreFilter=${genreFilter}&size=${30}`,
+        `/search?query=${query}&page=${1}&nationFlag=${'null'}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&size=${30}`,
       );
     } else {
       nationFlag = event.target.innerText === '국내영화' ? 'True' : 'False';
       navigation(
-        `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&size=${30}`,
+        `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&size=${30}`,
       );
     }
   };
