@@ -93,7 +93,12 @@ export default async function getMoives(queryParams, callback) {
   const requestBody = new esb.requestBodySearch();
   const boolQuery = new esb.boolQuery();
   //genrefilter
-  if (typeof genreFilter !== 'undefined') {
+
+  if (
+    typeof genreFilter !== 'undefined' &&
+    genreFilter !== 'null' &&
+    genreFilter.trim() !== ''
+  ) {
     const genreBoolQuery = new esb.boolQuery();
     let genreFilterList = genreFilter.split(',');
     for (const genre of genreFilterList) {
@@ -101,18 +106,25 @@ export default async function getMoives(queryParams, callback) {
     }
     boolQuery.must(genreBoolQuery);
   }
-
   //nation
-  if (typeof nationFlag !== 'undefined') {
+  if (
+    typeof nationFlag !== 'undefined' &&
+    nationFlag !== (null || '') &&
+    nationFlag.trim() !== ''
+  ) {
     if (nationFlag === 'True') {
       boolQuery.must(esb.matchQuery('nation', '한국'));
-    } else {
+    } else if (nationFlag === 'False') {
       boolQuery.mustNot(esb.matchQuery('nation', '한국'));
     }
   }
 
   //range showtime
-  if (typeof showTimeFitler !== 'undefined') {
+  if (
+    typeof showTimeFitler !== 'undefined' &&
+    showTimeFitler !== (null || '') &&
+    showTimeFitler.trim() !== ''
+  ) {
     let showTimeRange = showTimeFitler.split(',');
     let showTimeFrom = showTimeRange[0];
     let showTimeTo = showTimeRange[1];
@@ -123,7 +135,11 @@ export default async function getMoives(queryParams, callback) {
   }
 
   //range opendate
-  if (typeof openDateFilter !== 'undefined') {
+  if (
+    typeof openDateFilter !== 'undefined' &&
+    openDateFilter !== (null || '') &&
+    openDateFilter.trim() !== ''
+  ) {
     let openDateRange = openDateFilter.split(',');
     let openDateFrom = openDateRange[0];
     let openDateTo = openDateRange[1];
