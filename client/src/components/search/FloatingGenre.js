@@ -14,7 +14,7 @@ const Wrapper = styled(Container)`
   position: fixed;
   z-index: 1000;
   left: 4%;
-  top: 10%;
+  top: 20%;
   &:hover {
     opacity: 1;
   }
