@@ -27,9 +27,7 @@ const FilterContainer = styled.div`
   }
 `;
 
-function Genre({ genre }) {
-  const [clickedGenre, setClickedGenre] = useState([]);
-
+function Genre({ genre, clickedGenre, setClickedGenre }) {
   return (
     <FilterContainer>
       {genre.map((item, index) => (

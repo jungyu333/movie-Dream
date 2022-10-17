@@ -42,6 +42,7 @@ const SearchHead = styled.div`
 `;
 
 function Search() {
+  const [clickedGenre, setClickedGenre] = useState([]);
   const [searchParams] = useSearchParams();
   const [page, setPage] = useState(1);
   const [searchData, setSearchData] = useState({
@@ -84,12 +85,20 @@ function Search() {
               <p>검색결과</p>
             </SearchHead>
           </Header>
-          <Genre genre={searchData.movieData.genre} />
+          <Genre
+            genre={searchData.movieData.genre}
+            clickedGenre={clickedGenre}
+            setClickedGenre={setClickedGenre}
+          />
           <Carousel />
           <SortBox />
           <SearchList movies={searchData.movieData.movie} />
           <FloatingButton />
-          <FloatingGenre genre={searchData.movieData.genre} />
+          <FloatingGenre
+            genre={searchData.movieData.genre}
+            clickedGenre={clickedGenre}
+            setClickedGenre={setClickedGenre}
+          />
           <ShowTime />
         </Wrapper>
       </Layout>
