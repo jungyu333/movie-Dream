@@ -3,6 +3,22 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const GenreItem = styled.div`
+  height: 100%;
+  cursor: pointer;
+  color: gray;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  padding: 5px 2px;
+  text-align: center;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: min-content;
+  &:hover {
+    background-color: lightgray;
+    color: white;
+  }
   background-color: ${props =>
     props.clickedGenre.includes(props.item) ? 'lightgray' : ''};
 `;

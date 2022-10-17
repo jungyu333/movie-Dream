@@ -1,6 +1,7 @@
 import { Container, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import GenreButton from './GenreButton';
 
 const Wrapper = styled(Container)`
   width: 10vw;
@@ -15,10 +16,8 @@ const Wrapper = styled(Container)`
   z-index: 1000;
   left: 4%;
   top: 20%;
-  &:hover {
-    opacity: 1;
-  }
-  opacity: ${props => (props.scroll ? '0.9' : '0')};
+
+  opacity: ${props => (props.scroll ? '1' : '0')};
   visibility: ${props => (props.scroll ? '' : 'hidden')};
   transition: ${props =>
     props.scroll
@@ -46,27 +45,7 @@ const CustomGridItem = styled(Grid)`
   height: 15%;
 `;
 
-const Genre = styled.div`
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  color: lightgray;
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  padding: 5px 2px;
-  text-align: center;
-  font-size: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-height: min-content;
-  &:hover {
-    background-color: lightgray;
-    color: white;
-  }
-`;
-
-function FloatingGenre({ genre }) {
+function FloatingGenre({ genre, clickedGenre, setClickedGenre }) {
   const [scroll, setScroll] = useState(false);
 
   useEffect(() => {
@@ -90,7 +69,12 @@ function FloatingGenre({ genre }) {
       <CustomGridContainer container rowSpacing={1}>
         {genre.map((item, index) => (
           <CustomGridItem key={index} item md={12}>
-            <Genre>{item.key}</Genre>
+            <GenreButton
+              clickedGenre={clickedGenre}
+              setClickedGenre={setClickedGenre}
+              key={index}
+              item={item.key}
+            />
           </CustomGridItem>
         ))}
       </CustomGridContainer>
