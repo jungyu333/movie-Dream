@@ -13,6 +13,7 @@ function GenreButton({ item, setClickedGenre, clickedGenre }) {
   const query = searchParams.get('query');
   const sortType = searchParams.get('sort');
   const nationFlag = searchParams.get('nationFlag');
+  const showTimeFilter = searchParams.get('showTimeFilter');
 
   const onClickGenre = () => {
     let clickItem = [];
@@ -27,7 +28,7 @@ function GenreButton({ item, setClickedGenre, clickedGenre }) {
     const genreFilter = clickItem.join(',');
 
     navigation(
-      `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&size=${30}`,
+      `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&size=${30}`,
     );
   };
   return (
