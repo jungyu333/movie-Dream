@@ -12,7 +12,6 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const actordata = ['이정재'];
 const CustomImageList = styled(ImageList)`
   padding: 1rem;
 `;
@@ -42,7 +41,7 @@ const CustomImageListItem = styled(ImageListItem)`
 `;
 const CustomContainer = styled(Container)`
   width: fit-content;
-  height: 65px;
+  height: 50px;
 `;
 const CustomBox = styled(Box)`
   position: absolute;
@@ -58,16 +57,17 @@ const CustomBox = styled(Box)`
   overflow-y: auto;
 `;
 
-function ActorModal() {
+function ActorModal({ actorName }, { movie }) {
   /**const id = useParams();*/
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
   return (
-    <div>
-      <Button onClick={handleOpen}>{actordata}</Button>
+    <div style={{ display: 'flex' }}>
+      <Box>
+        <Button onClick={handleOpen}>{actorName.name}</Button>
+      </Box>
       <Modal
         open={open}
         onClose={handleClose}
@@ -76,11 +76,11 @@ function ActorModal() {
       >
         <CustomBox>
           <CustomContainer>
-            <Typography variant="h6">{actordata}의 다른 작품</Typography>
+            <Typography variant="h6">{actorName.name}의 다른 작품</Typography>
           </CustomContainer>
           <CustomImageList cols={5} rowHeight={220}>
             {[1, 2, 3, 4, 5].map(item => (
-              <Link to={'/movie/영화제목'}>
+              <Link to={`/movie/${item}`}>
                 <CustomImageListItem>
                   <img
                     style={{ borderRadius: 15 }}
