@@ -73,6 +73,9 @@ function Search() {
         }),
       )
       .catch(err => console.error(err));
+    if (genreFilter) {
+      setClickedGenre(genreFilter.split(',').filter(genre => genre !== 'null'));
+    }
   }, [query, page, sortType, nationFlag, genreFilter, showTimeFilter]);
 
   return (
