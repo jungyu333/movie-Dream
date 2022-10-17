@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Container, Slider } from '@mui/material';
 import styled from 'styled-components';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -37,30 +37,10 @@ const CustomBox = styled(Container)`
     color: white;
   }
 `;
-const marks = [
-  {
-    value: 0,
-    label: '0',
-  },
-
-  {
-    value: 60,
-    label: '60',
-  },
-
-  {
-    value: 120,
-    label: '120',
-  },
-
-  {
-    value: 180,
-    label: '180',
-  },
-];
 
 function ShowTime() {
   const [searchParams] = useSearchParams();
+  const [value, setValue] = useState([0, 180]);
 
   const query = searchParams.get('query');
   const sortType = searchParams.get('sort');
@@ -70,16 +50,16 @@ function ShowTime() {
   const navigation = useNavigate();
   const onChangeValue = useCallback(
     (event, newValue) => {
-      let showTime = [0];
-      showTime.push(newValue);
-
-      showTime = showTime.join(',');
-      navigation(
-        `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTime}&size=${30}`,
-      );
+      setValue(newValue);
     },
-    [query, sortType, genreFilter, nationFlag, navigation],
+    [setValue],
   );
+
+  useEffect(() => {
+    navigation(
+      `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${value}&size=${30}`,
+    );
+  }, [query, nationFlag, sortType, genreFilter, value, navigation]);
 
   return (
     <CustomBox>
@@ -90,8 +70,8 @@ function ShowTime() {
         step={30}
         max={180}
         valueLabelDisplay="auto"
-        marks={marks}
-        onChangeCommitted={onChangeValue}
+        value={value}
+        onChange={onChangeValue}
       />
     </CustomBox>
   );
