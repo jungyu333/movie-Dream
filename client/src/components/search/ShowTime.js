@@ -6,8 +6,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 const CustomBox = styled(Container)`
   position: fixed;
   left: 4%;
-  bottom: 20%;
-  width: 12vw;
+  top: 10%;
+  width: 10vw;
   min-width: 200px;
   border: 1px solid lightgray;
   border-radius: 10px;
