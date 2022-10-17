@@ -17,7 +17,7 @@ export default async function getMoives(queryParams, callback) {
   let nationFlag = queryParams.nationFlag;
 
   //rangeFilter showtime, openingdate
-  let showTimeFitler = queryParams.showTimeFitler;
+  let showTimeFilter = queryParams.showTimeFilter;
   let openDateFilter = queryParams.openDateFilter;
 
   //상단 영화 고정
@@ -120,12 +120,13 @@ export default async function getMoives(queryParams, callback) {
   }
 
   //range showtime
+
   if (
-    typeof showTimeFitler !== 'undefined' &&
-    showTimeFitler !== (null || '') &&
-    showTimeFitler.trim() !== ''
+    typeof showTimeFilter !== 'undefined' &&
+    showTimeFilter !== ('null' || '') &&
+    showTimeFilter.trim() !== ''
   ) {
-    let showTimeRange = showTimeFitler.split(',');
+    let showTimeRange = showTimeFilter.split(',');
     let showTimeFrom = showTimeRange[0];
     let showTimeTo = showTimeRange[1];
 
