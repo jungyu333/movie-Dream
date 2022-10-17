@@ -60,43 +60,39 @@ function ReviewBox() {
   return (
     <Wrapper>
       <CustomPaper className="contentbox" elevation={3}>
-      <b>Comment</b>
-      <Grid item xl={6} md={3} xs={6}>
-      <CustomList>
-      {[1, 2, 3, 4, 5, 6].map((item, index) => (
-        <Link to={'/'}>
-          <CustomListItem alignItems="flex-start">
-            <CustomAvatarItem>
-              <Avatar variant="square" alt="Remy Sharp" />
-            </CustomAvatarItem>
-            <ListItemText
-              primary="닉네임"
-              secondary={
-                <>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    댓글 내용
-                  </Typography>
-                  {`  시간`}
-                </>
-              }
-            />
-          </CustomListItem>
-        </Link>
-         ))}
-        <CustomDivider component="div" />
-      </CustomList>
-    </Grid>
-    </CustomPaper>
+        <b>Comment</b>
+        <Grid item xl={6} md={3} xs={6}>
+          <CustomList>
+            {[1, 2, 3, 4, 5, 6].map((item, index) => (
+              <Link to={'/'}>
+                <CustomListItem alignItems="flex-start">
+                  <CustomAvatarItem>
+                    <Avatar variant="square" alt="Remy Sharp" />
+                  </CustomAvatarItem>
+                  <ListItemText
+                    primary="닉네임"
+                    secondary={
+                      <>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          댓글 내용
+                        </Typography>
+                        {`  시간`}
+                      </>
+                    }
+                  />
+                </CustomListItem>
+              </Link>
+            ))}
+            <CustomDivider component="div" />
+          </CustomList>
+        </Grid>
+      </CustomPaper>
     </Wrapper>
-    
   );
 }
 
-
 export default ReviewBox;
-
-
