@@ -1,60 +1,61 @@
 import { Box, List, ListItem, Button, Container } from '@mui/material';
 import styled from 'styled-components';
 import ActorModal from './Actormodal';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import DirectorModal from './Directormodal';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
-const Wrapper = styled(Container)`
-  display: flex;
-  justify-content: center;
-  margin: 1rem 0;
-`;
+const Wrapper = styled(Container)``;
 const CustomBox = styled(Box)`
   width: 100%;
-  max-width: 360;
-  max-height: 150px;
+  height: 100%;
   background-color: white;
 `;
+const Customdiv = styled.div`
+  max-height: 10%;
+  max-width: 80%;
+`;
+const Navdiv = styled.div`
+  display: flex;
+  width: 7%;
+`;
 
-function Infotable() {
-  const { id } = useParams();
+function Infotable({ movie }) {
+  const [actorName, setActorName] = useState([]);
+  const params = useParams();
+  useEffect(() => {
+    axios.get('https://jsonplaceholder.typicode.com/users').then(res => {
+      const actor = res.data.filter(actor => actor.id === parseInt(params.id));
+
+      setActorName(...actor);
+    });
+  }, []);
+  console.log(actorName);
   return (
-    <Wrapper>
-      <CustomBox>
-        <nav aria-label="main mailbox folders">
-          <List>
-            <ListItem>
-              <div>
-                <Button path="/movie/:id">{id}</Button>
-              </div>
-              <div>상영상태 표시</div>
-            </ListItem>
-            <ListItem>
-              <div>
-                <b>감독</b>
-              </div>
-              <div>
-                <DirectorModal />
-              </div>
-            </ListItem>
-            <ListItem>
-              <div>
-                <b>출연</b>
-              </div>
-              <div>
-                <ActorModal />
-              </div>
-            </ListItem>
-            <ListItem>
-              <div>
-                <b>소개</b>
-              </div>
-              <div>Plot</div>
-            </ListItem>
-          </List>
-        </nav>
-      </CustomBox>
-    </Wrapper>
+    <CustomBox>
+      <List>
+        <ListItem>
+          <Customdiv>상영상태 표시</Customdiv>
+        </ListItem>
+        <ListItem>
+          <Navdiv>감독</Navdiv>
+          <Customdiv>
+            <DirectorModal />
+          </Customdiv>
+        </ListItem>
+        <ListItem>
+          <Navdiv>출연</Navdiv>
+          <Customdiv>
+            <ActorModal actorName={actorName} />
+          </Customdiv>
+        </ListItem>
+        <ListItem>
+          <Navdiv>소개</Navdiv>
+        </ListItem>
+        <ListItem>이곳은 스토리가 나올 구역입니다.</ListItem>
+      </List>
+    </CustomBox>
   );
 }
 

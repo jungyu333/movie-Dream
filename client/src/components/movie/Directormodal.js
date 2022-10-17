@@ -11,8 +11,8 @@ import { useState } from 'react';
 import { Link, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
+import Movie from '../../routes/Movie';
 
-const directordata = ['홍상수'];
 const CustomImageList = styled(ImageList)`
   padding: 1rem;
 `;
@@ -53,7 +53,7 @@ const CustomBox = styled(Box)`
   width: 850px;
   height: 550px;
   box-shadow: 24;
-  background-color: aliceblue;
+  background-color: white;
   justify-content: center;
   padding: 4;
   border-radius: 15px;
@@ -61,15 +61,13 @@ const CustomBox = styled(Box)`
 `;
 
 function DirectorModal() {
-  /**const id = useParams();*/
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
   return (
     <div>
-      <Button onClick={handleOpen}>{directordata}</Button>
+      <Button onClick={handleOpen}>봉준호</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -78,11 +76,11 @@ function DirectorModal() {
       >
         <CustomBox>
           <CustomContainer>
-            <Typography variant="h6">{directordata}의 다른 작품</Typography>
+            <Typography variant="h6">봉준호의 다른 작품</Typography>
           </CustomContainer>
           <CustomImageList cols={5} rowHeight={220}>
             {[1, 2, 3, 4, 5].map(item => (
-              <Link to={'/movie/영화제목'}>
+              <Link to={`/movie/${item}`}>
                 <CustomImageListItem>
                   <img
                     style={{ borderRadius: 15 }}

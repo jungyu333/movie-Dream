@@ -41,17 +41,16 @@ const CustomDivider = styled(Divider)`
 `;
 
 const Wrapper = styled(Container)`
-  width: 1500px;
+  width: 100%;
   height: 330px;
   display: flex;
   justify-content: center;
+  text-align: center;
 `;
 const CustomPaper = styled(Paper)`
-  width: 920px;
+  width: 100%;
   height: 300px;
-  margin: 30px 10px;
   border-radius: 15px;
-  border: 1px;
   background-color: white;
   overflow-y: scroll;
 `;
@@ -60,7 +59,7 @@ function ReviewBox() {
   return (
     <Wrapper>
       <CustomPaper className="contentbox" elevation={3}>
-        <b>Comment</b>
+        <Typography>Review Reply</Typography>
         <Grid item xl={6} md={3} xs={6}>
           <CustomList>
             {[1, 2, 3, 4, 5, 6].map((item, index) => (
