@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
+import NationButton from './NationButton';
 
 const SortContainer = styled.div`
   display: flex;
@@ -11,40 +12,50 @@ const SortContainer = styled.div`
   margin-top: 1rem;
 `;
 
-const Sort = styled.div`
+const OpeningSort = styled.div`
   margin: 0 10px;
   cursor: pointer;
   font-weight: 600;
   font-size: 0.9rem;
-  color: lightgray;
+  color: ${props => (props.sort === 'opening_date' ? 'black' : 'lightgray')};
   &:hover {
     color: rgba(0, 0, 0, 250);
   }
 `;
 
-function SortBox({ query }) {
+const ScoreSort = styled.div`
+  margin: 0 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: ${props => (props.sort === 'score_avg' ? 'black' : 'lightgray')};
+  &:hover {
+    color: rgba(0, 0, 0, 250);
+  }
+`;
+
+function SortBox() {
+  const [searchParams] = useSearchParams();
+  const sort = searchParams.get('sort');
+  const nationFlag = searchParams.get('nationFlag');
+  const query = searchParams.get('query');
+  const genreFilter = searchParams.get('genreFilter');
+  const showTimeFilter = searchParams.get('showTimeFilter');
+
   return (
     <SortContainer>
       <Link
-        to={`/search?query=${query}&page=${1}&sort=${'opening_date'}&size=${30}`}
+        to={`/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${'opening_date'}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&size=${30} `}
       >
-        <Sort>최신순</Sort>
+        <OpeningSort sort={sort}>최신순</OpeningSort>
       </Link>
       <Link
-        to={`/search?query=${query}&page=${1}&sort=${'score_avg'}&size=${30}`}
+        to={`/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${'score_avg'}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&size=${30} `}
       >
-        <Sort>평점순</Sort>
+        <ScoreSort sort={sort}>평점순</ScoreSort>
       </Link>
-      <Link
-        to={`/search?query=${query}&page=${1}&sort=${'국내영화'}&size=${30}`}
-      >
-        <Sort>국내영화</Sort>
-      </Link>
-      <Link
-        to={`/search?query=${query}&page=${1}&sort=${'해외영화'}&size=${30}`}
-      >
-        <Sort>해외영화</Sort>
-      </Link>
+
+      <NationButton />
     </SortContainer>
   );
 }

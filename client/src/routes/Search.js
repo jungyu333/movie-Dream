@@ -10,6 +10,7 @@ import Genre from '../components/search/Genre';
 import SearchList from '../components/search/SearchList';
 import SortBox from '../components/search/SortBox';
 import axios from 'axios';
+import ShowTime from '../components/search/ShowTime';
 
 const Wrapper = styled(Container)`
   display: flex;
@@ -51,10 +52,15 @@ function Search() {
     isLoading: false,
   });
   const query = searchParams.get('query');
+  const sortType = searchParams.get('sort');
+  const nationFlag = searchParams.get('nationFlag');
+  const genreFilter = searchParams.get('genreFilter');
+  const showTimeFilter = searchParams.get('showTimeFilter');
+
   useEffect(() => {
     axios
       .get(
-        `/api/search?query=${query}&page=${page}&sort=${'score_avg'}&size=${30}`,
+        `/api/search?query=${query}&page=${page}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&size=${30}`,
       )
       .then(res =>
         setSearchData({
@@ -66,7 +72,7 @@ function Search() {
         }),
       )
       .catch(err => console.error(err));
-  }, [query, page]);
+  }, [query, page, sortType, nationFlag, genreFilter, showTimeFilter]);
 
   return (
     <>
@@ -80,10 +86,11 @@ function Search() {
           </Header>
           <Genre genre={searchData.movieData.genre} />
           <Carousel />
-          <SortBox query={query} />
+          <SortBox />
           <SearchList movies={searchData.movieData.movie} />
           <FloatingButton />
           <FloatingGenre genre={searchData.movieData.genre} />
+          <ShowTime />
         </Wrapper>
       </Layout>
     </>
