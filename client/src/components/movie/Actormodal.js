@@ -57,7 +57,18 @@ const CustomBox = styled(Box)`
   overflow-y: auto;
 `;
 
-function ActorModal({ actorName }, { movie }) {
+export const ScrollDiv = styled.div`
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #ccc;
+  }
+`;
+
+function ActorModal() {
   /**const id = useParams();*/
   const [open, setOpen] = useState(false);
 
@@ -66,7 +77,7 @@ function ActorModal({ actorName }, { movie }) {
   return (
     <div style={{ display: 'flex' }}>
       <Box>
-        <Button onClick={handleOpen}>{actorName.name}</Button>
+        <Button onClick={handleOpen}>배우</Button>
       </Box>
       <Modal
         open={open}
@@ -76,7 +87,7 @@ function ActorModal({ actorName }, { movie }) {
       >
         <CustomBox>
           <CustomContainer>
-            <Typography variant="h6">{actorName.name}의 다른 작품</Typography>
+            <Typography variant="h6">배우의 다른 작품</Typography>
           </CustomContainer>
           <CustomImageList cols={5} rowHeight={220}>
             {[1, 2, 3, 4, 5].map(item => (

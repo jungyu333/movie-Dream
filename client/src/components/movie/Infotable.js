@@ -21,17 +21,8 @@ const Navdiv = styled.div`
   width: 7%;
 `;
 
-function Infotable({ movie }) {
-  const [actorName, setActorName] = useState([]);
-  const params = useParams();
-  useEffect(() => {
-    axios.get('https://jsonplaceholder.typicode.com/users').then(res => {
-      const actor = res.data.filter(actor => actor.id === parseInt(params.id));
-
-      setActorName(...actor);
-    });
-  }, []);
-  console.log(actorName);
+function Infotable() {
+  
   return (
     <CustomBox>
       <List>
@@ -47,7 +38,7 @@ function Infotable({ movie }) {
         <ListItem>
           <Navdiv>출연</Navdiv>
           <Customdiv>
-            <ActorModal actorName={actorName} />
+            <ActorModal />
           </Customdiv>
         </ListItem>
         <ListItem>
