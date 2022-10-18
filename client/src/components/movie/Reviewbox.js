@@ -14,7 +14,7 @@ import {
 import { Link } from 'react-router-dom';
 
 const CustomList = styled(List)`
-  margin: 1rem 0;
+margin: 1rem 0;
 `;
 
 const CustomAvatarItem = styled(ListItemAvatar)`
@@ -29,10 +29,13 @@ const CustomAvatarItem = styled(ListItemAvatar)`
   }
 `;
 
+const padding = styled()
+
 const CustomListItem = styled(ListItem)`
   padding: 10px 0;
   &:hover {
     background-color: #cdcfd4;
+    
   }
 `;
 
@@ -54,16 +57,17 @@ const CustomPaper = styled(Paper)`
   border: 1px;
   background-color: white;
   overflow-y: scroll;
-`;
+ `;
+
 
 function ReviewBox() {
   return (
     <Wrapper>
       <CustomPaper className="contentbox" elevation={3}>
-        <b>Comment</b>
+        <div>Comment</div>
         <Grid item xl={6} md={3} xs={6}>
           <CustomList>
-            {[1, 2, 3, 4, 5, 6].map((item, index) => (
+            {[1, 2, ].map((item, index) => (
               <Link to={'/'}>
                 <CustomListItem alignItems="flex-start">
                   <CustomAvatarItem>
@@ -87,7 +91,7 @@ function ReviewBox() {
                 </CustomListItem>
               </Link>
             ))}
-            <CustomDivider component="div" />
+       
           </CustomList>
         </Grid>
       </CustomPaper>
