@@ -1,31 +1,25 @@
-import { Container, Paper, Typography } from '@mui/material';
+import { Container, Paper, Skeleton, Typography } from '@mui/material';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Infobox from './Infobox';
+import axios from 'axios';
+import Posterimage from './Posterimage';
+import { useParams } from 'react-router-dom';
 
-const Wrapper = styled(Container)`
-  width: 1500px;
-  height: 380px;
-  display: flex;
-  margin: 5rem auto 0 auto;
-  justify-content: center;
+const Wrapper = styled.div`
+  width: 50%;
 `;
 const CustomPaper = styled(Paper)`
-  width: 350px;
-  height: 380px;
-  margin: 10px;
+  height: 100%;
   border-radius: 15px;
-  border: 1px;
-  background-color: white;
-  text-align: center;
 `;
 
-function Imagebox() {
+function Imagebox({ url }) {
   return (
     <Wrapper>
       <CustomPaper elevation={3}>
-        <Typography>영화 포스터</Typography>
+        <Posterimage poster={url} />
       </CustomPaper>
-      <Infobox />
     </Wrapper>
   );
 }

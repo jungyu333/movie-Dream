@@ -7,27 +7,50 @@ import Imagebox from '../components/movie/Imagebox';
 import WordCloudBox from '../components/movie/Wordcloudbox';
 import Layout from '../components/common/Layout';
 import FloatingButton from '../components/search/FloatingButton';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import axios from 'axios';
+import Infobox from '../components/movie/Infobox';
 
 const Wrapper = styled(Container)`
   display: flex;
-  margin: 2rem auto 0 auto;
+  margin: 3rem auto 0 auto;
   flex-direction: column;
+`;
+
+const Header = styled(Container)`
+  display: flex;
+  align-items: center;
+  margin: 2rem 0;
 `;
 
 function Movie() {
   //const { id } = useParams();
+  const [movie, setMovie] = useState([]);
+  const params = useParams();
+
+  useEffect(() => {
+    axios.get('https://jsonplaceholder.typicode.com/photos').then(res => {
+      const item = res.data.filter(item => item.id === parseInt(params.id));
+
+      setMovie(...item);
+    });
+  }, []);
 
   return (
     <>
-      <Wrapper>
-        <Layout isNavSearch={true} isMain={false} />
-        <div>
-          <Imagebox />
-        </div>
-        <ReviewBox />
-        <WordCloudBox />
-        <FloatingButton />
-      </Wrapper>
+      <Layout isNavSearch={true} isMain={false}>
+        <Wrapper>
+          <Header>
+            <Imagebox url={movie.url} />
+            <Infobox movie={movie} />
+          </Header>
+
+          <ReviewBox />
+          <WordCloudBox />
+          <FloatingButton />
+        </Wrapper>
+      </Layout>
     </>
   );
 }
