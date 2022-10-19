@@ -15,7 +15,7 @@ const Wrapper = styled(Container)`
   position: fixed;
   z-index: 1000;
   left: 4%;
-  top: 20%;
+  top: 40%;
 
   opacity: ${props => (props.scroll ? '1' : '0')};
   visibility: ${props => (props.scroll ? '' : 'hidden')};
