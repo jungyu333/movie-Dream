@@ -11,7 +11,7 @@ const CustomBox = styled(Container)`
   min-width: 200px;
   border: 1px solid lightgray;
   border-radius: 10px;
-  padding: 10px 25px;
+  padding: 10px 15px;
   box-shadow: 2px 2px 2px lightgray;
   & h1 {
     margin: 10px 0;
@@ -46,6 +46,7 @@ function ShowTime() {
   const sortType = searchParams.get('sort');
   const genreFilter = searchParams.get('genreFilter');
   const nationFlag = searchParams.get('nationFlag');
+  const openDateFilter = searchParams.get('openDateFilter');
 
   const navigation = useNavigate();
   const onChangeValue = useCallback(
@@ -57,15 +58,22 @@ function ShowTime() {
 
   useEffect(() => {
     navigation(
-      `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${value}&size=${30}`,
+      `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${value}&openDateFilter=${openDateFilter}&size=${30}`,
     );
-  }, [query, nationFlag, sortType, genreFilter, value, navigation]);
+  }, [
+    query,
+    nationFlag,
+    sortType,
+    genreFilter,
+    value,
+    navigation,
+    openDateFilter,
+  ]);
 
   return (
     <CustomBox>
       <h1>Select Time</h1>
       <Slider
-        aria-label="Custom marks"
         defaultValue={0}
         step={30}
         max={180}

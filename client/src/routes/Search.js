@@ -11,6 +11,7 @@ import SearchList from '../components/search/SearchList';
 import SortBox from '../components/search/SortBox';
 import axios from 'axios';
 import ShowTime from '../components/search/ShowTime';
+import MovieDateFilter from '../components/search/MovieDateFilter';
 
 const Wrapper = styled(Container)`
   display: flex;
@@ -57,11 +58,12 @@ function Search() {
   const nationFlag = searchParams.get('nationFlag');
   const genreFilter = searchParams.get('genreFilter');
   const showTimeFilter = searchParams.get('showTimeFilter');
+  const openDateFilter = searchParams.get('openDateFilter');
 
   useEffect(() => {
     axios
       .get(
-        `/api/search?query=${query}&page=${page}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&size=${30}`,
+        `/api/search?query=${query}&page=${page}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&openDateFilter=${openDateFilter}&size=${30}`,
       )
       .then(res =>
         setSearchData({
@@ -76,7 +78,15 @@ function Search() {
     if (genreFilter) {
       setClickedGenre(genreFilter.split(',').filter(genre => genre !== 'null'));
     }
-  }, [query, page, sortType, nationFlag, genreFilter, showTimeFilter]);
+  }, [
+    query,
+    page,
+    sortType,
+    nationFlag,
+    genreFilter,
+    showTimeFilter,
+    openDateFilter,
+  ]);
 
   return (
     <>
@@ -103,6 +113,7 @@ function Search() {
             setClickedGenre={setClickedGenre}
           />
           <ShowTime />
+          <MovieDateFilter />
         </Wrapper>
       </Layout>
     </>
