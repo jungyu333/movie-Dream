@@ -2,7 +2,7 @@ import es from '../lib/elasticsearch.js';
 import common from '../static/commonStatic.js';
 import esb from 'elastic-builder';
 
-export default async function getMoives(queryParams, callback) {
+export default async function getMovies(queryParams, callback) {
   let query = queryParams.query;
   let size = typeof queryParams.size !== 'undefined' ? queryParams.size : 10;
   let page = typeof queryParams.page !== 'undefined' ? queryParams.page : 1;
