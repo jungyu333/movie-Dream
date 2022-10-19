@@ -4,19 +4,14 @@ import styled from 'styled-components';
 import GenreButton from './GenreButton';
 
 const Wrapper = styled(Container)`
-  width: 10vw;
   min-width: 200px;
+  margin-bottom: 1rem;
   height: fit-content;
   background-color: white;
   border: 1px solid lightgray;
   border-radius: 10px;
   box-shadow: 2px 2px 5px lightgray;
   padding: 10px;
-  position: fixed;
-  z-index: 1000;
-  left: 4%;
-  top: 40%;
-
   opacity: ${props => (props.scroll ? '1' : '0')};
   visibility: ${props => (props.scroll ? '' : 'hidden')};
   transition: ${props =>
