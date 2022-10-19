@@ -10,9 +10,13 @@ import {
   ListItemAvatar,
   ListItemText,
   Typography,
-  Scroll
+  Box,
+  Rating
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+
+
+
 
 const CustomList = styled(List)`
 margin: 1rem 0;
@@ -32,11 +36,7 @@ const CustomAvatarItem = styled(ListItemAvatar)`
 
 
 const CustomListItem = styled(ListItem)`
-  padding: 20px;
-  &:hover {
-    background-color: #cdcfd4;
-    
-  }
+  padding: 10px;
 `;
   
 const CustomDivider = styled(Divider)`
@@ -71,11 +71,9 @@ function ReviewBox() {
         <Grid item xl={6} md={3} xs={6}>
           <CustomList>
             {[1, 2, 3, 4].map((item, index) => (
-              <Link to={'/'}>
+              <>
+         
                 <CustomListItem alignItems="flex-start">
-                <CustomAvatarItem>
-                  <Avatar src="/broken-image.jpg" />
-                  </CustomAvatarItem>
                     <ListItemText
                     primary="닉네임"
                     secondary={
@@ -87,12 +85,19 @@ function ReviewBox() {
                         >
                           댓글 내용
                         </Typography>
-                        {`  시간`}
+                        <Typography
+                        variant="body2"
+                        color="text.primary">
+                          시간
+                        </Typography>
                       </>
                     }
                   />
                 </CustomListItem>
-              </Link>
+            
+            
+              </>
+            
             ))}
           
           </CustomList>
