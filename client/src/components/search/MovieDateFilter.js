@@ -3,18 +3,15 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import RadioControlItem from './RadioControlItem';
 import moment from 'moment';
+import { Container } from '@mui/material';
 
-const Wrapper = styled.div`
+const Wrapper = styled(Container)`
   border: 1px solid lightgray;
+  margin-bottom: 1rem;
   box-shadow: 2px 2px 5px lightgray;
   border-radius: 10px;
   padding: 10px;
-  width: 10vw;
   min-width: 200px;
-  position: fixed;
-  z-index: 1000;
-  left: 4%;
-  top: 20%;
   font-size: 0.9rem;
   & h1 {
     font-weight: 600;

@@ -42,6 +42,14 @@ const SearchHead = styled.div`
   }
 `;
 
+const FilterContainer = styled.div`
+  position: fixed;
+  z-index: 1000;
+  left: 4%;
+  top: 15%;
+  width: 11vw;
+`;
+
 function Search() {
   const [clickedGenre, setClickedGenre] = useState([]);
   const [searchParams] = useSearchParams();
@@ -107,13 +115,15 @@ function Search() {
           <SortBox />
           <SearchList movies={searchData.movieData.movie} />
           <FloatingButton />
-          <FloatingGenre
-            genre={searchData.movieData.genre}
-            clickedGenre={clickedGenre}
-            setClickedGenre={setClickedGenre}
-          />
-          <ShowTime />
-          <MovieDateFilter />
+          <FilterContainer>
+            <ShowTime />
+            <MovieDateFilter />
+            <FloatingGenre
+              genre={searchData.movieData.genre}
+              clickedGenre={clickedGenre}
+              setClickedGenre={setClickedGenre}
+            />
+          </FilterContainer>
         </Wrapper>
       </Layout>
     </>
