@@ -1,0 +1,7 @@
+@font-face {
+    font-family: "SUIT";
+    font-weight: 200;
+    src: url("../fonts/SUIT-Regular.ttf") format("woff2"),
+        url("../fonts/SUIT-Regular.ttf") format("woff"),
+        url("../fonts/SUIT-Regular.ttf") format("truetype");
+}
