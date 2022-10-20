@@ -92,6 +92,7 @@ video {
   box-sizing:border-box ;
   text-decoration:none ;
   user-select: none;
+  font-family:SUIT ;
   -ms-user-select: none;
   :link {
     color: black;
@@ -100,7 +101,7 @@ video {
     color:black ;
   }
 }
-/* HTML5 display-role reset for older browsers */
+
 article,
 aside,
 details,
