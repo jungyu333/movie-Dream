@@ -31,18 +31,35 @@ const ImageBox = styled.div`
   height: 25vh;
   width: 100%;
   min-width: 90px;
-  justify-content: center;
+  & a {
+    position: relative;
+    &:hover {
+      & img {
+        filter: brightness(0.3);
+      }
+      & div {
+        display: flex;
+      }
+    }
+  }
 `;
 
 const Image = styled.img`
   height: 100%;
   width: 100%;
   object-fit: fill;
+  transition: all 0.4s linear;
 `;
 
-const MovieTitle = styled.h1`
-  text-align: center;
+const MovieTitle = styled.div`
   font-weight: 600;
+  text-align: center;
+  display: none;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 function Carousel({ title, movies }) {
