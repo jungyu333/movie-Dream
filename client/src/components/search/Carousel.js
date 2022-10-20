@@ -5,13 +5,13 @@ import 'slick-carousel/slick/slick-theme.css';
 import styled from 'styled-components';
 import PrevArrow from './PrevArrow';
 import NextArrow from './NextArrow';
-import { padding } from '@mui/system';
-import Link from '@mui/material/Link';
-import { fontFamily, fontWeight } from '@mui/system';
- 
+import { Link } from 'react-router-dom';
+
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   margin: 1rem 0;
 `;
 
@@ -19,35 +19,33 @@ const CustomSlicer = styled(Slider)`
   width: 95%;
 `;
 
-const ImageBox = styled.div`
-  height: 27vh;
-  padding: 10px;
-  background-color: #F4D1C4;
-  justify-content: center;
-  .poster:hover{
-    transform:scale(1.05);
-  }
-
-  }
+const Header = styled.h1`
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  align-self: flex-start;
 `;
 
-const ImageStyle = {
-  height: "22vh",
-  margin:"auto",
-};
+const ImageBox = styled.div`
+  height: 25vh;
+  width: 100%;
+  min-width: 90px;
+  justify-content: center;
+`;
 
-const NameStyle = {
-  fontWeight:"bold",
-  textAlign: "center",
-  fontFamily: "SUIT"
-};
+const Image = styled.img`
+  height: 100%;
+  width: 100%;
+  object-fit: fill;
+`;
 
-const ClassStyle = {
-  fontFamily:"SUIT",
-  fontWeight:"bold"
-};
+const MovieTitle = styled.h1`
+  text-align: center;
+  font-weight: 600;
+`;
 
-function Carousel({openMovie, topMovie}) {
+function Carousel({ title, movies }) {
   const settings = {
     dots: false,
     infinite: true,
@@ -60,34 +58,27 @@ function Carousel({openMovie, topMovie}) {
 
   return (
     <>
-    <h1 style={ClassStyle}>평점순</h1>
-    <Wrapper>
-      <CustomSlicer {...settings}>
-        {topMovie.map(item => (
-          <ImageBox key={item.movie_id}>
-            <a href = {'http://localhost:3000/movie/'+item.movie_id}>
-              <img className="poster" src={item.movie_poster} style={ImageStyle} /><br/>
-              <div style={NameStyle}>{item.h_movie}</div>
-            </a>
-          </ImageBox>
-         ))}
-      </CustomSlicer>
-    </Wrapper>
-    <h1 style={ClassStyle}>최신순</h1>
-    <Wrapper>
-      <CustomSlicer {...settings}>
-        {openMovie.map(item => (
-          <ImageBox key={item.movie_id}>
-            <a href = {'http://localhost:3000/movie/'+item.movie_id}>
-              <img className="poster" src={item.movie_poster} style={ImageStyle} /><br/>
-              <div style={NameStyle}>{item.h_movie}</div>
-            </a>
-          </ImageBox>
-         ))}
-      </CustomSlicer>      
-    </Wrapper>
+      <Wrapper>
+        <Header>{title}</Header>
+        <CustomSlicer {...settings}>
+          {movies.map(item => (
+            <ImageBox key={item.movie_id}>
+              <Link to={`/movie/${item.movie_id}`}>
+                <Image
+                  src={
+                    item.movie_poster !== ''
+                      ? item.movie_poster
+                      : '/Noimage.jpeg'
+                  }
+                  alt="poster"
+                />
+                <MovieTitle>{item.h_movie}</MovieTitle>
+              </Link>
+            </ImageBox>
+          ))}
+        </CustomSlicer>
+      </Wrapper>
     </>
-
   );
 }
 

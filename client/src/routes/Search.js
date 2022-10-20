@@ -116,9 +116,10 @@ function Search() {
             setClickedGenre={setClickedGenre}
           />
           <Carousel
-            openMovie={searchData.movieData.openMovie}
-            topMovie={searchData.movieData.topMove} 
+            title="New Movies!"
+            movies={searchData.movieData.openMovie}
           />
+          <Carousel title="Hot Movies!" movies={searchData.movieData.topMove} />
           <SortBox />
           <SearchList movies={searchData.movieData.movie} />
           <FloatingButton />
