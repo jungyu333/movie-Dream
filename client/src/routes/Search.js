@@ -58,6 +58,8 @@ function Search() {
     movieData: {
       movie: [],
       genre: [],
+      openMovie: [],
+      topMove: [],
     },
     isLoading: false,
   });
@@ -78,6 +80,8 @@ function Search() {
           movieData: {
             movie: [...res.data.movies],
             genre: [...res.data.genre],
+            openMovie: [...res.data.top_open_movie],
+            topMove: [...res.data.top_score_movie],
           },
           isLoading: true,
         }),
@@ -111,7 +115,10 @@ function Search() {
             clickedGenre={clickedGenre}
             setClickedGenre={setClickedGenre}
           />
-          <Carousel />
+          <Carousel
+            openMovie={searchData.movieData.openMovie}
+            topMovie={searchData.movieData.topMove} 
+          />
           <SortBox />
           <SearchList movies={searchData.movieData.movie} />
           <FloatingButton />
