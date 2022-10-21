@@ -34,12 +34,11 @@ const HomeLink = styled.div`
     align-items: center;
     margin-left: -10px;
     margin-right: 10px;
-    fill: white;
+   
     
-    & :hover {
-      opacity: 1;
-      -webkit-animation: flash 1.5s;
-      animation: flash 1.5s;
+    &:hover {
+     
+      filter : invert(20%);
     }
   }
   & div {
