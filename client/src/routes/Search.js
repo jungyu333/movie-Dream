@@ -1,4 +1,4 @@
-import { Container } from '@mui/material';
+import { Container, Skeleton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -13,6 +13,8 @@ import axios from 'axios';
 import ShowTime from '../components/search/ShowTime';
 import MovieDateFilter from '../components/search/MovieDateFilter';
 import { useInView } from 'react-intersection-observer';
+import SearchSkeleton from '../components/search/SearchSkeleton';
+import GenreSkeleton from '../components/search/GenreSkeleton';
 
 const Wrapper = styled(Container)`
   display: flex;
@@ -54,6 +56,8 @@ const FilterContainer = styled.div`
 const Observer = styled.div`
   height: 10px;
 `;
+
+const CustomSkeleton = styled(Skeleton)``;
 
 function Search() {
   const [clickedGenre, setClickedGenre] = useState([]);
@@ -140,7 +144,7 @@ function Search() {
               <p>검색결과</p>
             </SearchHead>
           </Header>
-          {searchData.movieData.genre && (
+          {searchData.isLoaded ? (
             <Genre
               genre={searchData.movieData.genre}
               clickedGenre={clickedGenre}
@@ -148,7 +152,10 @@ function Search() {
               setSearchData={setSearchData}
               setPage={setPage}
             />
+          ) : (
+            <GenreSkeleton />
           )}
+
           {JSON.parse(localStorage.getItem('openMovie')) && (
             <Carousel
               title="New Movies!"
@@ -162,7 +169,13 @@ function Search() {
             />
           )}
           <SortBox setSearchData={setSearchData} setPage={setPage} />
-          <SearchList movies={searchData.movieData.movie} />
+
+          {searchData.isLoaded ? (
+            <SearchList movies={searchData.movieData.movie} />
+          ) : (
+            <SearchSkeleton />
+          )}
+
           <Observer ref={searchData.hasMoreMovies ? ref : undefined} />
           <FloatingButton />
           <FilterContainer>
