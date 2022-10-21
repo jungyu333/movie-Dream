@@ -65,13 +65,51 @@ const MovieTitle = styled.div`
 
 function Carousel({ title, movies }) {
   const settings = {
-    dots: false,
+    dots: true,
     infinite: true,
     slidesToShow: 5,
     slidesToScroll: 5,
     autoplaySpeed: 1000,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
+    responsive: [
+      {
+        breakpoint: 900,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
+          infinite: true,
+          dots:true
+        }
+      },
+      {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots:true
+        }
+      },
+      {
+        breakpoint: 500,
+        settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        infinite: true,
+        dots:true
+        } 
+      },
+      {
+        breakpoint: 350,
+        settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        infinite: true,
+        dots:true
+        }
+      }
+    ]
   };
 
   return (
