@@ -64,8 +64,6 @@ function Search() {
     movieData: {
       movie: [],
       genre: [],
-      openMovie: [],
-      topMove: [],
     },
     isLoaded: false,
     hasMoreMovies: true,
@@ -85,13 +83,28 @@ function Search() {
       .then(res => {
         let movies = [...searchData.movieData.movie];
         movies = movies.concat(res.data.movies);
-        console.log(movies);
+
+        if (localStorage.openMovie === undefined) {
+          localStorage.setItem('openMovie', JSON.stringify([]));
+        } else {
+          localStorage.setItem(
+            'openMovie',
+            JSON.stringify([...res.data.top_open_movie]),
+          );
+        }
+        if (localStorage.scoreMovie === undefined) {
+          localStorage.setItem('scoreMovie', JSON.stringify([]));
+        } else {
+          localStorage.setItem(
+            'scoreMovie',
+            JSON.stringify([...res.data.top_score_movie]),
+          );
+        }
+
         setSearchData({
           movieData: {
             movie: [...movies],
             genre: [...res.data.genre],
-            openMovie: [...res.data.top_open_movie],
-            topMove: [...res.data.top_score_movie],
           },
           isLoaded: true,
           hasMoreMovies: res.data.movies.length === 5,
@@ -116,6 +129,7 @@ function Search() {
       setPage(prev => prev + 1);
     }
   }, [inView, searchData.isLoaded]);
+
   return (
     <>
       <Layout isNavSearch={true} isMain={false}>
@@ -135,11 +149,18 @@ function Search() {
               setPage={setPage}
             />
           )}
-          <Carousel
-            title="New Movies!"
-            movies={searchData.movieData.openMovie}
-          />
-          <Carousel title="Hot Movies!" movies={searchData.movieData.topMove} />
+          {JSON.parse(localStorage.getItem('openMovie')) && (
+            <Carousel
+              title="New Movies!"
+              movies={JSON.parse(localStorage.getItem('openMovie'))}
+            />
+          )}
+          {JSON.parse(localStorage.getItem('scoreMovie')) && (
+            <Carousel
+              title="Hot Movies!"
+              movies={JSON.parse(localStorage.getItem('scoreMovie'))}
+            />
+          )}
           <SortBox setSearchData={setSearchData} setPage={setPage} />
           <SearchList movies={searchData.movieData.movie} />
           <Observer ref={searchData.hasMoreMovies ? ref : undefined} />
