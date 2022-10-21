@@ -40,7 +40,13 @@ const CustomGridItem = styled(Grid)`
   height: 15%;
 `;
 
-function FloatingGenre({ genre, clickedGenre, setClickedGenre }) {
+function FloatingGenre({
+  genre,
+  clickedGenre,
+  setClickedGenre,
+  setSearchData,
+  setPage,
+}) {
   const [scroll, setScroll] = useState(false);
 
   useEffect(() => {
@@ -69,6 +75,8 @@ function FloatingGenre({ genre, clickedGenre, setClickedGenre }) {
               setClickedGenre={setClickedGenre}
               key={index}
               item={item.key}
+              setSearchData={setSearchData}
+              setPage={setPage}
             />
           </CustomGridItem>
         ))}
