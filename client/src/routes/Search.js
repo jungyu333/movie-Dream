@@ -145,8 +145,8 @@ function Search() {
           <Observer ref={searchData.hasMoreMovies ? ref : undefined} />
           <FloatingButton />
           <FilterContainer>
-            <ShowTime />
-            <MovieDateFilter />
+            <ShowTime setSearchData={setSearchData} setPage={setPage} />
+            <MovieDateFilter setSearchData={setSearchData} setPage={setPage} />
             <FloatingGenre
               genre={searchData.movieData.genre}
               clickedGenre={clickedGenre}

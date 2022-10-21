@@ -71,7 +71,7 @@ function SortBox({ setSearchData, setPage }) {
         <ScoreSort sort={sort}>평점순</ScoreSort>
       </Link>
 
-      <NationButton />
+      <NationButton setSearchData={setSearchData} setPage={setPage} />
     </SortContainer>
   );
 }
