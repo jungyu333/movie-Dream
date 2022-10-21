@@ -30,7 +30,7 @@ const CustomGrow = styled(Grow)`
   transform-origin: center top;
 `;
 
-function NationButton() {
+function NationButton({ setPage, setSearchData }) {
   const [searchParams] = useSearchParams();
   const navigation = useNavigate();
   const [open, setOpen] = useState(false);
@@ -42,17 +42,29 @@ function NationButton() {
   const genreFilter = searchParams.get('genreFilter');
   let nationFlag = searchParams.get('nationFlag');
   const showTimeFilter = searchParams.get('showTimeFilter');
+  const openDateFilter = searchParams.get('openDateFilter');
 
   const handleMenuItemClick = event => {
     setOpen(false);
+    setSearchData({
+      movieData: {
+        movie: [],
+        genre: [],
+        openMovie: [],
+        topMove: [],
+      },
+      isLoaded: false,
+      hasMoreMovies: true,
+    });
+    setPage(1);
     if (event.target.innerText === '전체영화') {
       navigation(
-        `/search?query=${query}&page=${1}&nationFlag=${'null'}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&size=${30}`,
+        `/search?query=${query}&nationFlag=${'null'}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&openDateFilter=${openDateFilter}&size=${5}`,
       );
     } else {
       nationFlag = event.target.innerText === '국내영화' ? 'True' : 'False';
       navigation(
-        `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&size=${30}`,
+        `/search?query=${query}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&openDateFilter=${openDateFilter}&size=${5}`,
       );
     }
   };

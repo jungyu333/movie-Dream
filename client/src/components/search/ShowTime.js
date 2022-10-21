@@ -35,7 +35,7 @@ const CustomBox = styled(Container)`
   }
 `;
 
-function ShowTime() {
+function ShowTime({ setSearchData, setPage }) {
   const [searchParams] = useSearchParams();
   const [value, setValue] = useState([0, 180]);
 
@@ -49,13 +49,24 @@ function ShowTime() {
   const onChangeValue = useCallback(
     (event, newValue) => {
       setValue(newValue);
+      setSearchData({
+        movieData: {
+          movie: [],
+          genre: [],
+          openMovie: [],
+          topMove: [],
+        },
+        isLoaded: false,
+        hasMoreMovies: true,
+      });
+      setPage(1);
     },
-    [setValue],
+    [setValue, setSearchData, setPage],
   );
 
   useEffect(() => {
     navigation(
-      `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${value}&openDateFilter=${openDateFilter}&size=${30}`,
+      `/search?query=${query}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${value}&openDateFilter=${openDateFilter}&size=${5}`,
     );
   }, [
     query,
