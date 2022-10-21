@@ -43,7 +43,7 @@ function SearchInput({ isNavSearch, isMain }) {
   const onSubmit = e => {
     e.preventDefault();
     navigation(
-      `/search?query=${content}&page=${1}&sort=${'opening_date'}&size=${30}`,
+      `/search?query=${content}&nationFlag=${null}&sort=${'opening_date'}&genreFilter=${null}&showTimeFilter=${'0,180'}&openDateFilter=${''}&size=${5}`,
     );
   };
 
