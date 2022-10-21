@@ -34,28 +34,42 @@ const ScoreSort = styled.div`
   }
 `;
 
-function SortBox() {
+function SortBox({ setSearchData, setPage }) {
   const [searchParams] = useSearchParams();
   const sort = searchParams.get('sort');
   const nationFlag = searchParams.get('nationFlag');
   const query = searchParams.get('query');
   const genreFilter = searchParams.get('genreFilter');
   const showTimeFilter = searchParams.get('showTimeFilter');
+  const openDateFilter = searchParams.get('openDateFilter');
 
+  const onClickSort = () => {
+    setSearchData({
+      movieData: {
+        movie: [],
+        genre: [],
+      },
+      isLoaded: false,
+      hasMoreMovies: true,
+    });
+    setPage(1);
+  };
   return (
     <SortContainer>
       <Link
-        to={`/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${'opening_date'}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&size=${30} `}
+        onClick={onClickSort}
+        to={`/search?query=${query}&nationFlag=${nationFlag}&sort=${'opening_date'}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&openDateFilter=${openDateFilter}&size=${5} `}
       >
         <OpeningSort sort={sort}>최신순</OpeningSort>
       </Link>
       <Link
-        to={`/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${'score_avg'}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&size=${30} `}
+        onClick={onClickSort}
+        to={`/search?query=${query}&nationFlag=${nationFlag}&sort=${'score_avg'}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&openDateFilter=${openDateFilter}&size=${5} `}
       >
         <ScoreSort sort={sort}>평점순</ScoreSort>
       </Link>
 
-      <NationButton />
+      <NationButton setSearchData={setSearchData} setPage={setPage} />
     </SortContainer>
   );
 }

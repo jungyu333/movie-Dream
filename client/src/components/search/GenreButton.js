@@ -23,7 +23,13 @@ const GenreItem = styled.div`
     props.clickedGenre.includes(props.item) ? 'lightgray' : ''};
 `;
 
-function GenreButton({ item, setClickedGenre, clickedGenre }) {
+function GenreButton({
+  item,
+  setClickedGenre,
+  clickedGenre,
+  setSearchData,
+  setPage,
+}) {
   const navigation = useNavigate();
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query');
@@ -42,10 +48,19 @@ function GenreButton({ item, setClickedGenre, clickedGenre }) {
     }
 
     setClickedGenre([...clickItem]);
+    setSearchData({
+      movieData: {
+        movie: [],
+        genre: [],
+      },
+      isLoaded: false,
+      hasMoreMovies: true,
+    });
+    setPage(1);
     const genreFilter = clickItem.join(',');
 
     navigation(
-      `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&openDateFilter=${openDateFilter}&size=${30}`,
+      `/search?query=${query}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&openDateFilter=${openDateFilter}&size=${5}`,
     );
   };
   return (

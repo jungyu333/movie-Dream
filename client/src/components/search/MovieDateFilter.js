@@ -27,7 +27,7 @@ const RadioContainer = styled.div`
   margin-top: 10px;
 `;
 
-function MovieDateFilter() {
+function MovieDateFilter({ setSearchData, setPage }) {
   const [selected, setSelected] = useState('0');
   const [date, setDate] = useState('');
   const [searchParams] = useSearchParams();
@@ -37,21 +37,46 @@ function MovieDateFilter() {
   const showTimeFilter = searchParams.get('showTimeFilter');
   const genreFilter = searchParams.get('genreFilter');
   const navigation = useNavigate();
-  const handleChange = useCallback(value => {
-    if (value === '0') {
-      setSelected(value);
-      setDate('');
-    } else {
-      const today = moment().format('YYYY.MM.DD');
-      const calculatedDate = moment().subtract(value, 'M').format('YYYY.MM.DD');
-      setSelected(value);
-      setDate(`${calculatedDate},${today}`);
-    }
-  }, []);
+  const handleChange = useCallback(
+    value => {
+      if (value === '0') {
+        setSelected(value);
+        setDate('');
+        setSearchData({
+          movieData: {
+            movie: [],
+            genre: [],
+            openMovie: [],
+            topMove: [],
+          },
+          isLoaded: false,
+          hasMoreMovies: true,
+        });
+        setPage(1);
+      } else {
+        const today = moment().format('YYYY.MM.DD');
+        const calculatedDate = moment()
+          .subtract(value, 'M')
+          .format('YYYY.MM.DD');
+        setSelected(value);
+        setDate(`${calculatedDate},${today}`);
+        setSearchData({
+          movieData: {
+            movie: [],
+            genre: [],
+          },
+          isLoaded: false,
+          hasMoreMovies: true,
+        });
+        setPage(1);
+      }
+    },
+    [setSearchData, setPage],
+  );
 
   useEffect(() => {
     navigation(
-      `/search?query=${query}&page=${1}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&openDateFilter=${date}&size=${30}`,
+      `/search?query=${query}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&openDateFilter=${date}&size=${5}`,
     );
   }, [
     navigation,
@@ -62,7 +87,7 @@ function MovieDateFilter() {
     showTimeFilter,
     date,
   ]);
-  console.log(date);
+
   return (
     <Wrapper>
       <div>
