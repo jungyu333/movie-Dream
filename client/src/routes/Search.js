@@ -131,6 +131,8 @@ function Search() {
               genre={searchData.movieData.genre}
               clickedGenre={clickedGenre}
               setClickedGenre={setClickedGenre}
+              setSearchData={setSearchData}
+              setPage={setPage}
             />
           )}
           <Carousel
@@ -149,6 +151,8 @@ function Search() {
               genre={searchData.movieData.genre}
               clickedGenre={clickedGenre}
               setClickedGenre={setClickedGenre}
+              setSearchData={setSearchData}
+              setPage={setPage}
             />
           </FilterContainer>
         </Wrapper>

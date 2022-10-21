@@ -27,7 +27,13 @@ const FilterContainer = styled.div`
   }
 `;
 
-function Genre({ genre, clickedGenre, setClickedGenre }) {
+function Genre({
+  genre,
+  clickedGenre,
+  setClickedGenre,
+  setSearchData,
+  setPage,
+}) {
   return (
     <FilterContainer>
       {genre.map((item, index) => (
@@ -36,6 +42,8 @@ function Genre({ genre, clickedGenre, setClickedGenre }) {
           setClickedGenre={setClickedGenre}
           key={index}
           item={item.key}
+          setSearchData={setSearchData}
+          setPage={setPage}
         />
       ))}
     </FilterContainer>
