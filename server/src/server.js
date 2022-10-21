@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import SearchRouter from './routes/search.js';
 import AutoSearchRouter from './routes/autocomplete.js';
+import CrwlRouter from './routes/movieCrwl.js';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(
   })
 );
 
+app.use('/api/crwl', CrwlRouter);
 app.use('/api/search', SearchRouter);
 app.use('/api/auto', AutoSearchRouter);
 
