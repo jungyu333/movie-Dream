@@ -6,12 +6,12 @@ const CustomArror = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: black;
+  background-color: grey;
   opacity: 0.1;
   z-index: 50;
   color: black;
-  height: 100%;
-  width: 2vw;
+  height: 98.5%;
+  width: 3vw;
   cursor: pointer;
   right: 0;
   top: 0;

@@ -9,9 +9,9 @@ const CustomArror = styled.div`
   background-color: black;
   opacity: 0.1;
   z-index: 30;
-  color: black;
-  height: 100%;
-  width: 2vw;
+  color: grey;
+  height: 98.5%;
+  width: 3vw;
   cursor: pointer;
   left: 0;
   top: 0;
