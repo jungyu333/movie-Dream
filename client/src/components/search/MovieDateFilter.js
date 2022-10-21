@@ -64,8 +64,6 @@ function MovieDateFilter({ setSearchData, setPage }) {
           movieData: {
             movie: [],
             genre: [],
-            openMovie: [],
-            topMove: [],
           },
           isLoaded: false,
           hasMoreMovies: true,

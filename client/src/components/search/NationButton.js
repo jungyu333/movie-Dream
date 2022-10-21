@@ -50,8 +50,6 @@ function NationButton({ setPage, setSearchData }) {
       movieData: {
         movie: [],
         genre: [],
-        openMovie: [],
-        topMove: [],
       },
       isLoaded: false,
       hasMoreMovies: true,
