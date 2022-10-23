@@ -4,14 +4,17 @@ import styled from 'styled-components';
 const RadioItem = styled.div`
   display: flex;
   align-items: center;
+
   margin: 5px 0;
   & input {
     cursor: pointer;
+    margin: 0;
   }
 
   & label {
     margin-left: 5px;
     font-size: 0.8rem;
+    min-width: max-content;
     color: gray;
     cursor: pointer;
   }

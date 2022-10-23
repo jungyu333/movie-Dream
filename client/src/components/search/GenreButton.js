@@ -53,7 +53,7 @@ function GenreButton({
         movie: [],
         genre: [],
       },
-      isLoaded: false,
+      isLoading: true,
       hasMoreMovies: true,
     });
     setPage(1);

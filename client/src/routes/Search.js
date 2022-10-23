@@ -1,4 +1,4 @@
-import { Container, Skeleton } from '@mui/material';
+import { Container } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -13,8 +13,6 @@ import axios from 'axios';
 import ShowTime from '../components/search/ShowTime';
 import MovieDateFilter from '../components/search/MovieDateFilter';
 import { useInView } from 'react-intersection-observer';
-import SearchSkeleton from '../components/search/SearchSkeleton';
-import GenreSkeleton from '../components/search/GenreSkeleton';
 
 const Wrapper = styled(Container)`
   display: flex;
@@ -45,19 +43,37 @@ const SearchHead = styled.div`
   }
 `;
 
-const FilterContainer = styled.div`
+const FilterContainer = styled(Container)`
   position: fixed;
   z-index: 1000;
-  left: 4%;
+  left: 3vw;
   top: 15%;
-  width: 11vw;
+  width: 13vw;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    display: flex;
+    justify-content: center;
+    height: 15vh;
+    width: 100%;
+    align-items: center;
+    position: static;
+  }
+
+  @media ${({ theme }) => theme.device.mobile} {
+    display: flex;
+    height: 20vh;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+    position: static;
+    margin-top: 1rem;
+  }
 `;
 
 const Observer = styled.div`
   height: 10px;
 `;
-
-const CustomSkeleton = styled(Skeleton)``;
 
 function Search() {
   const [clickedGenre, setClickedGenre] = useState([]);
@@ -69,7 +85,7 @@ function Search() {
       movie: [],
       genre: [],
     },
-    isLoaded: false,
+    isLoading: true,
     hasMoreMovies: true,
   });
   const query = searchParams.get('query');
@@ -110,7 +126,7 @@ function Search() {
             movie: [...movies],
             genre: [...res.data.genre],
           },
-          isLoaded: true,
+          isLoading: false,
           hasMoreMovies: res.data.movies.length === 5,
         });
       })
@@ -129,10 +145,10 @@ function Search() {
   ]);
 
   useEffect(() => {
-    if (inView && searchData.isLoaded) {
+    if (inView && !searchData.isLoading) {
       setPage(prev => prev + 1);
     }
-  }, [inView, searchData.isLoaded]);
+  }, [inView, searchData.isLoading]);
 
   return (
     <>
@@ -144,17 +160,27 @@ function Search() {
               <p>검색결과</p>
             </SearchHead>
           </Header>
-          {searchData.isLoaded ? (
-            <Genre
+
+          <Genre
+            genre={searchData.movieData.genre}
+            clickedGenre={clickedGenre}
+            setClickedGenre={setClickedGenre}
+            setSearchData={setSearchData}
+            setPage={setPage}
+            isLoading={searchData.isLoading}
+          />
+
+          <FilterContainer>
+            <ShowTime setSearchData={setSearchData} setPage={setPage} />
+            <MovieDateFilter setSearchData={setSearchData} setPage={setPage} />
+            <FloatingGenre
               genre={searchData.movieData.genre}
               clickedGenre={clickedGenre}
               setClickedGenre={setClickedGenre}
               setSearchData={setSearchData}
               setPage={setPage}
             />
-          ) : (
-            <GenreSkeleton />
-          )}
+          </FilterContainer>
 
           {JSON.parse(localStorage.getItem('openMovie')) && (
             <Carousel
@@ -170,25 +196,13 @@ function Search() {
           )}
           <SortBox setSearchData={setSearchData} setPage={setPage} />
 
-          {searchData.isLoaded ? (
-            <SearchList movies={searchData.movieData.movie} />
-          ) : (
-            <SearchSkeleton />
-          )}
+          <SearchList
+            movies={searchData.movieData.movie}
+            isLoading={searchData.isLoading}
+          />
 
           <Observer ref={searchData.hasMoreMovies ? ref : undefined} />
           <FloatingButton />
-          <FilterContainer>
-            <ShowTime setSearchData={setSearchData} setPage={setPage} />
-            <MovieDateFilter setSearchData={setSearchData} setPage={setPage} />
-            <FloatingGenre
-              genre={searchData.movieData.genre}
-              clickedGenre={clickedGenre}
-              setClickedGenre={setClickedGenre}
-              setSearchData={setSearchData}
-              setPage={setPage}
-            />
-          </FilterContainer>
         </Wrapper>
       </Layout>
     </>

@@ -1,28 +1,19 @@
-import { Container, Skeleton } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
 
-const CustomContainer = styled(Container)`
-  margin: 0.8rem 0;
-  display: flex;
-`;
-
 const CustomSkeleton = styled(Skeleton)`
   background-color: lightgray;
-  border-radius: 10px;
-  margin: 0 5px;
-  width: 50px;
+  border: 1px solid lightgray;
+  border-radius: 20px;
+  margin: 10px 5px;
+  width: 63px;
   height: 30px;
+  padding: 5px 2px;
 `;
 
 function GenreSkeleton() {
-  return (
-    <CustomContainer>
-      {[1, 2, 3, 4, 5].map(item => (
-        <CustomSkeleton key={item} />
-      ))}
-    </CustomContainer>
-  );
+  return <CustomSkeleton />;
 }
 
 export default GenreSkeleton;
