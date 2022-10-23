@@ -49,7 +49,7 @@ function SortBox({ setSearchData, setPage }) {
         movie: [],
         genre: [],
       },
-      isLoaded: false,
+      isLoading: true,
       hasMoreMovies: true,
     });
     setPage(1);

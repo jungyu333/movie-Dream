@@ -51,7 +51,7 @@ function NationButton({ setPage, setSearchData }) {
         movie: [],
         genre: [],
       },
-      isLoaded: false,
+      isLoading: true,
       hasMoreMovies: true,
     });
     setPage(1);

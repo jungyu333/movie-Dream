@@ -19,7 +19,7 @@ const Wrapper = styled(Container)`
       ? 'all 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'
       : 'all 195ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'};
 
-  @media screen and (max-width: 900px) {
+  @media ${({ theme }) => theme.device.tablet} {
     display: none;
   }
 `;
