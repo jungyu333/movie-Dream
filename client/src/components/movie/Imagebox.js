@@ -1,25 +1,28 @@
-import { Container, Paper, Skeleton, Typography } from '@mui/material';
-import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Infobox from './Infobox';
-import axios from 'axios';
-import Posterimage from './Posterimage';
-import { useParams } from 'react-router-dom';
+import Posterimage from './PosterImage';
 
 const Wrapper = styled.div`
-  width: 50%;
-`;
-const CustomPaper = styled(Paper)`
-  height: 100%;
-  border-radius: 15px;
+  display: flex;
+  border-radius: 10px;
+  justify-content: center;
+  min-height: 290px;
+  align-items: center;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url(${props => props.url});
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  @media ${({ theme }) => theme.device.smallTablet} {
+    width: 100%;
+    height: 30vh;
+  }
 `;
 
 function Imagebox({ url }) {
   return (
-    <Wrapper>
-      <CustomPaper elevation={3}>
-        <Posterimage poster={url} />
-      </CustomPaper>
+    <Wrapper url={url}>
+      <Posterimage poster={url} />
     </Wrapper>
   );
 }

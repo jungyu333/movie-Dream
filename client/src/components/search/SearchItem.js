@@ -57,7 +57,7 @@ function SearchItem({ movie }) {
   return (
     <Grid item xl={12} md={6} xs={12}>
       <CustomList>
-        <Link to={'/movie/:id'}>
+        <Link to={`/movie/${movie.movie_id}`}>
           <CustomListItem alignItems="flex-start">
             <CustomAvatarItem>
               <CustomAvatar

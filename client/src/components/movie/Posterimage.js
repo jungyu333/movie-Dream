@@ -1,21 +1,18 @@
 import styled from 'styled-components';
 
-const Box = styled.div`
-  height: 50vh;
-  margin: 15px;
-  & img {
-    width: 100%;
-    height: 100%;
-    border-radius: 15px;
+const Image = styled.img`
+  object-fit: cover;
+  border-radius: 10px;
+  image-rendering: auto;
+
+  @media ${({ theme }) => theme.device.smallTablet} {
+    object-fit: cover;
+    height: 90%;
   }
 `;
 
-function Posterimage({ poster }) {
-  return (
-    <Box>
-      <img src={poster} />
-    </Box>
-  );
+function PosterImage({ poster }) {
+  return <Image src={poster} alt="poster" />;
 }
 
-export default Posterimage;
+export default PosterImage;
