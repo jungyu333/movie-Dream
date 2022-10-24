@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   }
 `;
 
-function Infobox({ movie }) {
+function InfoBox({ movie }) {
   return (
     <Wrapper>
       <InfoTable movie={movie} />
@@ -25,4 +25,4 @@ function Infobox({ movie }) {
   );
 }
 
-export default Infobox;
+export default InfoBox;

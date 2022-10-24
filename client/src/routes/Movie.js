@@ -3,14 +3,14 @@ import { useParams } from 'react-router-dom';
 import { Container } from '@mui/material';
 import styled from 'styled-components';
 import ReviewBox from '../components/movie/Reviewbox';
-import Imagebox from '../components/movie/ImageBox';
+import ImageBox from '../components/movie/ImageBox';
 import WordCloudBox from '../components/movie/Wordcloudbox';
 import Layout from '../components/common/Layout';
 import FloatingButton from '../components/search/FloatingButton';
+import InfoBox from '../components/movie/InfoBox';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
-import Infobox from '../components/movie/Infobox';
 
 const Wrapper = styled(Container)`
   display: flex;
@@ -51,8 +51,8 @@ function Movie() {
       <Layout isNavSearch={true} isMain={false}>
         <Wrapper>
           <Header>
-            <Imagebox url={movieData.movie.movie_poster} />
-            <Infobox movie={movieData.movie} />
+            <ImageBox url={movieData.movie.movie_poster} />
+            <InfoBox movie={movieData.movie} />
           </Header>
           <ReviewBox />
           <WordCloudBox />
