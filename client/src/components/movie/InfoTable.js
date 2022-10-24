@@ -1,19 +1,5 @@
-import {
-  Box,
-  List,
-  ListItem,
-  Button,
-  Container,
-  Rating,
-  Divider,
-} from '@mui/material';
-
+import { Container, Divider } from '@mui/material';
 import styled from 'styled-components';
-import ActorModal from './Actormodal';
-import { useState, useEffect } from 'react';
-import DirectorModal from './Directormodal';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
 
 const Wrapper = styled(Container)`
   margin: 1rem 0;
@@ -71,10 +57,11 @@ const MainInfo = styled.div`
 const Director = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 5px;
   & h1 {
     font-size: 1rem;
     font-weight: 600;
-    margin-right: 5px;
+    margin-right: 10px;
   }
 
   & div {
@@ -89,7 +76,7 @@ const Actor = styled.div`
   & h1 {
     font-size: 1rem;
     font-weight: 600;
-    margin-right: 5px;
+    margin-right: 10px;
   }
 
   & div {
@@ -98,14 +85,32 @@ const Actor = styled.div`
   }
 `;
 
+const DescriptionContainer = styled.div`
+  height: 13vh;
+  min-height: 120px;
+  margin-bottom: 10px;
+  & h1 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-right: 10px;
+  }
+  & div {
+    height: 90%;
+    margin-top: 5px;
+    color: gray;
+    overflow-y: auto;
+    line-height: 1.5;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+`;
+
 function InfoTable({ movie }) {
-  console.log(Math.floor(movie.score_avg / 2));
-  console.log(movie);
   return (
     <Wrapper>
       <Title>
         <h1>{movie.h_movie}</h1>
-        <h2>| {movie.h_movie2}</h2>
       </Title>
       <SubInfo>
         <div>
@@ -138,6 +143,10 @@ function InfoTable({ movie }) {
                 .map((item, index) => <div key={index}>{item.name}</div>)
             : null}
         </Actor>
+        <DescriptionContainer>
+          <h1>소개</h1>
+          <div>{movie.movie_story}</div>
+        </DescriptionContainer>
       </MainInfo>
     </Wrapper>
   );
