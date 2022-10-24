@@ -15,10 +15,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true
-  })
+    cors({
+        origin: process.env.CLIENT_URL,
+        credentials: true
+    })
 );
 
 app.use('/api/crwl', CrwlRouter);
@@ -26,9 +26,9 @@ app.use('/api/search', SearchRouter);
 app.use('/api/auto', AutoSearchRouter);
 
 app.get('/', (req, res) => {
-  res.send('Hello express!');
+    res.send('Hello express!');
 });
 
 app.listen(process.env.PORT, () => {
-  console.log(`server is open on port ${process.env.PORT}!`);
+    console.log(`server is open on port ${process.env.PORT}!`);
 });

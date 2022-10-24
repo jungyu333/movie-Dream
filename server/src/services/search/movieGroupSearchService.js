@@ -1,12 +1,16 @@
-import es from '../lib/elasticsearch.js';
-import common from '../static/commonStatic.js';
+import es from '../../lib/elasticsearch.js';
+import common from '../../static/commonStatic.js';
 import esb from 'elastic-builder';
 
-
 export default async function getMoiveGroup(queryParams, callback) {
+    groupSearch(queryParams).then(function (res) {
+        callback(false, res);
+    });
+}
 
+async function groupSearch(queryParams) {
     let group = queryParams.group;
-    let name = queryParams.name; 
+    let name = queryParams.name;
 
     const responseData = {};
 
@@ -15,26 +19,20 @@ export default async function getMoiveGroup(queryParams, callback) {
     const boolQuery = new esb.boolQuery();
     let bodyData = null;
 
-    if ( group === '감독') {
-        boolQuery.must([
-            esb.matchQuery('movie_director', name),
-        ]);
+    if (group === '감독') {
+        boolQuery.must([esb.matchQuery('movie_director', name)]);
 
-        bodyData = requestBody.query(boolQuery)
-                              .agg(
-                                    esb.termsAggregation('genre', 'genre')
-                                )
-                               .toJSON();
-    }else {
-        boolQuery.must([
-            esb.matchQuery('movie_actor.name', name),
-        ]);
-        const nestedQuery = new esb.nestedQuery(boolQuery,'movie_actor');
-        bodyData = requestBody.query(nestedQuery)
-                              .agg(
-                                esb.termsAggregation('genre', 'genre')
-                              )
-                              .toJSON();
+        bodyData = requestBody
+            .query(boolQuery)
+            .agg(esb.termsAggregation('genre', 'genre'))
+            .toJSON();
+    } else {
+        boolQuery.must([esb.matchQuery('movie_actor.name', name)]);
+        const nestedQuery = new esb.nestedQuery(boolQuery, 'movie_actor');
+        bodyData = requestBody
+            .query(nestedQuery)
+            .agg(esb.termsAggregation('genre', 'genre'))
+            .toJSON();
     }
 
     const response = await es.search({
@@ -59,5 +57,5 @@ export default async function getMoiveGroup(queryParams, callback) {
     const aggregation = response.body.aggregations;
     responseData['genre'] = aggregation.genre.buckets;
 
-    callback(false, responseData);
+    return responseData;
 }
