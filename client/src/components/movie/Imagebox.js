@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Posterimage from './PosterImage';
+import PosterImage from './PosterImage';
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,12 +19,12 @@ const Wrapper = styled.div`
   }
 `;
 
-function Imagebox({ url }) {
+function ImageBox({ url }) {
   return (
     <Wrapper url={url}>
-      <Posterimage poster={url} />
+      <PosterImage poster={url} />
     </Wrapper>
   );
 }
 
-export default Imagebox;
+export default ImageBox;
