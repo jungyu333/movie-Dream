@@ -16,9 +16,9 @@ const client = new Client({
 //dev elasticsearch connect
 
 const client = new Client({
-  host: process.env.DEV_ELASTIC_URL,
-  node: process.env.DEV_ELASTIC_URL,
-  log: 'trace'
+    host: process.env.DEV_ELASTIC_URL,
+    node: process.env.DEV_ELASTIC_URL,
+    log: 'trace'
 });
 
 export default client;
