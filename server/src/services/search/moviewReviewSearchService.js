@@ -20,6 +20,14 @@ export default async function getMoiveReview(queryParams, callback) {
 }
 
 async function movieReviewSearch(queryParams) {
+    let sentimentFlag = queryParams.sentimentFlag;
+    sentimentFlag =
+        typeof sentimentFlag !== 'undefined'
+            ? sentimentFlag === 'true' || sentimentFlag === 'True'
+                ? (sentimentFlag = true)
+                : (sentimentFlag = false)
+            : false;
+
     const requestBody = new esb.requestBodySearch();
     const bodyData = requestBody
         .query(esb.matchQuery('movie_id', queryParams.movie_id))
@@ -27,7 +35,9 @@ async function movieReviewSearch(queryParams) {
         .toJSON();
 
     const response = await es.search({
-        index: common.ES_REVIEW_INDEX,
+        index: sentimentFlag
+            ? common.ES_REVIEW_SENTIMENT_INDEX
+            : common.ES_REVIEW_INDEX,
         body: bodyData,
         scroll: '30s'
     });

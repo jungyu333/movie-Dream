@@ -1,7 +1,7 @@
 import es from '../../lib/elasticsearch.js';
 import common from '../../static/commonStatic.js';
 import esb from 'elastic-builder';
-import { esScrollData, esDataPaging } from '../../util/esUtil.js';
+import { esScrollData, esDataPaging, getGenreList } from '../../util/esUtil.js';
 
 export default async function getMovies(queryParams, callback) {
     //상단 movie data(개봉,평점,장르)
@@ -38,6 +38,16 @@ export default async function getMovies(queryParams, callback) {
 async function getTopMovies(query) {
     const topResultData = {};
 
+    //today
+    let today = new Date();
+    const year = today.getFullYear().toString();
+    const month = ('0' + (today.getMonth() + 1)).slice(-2);
+    const recentMonth = ('0' + today.getMonth()).slice(-2);
+    const date = ('0' + today.getDate()).slice(-2);
+
+    today = year + '.' + month.toString() + '.' + date;
+    const recentDay = year + '.' + recentMonth + '.' + date;
+
     //poster script query
     const scriptQuery = esb.scriptQuery(
         esb
@@ -73,6 +83,7 @@ async function getTopMovies(query) {
         sourceData['movie_id'] = hit._source.movie_id;
         sourceData['h_movie'] = hit._source.h_movie;
         sourceData['movie_poster'] = hit._source.movie_poster;
+        sourceData['score_avg'] = hit._source.score_avg;
         topScoreMovies.push(sourceData);
     }
 
@@ -80,8 +91,12 @@ async function getTopMovies(query) {
 
     //개봉순
     const requestTopOpenBody = new esb.requestBodySearch();
+    const openBoolQuery = esb.boolQuery();
+    openBoolQuery
+        .must(esb.rangeQuery('opening_date').gte(recentDay).lte(today))
+        .must(topBoolQuery);
     const topOpenData = requestTopOpenBody
-        .query(topBoolQuery)
+        .query(openBoolQuery)
         .sort(esb.sort('opening_date', 'desc'))
         .size(10)
         .toJSON();
@@ -97,10 +112,40 @@ async function getTopMovies(query) {
         sourceData['movie_id'] = hit._source.movie_id;
         sourceData['h_movie'] = hit._source.h_movie;
         sourceData['movie_poster'] = hit._source.movie_poster;
+        sourceData['opening_date'] = hit._source.opening_date;
         topOpenMovies.push(sourceData);
     }
 
     topResultData['top_open_movie'] = topOpenMovies;
+
+    //개봉예정
+    const requestTopToBeOpenBody = new esb.requestBodySearch();
+    const toBeopenBoolQuery = esb.boolQuery();
+    toBeopenBoolQuery
+        .must(esb.rangeQuery('opening_date').gt(today))
+        .must(topBoolQuery);
+    const topToBeOpenData = requestTopToBeOpenBody
+        .query(toBeopenBoolQuery)
+        .sort(esb.sort('opening_date', 'desc'))
+        .size(10)
+        .toJSON();
+
+    const topToBeOpenResponse = await es.search({
+        index: common.ES_MOVIE_INDEX,
+        body: topToBeOpenData
+    });
+
+    const topToBeOpenMovies = [];
+    for (const hit of topToBeOpenResponse.body.hits.hits) {
+        let sourceData = {};
+        sourceData['movie_id'] = hit._source.movie_id;
+        sourceData['h_movie'] = hit._source.h_movie;
+        sourceData['movie_poster'] = hit._source.movie_poster;
+        sourceData['opening_date'] = hit._source.opening_date;
+        topToBeOpenMovies.push(sourceData);
+    }
+
+    topResultData['top_to_be_open_movie'] = topToBeOpenMovies;
 
     //genre 태그 고정
     const requestSubBody = new esb.requestBodySearch();
@@ -193,11 +238,26 @@ async function mainMovieSearch(queryParams, requestBody, boolQuery) {
             ? queryParams.sort
             : 'score_avg';
 
-    boolQuery.must(esb.matchQuery('h_movie', query));
+    const sortScript = esb
+        .sort()
+        .type('number')
+        .script(
+            esb
+                .script()
+                .lang('painless')
+                .inline(
+                    'if(doc["h_movie3.keyword"].size() != 0){if(params.movie_name == doc["h_movie3.keyword"].value) { return 0;}} return 100000;'
+                )
+                .params({ movie_name: query })
+        )
+        .order('asc');
+
+    boolQuery.must(esb.matchPhraseQuery('h_movie', query));
     const bodyData = requestBody
         .query(boolQuery)
         .agg(esb.termsAggregation('genre', 'genre'))
         .size(10000)
+        .sort(sortScript)
         .sort(esb.sort(sort, 'desc'))
         .toJSON();
 

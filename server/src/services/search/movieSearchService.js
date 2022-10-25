@@ -3,12 +3,12 @@ import common from '../../static/commonStatic.js';
 import esb from 'elastic-builder';
 
 export default async function getMovie(queryParams, callback) {
-    movieSearch.then(function (res) {
+    movieSearch(queryParams).then(function (res) {
         //return Value
         let responseData = {};
         const hit = res.body.hits.hits[0];
         responseData['movie'] = hit._source;
-        callback(false, movieSearch(queryParams));
+        callback(false, responseData);
     });
 }
 
