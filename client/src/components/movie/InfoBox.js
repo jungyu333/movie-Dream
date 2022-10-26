@@ -4,7 +4,7 @@ import InfoTable from './InfoTable';
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
-  min-height: 290px;
+
   border-radius: 10px;
   border: 1px solid lightgray;
   box-shadow: 2px 2px 2px lightgray;
