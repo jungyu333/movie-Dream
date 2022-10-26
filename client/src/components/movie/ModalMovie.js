@@ -68,6 +68,32 @@ const CustomGridContainer = styled(Grid)`
 const CustomGridItem = styled(Grid)`
   height: 20vh;
   border-radius: 10px;
+
+  & div {
+    text-align: center;
+
+    height: 100%;
+    position: relative;
+    & p {
+      font-size: 0.9rem;
+      border-radius: 10px;
+      height: 90%;
+      width: 100%;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      top: 0;
+      color: white;
+      background-color: black;
+      opacity: 0;
+      transition: all 0.4s ease-in-out;
+      &:hover {
+        opacity: 1;
+        transition: all 0.4s ease-in-out;
+      }
+    }
+  }
   @media ${({ theme }) => theme.device.tablet} {
     height: 15vh;
   }
@@ -109,7 +135,10 @@ function ModalMovie({ handleClose, open, clickedData }) {
               .map(item => (
                 <CustomGridItem key={item.movie_id} item xs={6} md={4}>
                   <Link to={`/movie/${item.movie_id}`}>
-                    <Image src={item.movie_poster} url={item.movie_poster} />
+                    <div>
+                      <Image src={item.movie_poster} url={item.movie_poster} />
+                      <p>{item.h_movie}</p>
+                    </div>
                   </Link>
                 </CustomGridItem>
               ))}
