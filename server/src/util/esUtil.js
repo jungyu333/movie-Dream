@@ -1,21 +1,16 @@
 import es from '../lib/elasticsearch.js';
 import common from '../static/commonStatic.js';
-import esb from 'elastic-builder';
 
-export async function getGenreList() {
-    //genre
-    const requestSubBody = new esb.requestBodySearch();
-    const bodyData = requestSubBody
-        .agg(esb.termsAggregation('genre', 'genre'))
-        .size(0)
-        .toJSON();
+export async function multiSearch(requestBodyList) {
+    const searches = [];
+    for (const requestBody of requestBodyList) {
+        const indexMap = {};
+        indexMap['index'] = common.ES_MOVIE_INDEX;
+        searches.push(indexMap);
+        searches.push(requestBody);
+    }
 
-    const response = await es.search({
-        index: common.ES_MOVIE_INDEX,
-        body: bodyData
-    });
-
-    return response;
+    return await es.msearch({ body: searches });
 }
 
 export async function esScrollData(response) {

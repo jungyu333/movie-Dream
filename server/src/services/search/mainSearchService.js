@@ -1,7 +1,7 @@
 import es from '../../lib/elasticsearch.js';
 import common from '../../static/commonStatic.js';
 import esb from 'elastic-builder';
-import { esScrollData, esDataPaging, getGenreList } from '../../util/esUtil.js';
+import { esScrollData, esDataPaging } from '../../util/esUtil.js';
 
 export default async function getMovies(queryParams, callback) {
     //상단 movie data(개봉,평점,장르)
