@@ -1,5 +1,8 @@
 import { Container, Divider } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import ModalMovie from './ModalMovie';
 
 const Wrapper = styled(Container)`
   margin: 1rem 0;
@@ -45,50 +48,74 @@ const Genre = styled.div`
   display: flex;
   color: gray;
   margin: 0.5rem 0;
+
   & div {
     margin-right: 5px;
   }
 `;
 
 const MainInfo = styled.div`
-  margin-top: 1rem;
+  margin-top: 0.8rem;
 `;
 
 const Director = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
+  font-size: 1rem;
+  margin: 5px 0;
   & h1 {
-    font-size: 1rem;
     font-weight: 600;
     margin-right: 10px;
   }
 
   & div {
     color: gray;
+
+    opacity: 0.8;
     margin-right: 5px;
+    cursor: pointer;
+    :hover {
+      opacity: 1;
+    }
   }
 `;
 
 const Actor = styled.div`
   display: flex;
+  width: 100%;
   align-items: center;
+
+  font-size: 1rem;
+  margin: 5px 0;
   & h1 {
-    font-size: 1rem;
     font-weight: 600;
     margin-right: 10px;
+    min-width: max-content;
   }
 
   & div {
+    display: flex;
+    line-height: 1.2;
+    flex-wrap: wrap;
     color: gray;
+    opacity: 0.8;
     margin-right: 5px;
+
+    cursor: pointer;
+    & div {
+      min-width: max-content;
+      :hover {
+        opacity: 1;
+      }
+    }
   }
 `;
 
 const DescriptionContainer = styled.div`
-  height: 13vh;
-  min-height: 120px;
-  margin-bottom: 10px;
+  height: 8vh;
+  min-height: 100px;
+
+  margin: 5px 0;
   & h1 {
     font-size: 1rem;
     font-weight: 600;
@@ -107,6 +134,33 @@ const DescriptionContainer = styled.div`
 `;
 
 function InfoTable({ movie }) {
+  const [open, setOpen] = useState(false);
+  const params = useParams();
+  const [clickedData, setClickedData] = useState({
+    group: '',
+    name: '',
+  });
+
+  const handleOpenActor = useCallback(event => {
+    setClickedData({
+      group: '배우',
+      name: event.target.innerHTML,
+    });
+    setOpen(true);
+  }, []);
+
+  const handleOpenDirector = useCallback(event => {
+    setClickedData({
+      group: '감독',
+      name: event.target.innerHTML,
+    });
+    setOpen(true);
+  }, []);
+  const handleClose = useCallback(() => setOpen(false), []);
+  useEffect(() => {
+    setOpen(false);
+  }, [params.id]);
+
   return (
     <Wrapper>
       <Title>
@@ -133,21 +187,37 @@ function InfoTable({ movie }) {
       <MainInfo>
         <Director>
           <h1>감독</h1>
-          {movie.movie_director ? <div>{movie.movie_director}</div> : null}
+
+          {movie.movie_director ? (
+            <div onClick={handleOpenDirector}>{movie.movie_director}</div>
+          ) : null}
         </Director>
+        <Divider />
         <Actor>
           <h1>출연</h1>
-          {movie.movie_actor
-            ? movie.movie_actor
-                .filter(item => item.part !== '조연')
-                .map((item, index) => <div key={index}>{item.name}</div>)
-            : null}
+          <div>
+            {movie.movie_actor
+              ? movie.movie_actor
+                  .filter(item => item.part !== '조연')
+                  .map((item, index) => (
+                    <div onClick={handleOpenActor} key={index}>
+                      {item.name}
+                    </div>
+                  ))
+              : null}
+          </div>
         </Actor>
+        <Divider />
         <DescriptionContainer>
           <h1>소개</h1>
           <div>{movie.movie_story}</div>
         </DescriptionContainer>
       </MainInfo>
+      <ModalMovie
+        handleClose={handleClose}
+        open={open}
+        clickedData={clickedData}
+      />
     </Wrapper>
   );
 }
