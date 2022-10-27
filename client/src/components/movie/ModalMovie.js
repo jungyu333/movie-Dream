@@ -3,10 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import GenreChart from './GenreChart';
 
 const Image = styled.img`
   height: 90%;
   width: 100%;
+  min-width: max-content;
+  min-height: max-content;
   background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
     url(${props => props.url});
   border-radius: 10px;
@@ -38,10 +41,11 @@ const CustomBox = styled(Box)`
   top: 50%;
   left: 50%;
   width: 50vw;
-  height: 60vh;
+  height: 80vh;
   background-color: lightgray;
   padding: 1rem;
   border-radius: 15px;
+  min-height: 500px;
   &:focus {
     outline: none;
   }
@@ -57,7 +61,7 @@ const CustomBox = styled(Box)`
 
 const CustomGridContainer = styled(Grid)`
   width: 100%;
-  height: 95%;
+  height: 90%;
   margin-top: 0.8rem;
   overflow-y: auto;
   ::-webkit-scrollbar {
@@ -112,13 +116,17 @@ function ModalMovie({ handleClose, open, clickedData }) {
         group: clickedData.group,
         name: clickedData.name,
       })
-      .then(res =>
+      .then(res => {
+        const movies = res.data.movie.filter(
+          movie => movie.movie_id !== params.id,
+        );
+
         setModalData({
           genre: [...res.data.genre],
-          movie: [...res.data.movie],
+          movie: [...movies],
           isLoading: false,
-        }),
-      );
+        });
+      });
   }, [clickedData]);
   return (
     <>
@@ -130,19 +138,21 @@ function ModalMovie({ handleClose, open, clickedData }) {
           </Title>
 
           <CustomGridContainer container spacing={1}>
-            {modalData.movie
-              .filter(item => item.movie_id !== params.id)
-              .map(item => (
-                <CustomGridItem key={item.movie_id} item xs={6} md={4}>
-                  <Link to={`/movie/${item.movie_id}`}>
-                    <div>
-                      <Image src={item.movie_poster} url={item.movie_poster} />
-                      <p>{item.h_movie}</p>
-                    </div>
-                  </Link>
-                </CustomGridItem>
-              ))}
+            {modalData.movie.map(item => (
+              <CustomGridItem key={item.movie_id} item xs={6} md={4}>
+                <Link to={`/movie/${item.movie_id}`}>
+                  <div>
+                    <Image src={item.movie_poster} url={item.movie_poster} />
+                    <p>{item.h_movie}</p>
+                  </div>
+                </Link>
+              </CustomGridItem>
+            ))}
           </CustomGridContainer>
+          <GenreChart
+            genre={modalData.genre}
+            movieCount={modalData.movie.length}
+          />
         </CustomBox>
       </Modal>
     </>
