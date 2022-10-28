@@ -1,7 +1,6 @@
 import es from '../../lib/elasticsearch.js';
 import common from '../../static/commonStatic.js';
 import esb from 'elastic-builder';
-import { multiSearch } from '../../util/esUtil.js';
 
 export default async function getGenreList(callback) {
     //today
