@@ -45,7 +45,6 @@ async function movieReviewSearch(queryParams) {
         for (const hit of positiveHits) {
             positiveList.push(hit._source);
         }
-        responseData['positive'] = positiveList;
 
         const negativeRequestBody = new esb.requestBodySearch();
         const negativeBoolQuery = esb
@@ -70,7 +69,14 @@ async function movieReviewSearch(queryParams) {
         for (const hit of negativeHits) {
             negativeList.push(hit._source);
         }
-        responseData['negative'] = negativeList;
+
+        const reviewMap = {};
+        const sentimentMap = {};
+        sentimentMap['positive'] = positiveList;
+        sentimentMap['negative'] = negativeList;
+        reviewMap['data'] = sentimentMap;
+        reviewMap['sentiment'] = true;
+        responseData['review'] = reviewMap;
     } else {
         const requestBody = new esb.requestBodySearch();
         const bodyData = requestBody
@@ -89,7 +95,10 @@ async function movieReviewSearch(queryParams) {
         const scroll_data = await esScrollData(response);
         //paging
         const sourceList = esDataPaging(queryParams, scroll_data);
-        responseData['review'] = sourceList;
+        const reviewMap = {};
+        reviewMap['data'] = sourceList;
+        reviewMap['sentiment'] = false;
+        responseData['review'] = reviewMap;
     }
 
     return responseData;
