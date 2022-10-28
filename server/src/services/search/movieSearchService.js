@@ -9,6 +9,7 @@ export default async function getMovie(queryParams, callback) {
     //return Value
     let responseData = {};
     const total = res.body.hits.total.value;
+    const hit = res.body.hits.hits[0];
 
     if (total === 0) {
         responseData['movie'] = [];
@@ -246,6 +247,11 @@ async function movieWordCloud(queryParams) {
         index: common.ES_WORDCLOUD_INDEX,
         body: bodyData
     });
+
+    const total = response.body.hits.total.value;
+    if (total === 0) {
+        return [];
+    }
 
     const wordCloud = response.body.hits.hits[0]._source.word_cloud;
     const wordMapList = [];
