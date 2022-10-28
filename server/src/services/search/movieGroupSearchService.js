@@ -41,12 +41,14 @@ async function groupSearch(queryParams) {
         bodyData = requestBody
             .query(nestedQuery)
             .agg(
-                esb.filterAggregation(
-                    'genre_filter',
-                    esb.boolQuery
-                        .mustNot(esb.matchQuery('movie_id', movie_id))
-                        .agg(esb.termsAggregation('genre', 'genre'))
-                )
+                esb
+                    .filterAggregation(
+                        'genre_filter',
+                        esb
+                            .boolQuery()
+                            .mustNot(esb.matchQuery('movie_id', movie_id))
+                    )
+                    .agg(esb.termsAggregation('genre', 'genre'))
             )
             .toJSON();
     }
