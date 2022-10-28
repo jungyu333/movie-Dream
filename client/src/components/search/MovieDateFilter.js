@@ -49,22 +49,6 @@ const Header = styled.h1`
   }
 `;
 
-const RadioContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-top: 10px;
-  /* @media screen and (max-width: 1700px) {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    & div {
-      width: 100%;
-    }
-  } */
-`;
-
-const CustomGridContainer = styled(Grid)``;
-
 function MovieDateFilter({ setSearchData, setPage }) {
   const [selected, setSelected] = useState('0');
   const [date, setDate] = useState('');
@@ -127,37 +111,8 @@ function MovieDateFilter({ setSearchData, setPage }) {
   return (
     <Wrapper>
       <Header>개봉 날짜</Header>
-      {/* <RadioContainer>
-          <RadioControlItem
-            label="전체 영화"
-            id="0"
-            value="0"
-            selected={selected}
-            handleChange={handleChange}
-          />
-          <RadioControlItem
-            label="1개월 이내"
-            id="1"
-            value="1"
-            selected={selected}
-            handleChange={handleChange}
-          />
-          <RadioControlItem
-            label="3개월 이내"
-            id="2"
-            value="3"
-            selected={selected}
-            handleChange={handleChange}
-          />
-          <RadioControlItem
-            label="5개월 이내"
-            id="3"
-            value="5"
-            selected={selected}
-            handleChange={handleChange}
-          />
-        </RadioContainer> */}
-      <CustomGridContainer container>
+
+      <Grid container>
         <Grid item xl={6} md={3} xs={6}>
           <RadioControlItem
             label="전체 영화"
@@ -195,7 +150,7 @@ function MovieDateFilter({ setSearchData, setPage }) {
             handleChange={handleChange}
           />
         </Grid>
-      </CustomGridContainer>
+      </Grid>
     </Wrapper>
   );
 }
