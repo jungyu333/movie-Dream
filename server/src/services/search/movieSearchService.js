@@ -8,8 +8,17 @@ export default async function getMovie(queryParams, callback) {
 
     //return Value
     let responseData = {};
-    const hit = res.body.hits.hits[0];
-    responseData['movie'] = hit._source;
+    const total = res.body.hits.total.value;
+
+    if (total === 0) {
+        responseData['movie'] = [];
+        responseData['graph'] = [];
+        responseData['word_cloud'] = [];
+        callback(false, responseData);
+        return false;
+    }
+
+    responseData['movie'] = res.body.hits.hits[0]._source;
 
     //graph
     const movieMap = hit._source;
@@ -191,7 +200,7 @@ async function groupListSearchByMultiSearch(
                 const h_movie = bucket.key;
                 const movie_id = bucket[key].buckets[0].key;
                 const poster = bucket[key].buckets[0][key].buckets[0];
-                //movieMap['h_movie'] = h_movie;
+
                 movieMap['movie_id'] = movie_id;
                 movieMap['h_movie'] = h_movie;
                 movieMap['movie_poster'] =
