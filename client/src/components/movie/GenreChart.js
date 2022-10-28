@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-export function GenreChart({ genre, movieCount }) {
+export function GenreChart({ genre }) {
   let labels = [];
   let docCount = [];
 
@@ -60,7 +60,7 @@ export function GenreChart({ genre, movieCount }) {
   };
   return (
     <Wrapper>
-      {movieCount ? <Doughnut data={data} options={options} /> : null}
+      <Doughnut data={data} options={options} />
     </Wrapper>
   );
 }

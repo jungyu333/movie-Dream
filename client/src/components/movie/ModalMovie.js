@@ -4,6 +4,8 @@ import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import GenreChart from './GenreChart';
+import NoResult from './NoResult';
+import LoadingSpinner from '../common/LoadingSpinner';
 
 const Image = styled.img`
   height: 90%;
@@ -46,6 +48,7 @@ const CustomBox = styled(Box)`
   padding: 1rem;
   border-radius: 15px;
   min-height: 500px;
+  min-width: 400px;
   &:focus {
     outline: none;
   }
@@ -54,7 +57,6 @@ const CustomBox = styled(Box)`
     font-size: 1.2rem;
   }
   @media ${({ theme }) => theme.device.tablet} {
-    width: 80vw;
     height: 70vh;
   }
 `;
@@ -111,23 +113,32 @@ function ModalMovie({ handleClose, open, clickedData }) {
     isLoading: true,
   });
   useEffect(() => {
-    axios
-      .post('/api/search/group', {
-        group: clickedData.group,
-        name: clickedData.name,
-      })
-      .then(res => {
-        const movies = res.data.movie.filter(
-          movie => movie.movie_id !== params.id,
-        );
+    if (open) {
+      axios
+        .post('/api/search/group', {
+          group: clickedData.group,
+          name: clickedData.name,
+        })
+        .then(res => {
+          const movies = res.data.movie.filter(
+            movie => movie.movie_id !== params.id,
+          );
 
-        setModalData({
-          genre: [...res.data.genre],
-          movie: [...movies],
-          isLoading: false,
+          setModalData({
+            genre: [...res.data.genre],
+            movie: [...movies],
+            isLoading: false,
+          });
         });
+    } else {
+      setModalData({
+        genre: [],
+        movie: [],
+        isLoading: true,
       });
-  }, [clickedData]);
+    }
+  }, [clickedData, open]);
+
   return (
     <>
       <Modal open={open} onClose={handleClose}>
@@ -136,23 +147,34 @@ function ModalMovie({ handleClose, open, clickedData }) {
             <h1>{clickedData.name}</h1>
             <div>의 다른 영화</div>
           </Title>
-
-          <CustomGridContainer container spacing={1}>
-            {modalData.movie.map(item => (
-              <CustomGridItem key={item.movie_id} item xs={6} md={4}>
-                <Link to={`/movie/${item.movie_id}`}>
-                  <div>
-                    <Image src={item.movie_poster} url={item.movie_poster} />
-                    <p>{item.h_movie}</p>
-                  </div>
-                </Link>
-              </CustomGridItem>
-            ))}
-          </CustomGridContainer>
-          <GenreChart
-            genre={modalData.genre}
-            movieCount={modalData.movie.length}
-          />
+          {!modalData.isLoading ? (
+            <>
+              {modalData.movie.length > 0 ? (
+                <CustomGridContainer container spacing={1}>
+                  {modalData.movie.map(item => (
+                    <CustomGridItem key={item.movie_id} item xs={6} md={4}>
+                      <Link to={`/movie/${item.movie_id}`}>
+                        <div>
+                          <Image
+                            src={item.movie_poster}
+                            url={item.movie_poster}
+                          />
+                          <p>{item.h_movie}</p>
+                        </div>
+                      </Link>
+                    </CustomGridItem>
+                  ))}
+                </CustomGridContainer>
+              ) : (
+                <NoResult />
+              )}
+              {modalData.movie.length > 0 ? (
+                <GenreChart genre={modalData.genre} />
+              ) : null}
+            </>
+          ) : (
+            <LoadingSpinner />
+          )}
         </CustomBox>
       </Modal>
     </>
