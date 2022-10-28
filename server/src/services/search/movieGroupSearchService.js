@@ -11,6 +11,7 @@ export default async function getMoiveGroup(queryParams, callback) {
 async function groupSearch(queryParams) {
     let group = queryParams.group;
     let name = queryParams.name;
+    let movie_id = queryParams.movie_id;
 
     const responseData = {};
 
@@ -21,17 +22,32 @@ async function groupSearch(queryParams) {
 
     if (group === '감독') {
         boolQuery.must([esb.matchQuery('movie_director', name)]);
-
         bodyData = requestBody
             .query(boolQuery)
-            .agg(esb.termsAggregation('genre', 'genre'))
+            .agg(
+                esb
+                    .filterAggregation(
+                        'genre_filter',
+                        esb
+                            .boolQuery()
+                            .mustNot(esb.matchQuery('movie_id', movie_id))
+                    )
+                    .agg(esb.termsAggregation('genre', 'genre'))
+            )
             .toJSON();
     } else {
         boolQuery.must([esb.matchQuery('movie_actor.name', name)]);
         const nestedQuery = new esb.nestedQuery(boolQuery, 'movie_actor');
         bodyData = requestBody
             .query(nestedQuery)
-            .agg(esb.termsAggregation('genre', 'genre'))
+            .agg(
+                esb.filterAggregation(
+                    'genre_filter',
+                    esb.boolQuery
+                        .mustNot(esb.matchQuery('movie_id', movie_id))
+                        .agg(esb.termsAggregation('genre', 'genre'))
+                )
+            )
             .toJSON();
     }
 
@@ -55,7 +71,8 @@ async function groupSearch(queryParams) {
 
     //response agg
     const aggregation = response.body.aggregations;
-    responseData['genre'] = aggregation.genre.buckets;
+
+    responseData['genre'] = aggregation.genre_filter.genre.buckets;
 
     return responseData;
 }
