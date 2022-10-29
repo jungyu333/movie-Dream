@@ -11,13 +11,6 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-const Title = styled.h1`
-  font-size: 2rem;
-  font-weight: 600;
-  text-align: center;
-  margin-right: 1rem;
-`;
-
 const Header = styled.div`
   display: flex;
   width: 100%;
@@ -31,7 +24,6 @@ function Home() {
       <Layout isNavSearch={true} isMain={true}>
         <Wrapper>
           <Header>
-            <Title>Title</Title>
             <SearchInput />
           </Header>
         </Wrapper>
