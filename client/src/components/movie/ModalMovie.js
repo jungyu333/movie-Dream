@@ -118,6 +118,7 @@ function ModalMovie({ handleClose, open, clickedData }) {
         .post('/api/search/group', {
           group: clickedData.group,
           name: clickedData.name,
+          movie_id: params.id,
         })
         .then(res => {
           const movies = res.data.movie.filter(
