@@ -83,21 +83,26 @@ function SearchInput({ isNavSearch, isMain }) {
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState('');
   const [autoContent, setAutoContent] = useState([]);
-  const [cursor, setCursor] = useState(-1);
+  const [cursor, setCursor] = useState(0);
+
   const navigation = useNavigate();
   const onChange = event => {
+    const searchInput = [];
+    searchInput.push(event.target.value);
     axios
       .get(`/api/auto?query=${event.target.value}`)
       .then(res => {
-        setAutoContent([...res.data]);
+        searchInput.push(...res.data);
+        setAutoContent([...searchInput]);
       })
       .catch(err => console.error(err));
-
+    setCursor(0);
     setIsOpen(true);
   };
 
-  const onClickAutoItem = useCallback(movieTitle => {
-    setContent(movieTitle);
+  const onClickAutoItem = useCallback(item => {
+    const content = item.h_movie ? item.h_movie : item;
+    setContent(content);
   }, []);
 
   const ArrowDown = 'ArrowDown';
@@ -109,25 +114,24 @@ function SearchInput({ isNavSearch, isMain }) {
       switch (e.key) {
         case ArrowDown:
           setCursor(cursor + 1);
-          if (autoRef.current?.childElementCount === cursor + 1) setCursor(0);
+          if (autoRef.current?.childElementCount === cursor + 1) setCursor(1);
           break;
         case ArrowUp:
           setCursor(cursor - 1);
           if (cursor <= 0) {
-            setAutoContent([]);
-            setCursor(-1);
+            setCursor(0);
           }
           break;
         case Escape:
           setAutoContent([]);
-          setCursor(-1);
+          setCursor(0);
           break;
         case Enter:
-          if (cursor === -1) {
-            setContent(e.target.value);
-          }
-          setContent(autoContent[cursor].h_movie);
-          setCursor(-1);
+          const enterContent = autoContent[cursor].h_movie
+            ? autoContent[cursor].h_movie
+            : autoContent[cursor];
+          setContent(enterContent);
+
           break;
         default:
           break;
@@ -137,7 +141,6 @@ function SearchInput({ isNavSearch, isMain }) {
 
   const onSubmit = e => {
     e.preventDefault();
-    setContent(e.target.value);
   };
 
   useEffect(() => {
@@ -152,7 +155,7 @@ function SearchInput({ isNavSearch, isMain }) {
     const handleCloseSearch = e => {
       if (autoRef.current && !autoRef.current.contains(e.target)) {
         setIsOpen(false);
-        setCursor(-1);
+        setCursor(0);
       }
     };
 
@@ -184,16 +187,19 @@ function SearchInput({ isNavSearch, isMain }) {
                     label="영화 검색하기"
                     onChange={onChange}
                     onKeyDown={handleKeyArrow}
+                    value={
+                      cursor !== 0 ? autoContent[cursor].h_movie : undefined
+                    }
                   />
-                  {isOpen && autoContent.length > 0 ? (
+                  {isOpen && autoContent.length > 1 ? (
                     <DropDownList ref={autoRef}>
                       {autoContent.map((item, index) => (
                         <DropDownItem
-                          key={item.movie_id}
+                          key={index}
                           selected={cursor === index}
-                          onClick={() => onClickAutoItem(item.h_movie)}
+                          onClick={() => onClickAutoItem(item)}
                         >
-                          {item.h_movie}
+                          {item.h_movie ? item.h_movie : item}
                         </DropDownItem>
                       ))}
                     </DropDownList>
