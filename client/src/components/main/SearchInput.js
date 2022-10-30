@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { InputBase, TextField } from '@mui/material';
 import axios from 'axios';
+import AutoItem from '../common/AutoItem';
 
 const Wrapper = styled.div`
   display: flex;
@@ -55,6 +56,7 @@ const DropDownList = styled.ul`
   display: flex;
   flex-direction: column;
   width: 100%;
+
   border: 1px solid lightgray;
   box-shadow: 2px 2px 2px solid lightgray;
   border-radius: 10px;
@@ -62,8 +64,9 @@ const DropDownList = styled.ul`
 
 const DropDownItem = styled.li`
   width: 100%;
-  padding: 13px 24px;
+  padding: 13px 10px;
   cursor: pointer;
+
   &:first-child {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -90,7 +93,7 @@ function SearchInput({ isNavSearch, isMain }) {
     const searchInput = [];
     searchInput.push(event.target.value);
     axios
-      .get(`/api/auto?query=${event.target.value}`)
+      .get(`/api/auto?query=${event.target.value}&size=${6}`)
       .then(res => {
         searchInput.push(...res.data);
         setAutoContent([...searchInput]);
@@ -199,7 +202,7 @@ function SearchInput({ isNavSearch, isMain }) {
                           selected={cursor === index}
                           onClick={() => onClickAutoItem(item)}
                         >
-                          {item.h_movie ? item.h_movie : item}
+                          <AutoItem autoItem={item} index={index} />
                         </DropDownItem>
                       ))}
                     </DropDownList>
