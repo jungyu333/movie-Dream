@@ -1,30 +1,23 @@
-import { Container, Paper, Skeleton } from '@mui/material';
 import styled from 'styled-components';
-const CustomSkeleton = styled(Skeleton)`
+import { Container } from '@mui/material';
+import WordCloudCanvas from './WordCloudCanvas';
+
+const Wrapper = styled.div`
   width: 100%;
   height: 100%;
-`;
-const Wrapper = styled(Container)`
-  width: 100%;
-  height: 230px;
-  display: flex;
-  justify-content: center;
-`;
-const CustomPaper = styled(Paper)`
-  width: 100%;
-  height: 300px;
-  margin: 10px 5px;
-  border-radius: 15px;
-  border: 1px;
+  min-height: 290px;
+  margin-left: 1rem;
   background-color: white;
+  @media ${({ theme }) => theme.device.smallTablet} {
+    width: 100%;
+    margin: 0;
+    margin-top: 8rem;
+  }
 `;
-
-function WordCloudBox() {
+function WordCloudBox({ wordCloud }) {
   return (
     <Wrapper>
-      <CustomPaper className="wordcloudbox" elevation={3}>
-        <CustomSkeleton animation="wave" variant="rectangular"></CustomSkeleton>
-      </CustomPaper>
+      <WordCloudCanvas wordCloud={wordCloud} />
     </Wrapper>
   );
 }

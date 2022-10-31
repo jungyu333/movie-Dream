@@ -256,11 +256,18 @@ async function movieWordCloud(queryParams) {
     const wordCloud = response.body.hits.hits[0]._source.word_cloud;
     const wordMapList = [];
 
+    let valueFlag = false;
+
+    if (wordCloud.length < 800) {
+        valueFlag = true;
+    }
     for (const word of wordCloud) {
         const wordMap = {};
         const wordData = word.split('__');
         wordMap['word'] = wordData[0];
-        wordMap['value'] = wordData[1];
+        wordMap['value'] = !valueFlag
+            ? wordData[1]
+            : String(parseInt(wordData[1]) + 50);
         wordMapList.push(wordMap);
     }
 
