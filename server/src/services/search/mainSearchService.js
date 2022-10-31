@@ -7,7 +7,7 @@ export default async function getMovies(queryParams, callback) {
     //상단 movie data(개봉,평점,장르)
     getTopMovies(queryParams.query).then(function (topMovie) {
         //return Value
-        let responseData = topMovie;
+        const responseData = topMovie;
         //Query
         const requestBody = new esb.requestBodySearch();
         const boolQuery = new esb.boolQuery();
@@ -24,6 +24,20 @@ export default async function getMovies(queryParams, callback) {
         mainMovieSearch(queryParams, requestBody, boolQuery).then(function (
             res
         ) {
+            const showTimeRangeFrom = res.body.aggregations['show_time']['min'];
+            const showTimeRangeTo = res.body.aggregations['show_time']['max'];
+
+            const showTimeRange = {};
+            showTimeRange['from'] = showTimeRangeAdjustment(
+                showTimeRangeFrom,
+                false
+            );
+            showTimeRange['to'] = showTimeRangeAdjustment(
+                showTimeRangeTo,
+                true
+            );
+            responseData['show_time_range'] = showTimeRange;
+
             //scroll
             esScrollData(res).then(function (data) {
                 //paging
@@ -79,7 +93,7 @@ async function getTopMovies(query) {
 
     const topScoreMovies = [];
     for (const hit of topScoreResponse.body.hits.hits) {
-        let sourceData = {};
+        const sourceData = {};
         sourceData['movie_id'] = hit._source.movie_id;
         sourceData['h_movie'] = hit._source.h_movie;
         sourceData['movie_poster'] = hit._source.movie_poster;
@@ -108,7 +122,7 @@ async function getTopMovies(query) {
 
     const topOpenMovies = [];
     for (const hit of topOpenResponse.body.hits.hits) {
-        let sourceData = {};
+        const sourceData = {};
         sourceData['movie_id'] = hit._source.movie_id;
         sourceData['h_movie'] = hit._source.h_movie;
         sourceData['movie_poster'] = hit._source.movie_poster;
@@ -137,7 +151,7 @@ async function getTopMovies(query) {
 
     const topToBeOpenMovies = [];
     for (const hit of topToBeOpenResponse.body.hits.hits) {
-        let sourceData = {};
+        const sourceData = {};
         sourceData['movie_id'] = hit._source.movie_id;
         sourceData['h_movie'] = hit._source.h_movie;
         sourceData['movie_poster'] = hit._source.movie_poster;
@@ -161,22 +175,21 @@ async function getTopMovies(query) {
     });
 
     //aggregation
-    let aggGenre = subResponse.body.aggregations.genre.buckets;
-
+    const aggGenre = subResponse.body.aggregations.genre.buckets;
     topResultData['genre'] = aggGenre;
 
     return topResultData;
 }
 function genreFilterBoolQuery(queryParams, boolQuery) {
     //genrefilter
-    let genreFilter = queryParams.genreFilter;
+    const genreFilter = queryParams.genreFilter;
     if (
         typeof genreFilter !== 'undefined' &&
         genreFilter !== 'null' &&
         genreFilter.trim() !== ''
     ) {
         const genreBoolQuery = new esb.boolQuery();
-        let genreFilterList = genreFilter.split(',');
+        const genreFilterList = genreFilter.split(',');
         for (const genre of genreFilterList) {
             genreBoolQuery.should(esb.matchQuery('genre', genre));
         }
@@ -185,7 +198,7 @@ function genreFilterBoolQuery(queryParams, boolQuery) {
 }
 function nationFilterBoolQuery(queryParams, boolQuery) {
     //nationFilter
-    let nationFlag = queryParams.nationFlag;
+    const nationFlag = queryParams.nationFlag;
     if (
         typeof nationFlag !== 'undefined' &&
         nationFlag !== (null || '') &&
@@ -199,15 +212,15 @@ function nationFilterBoolQuery(queryParams, boolQuery) {
     }
 }
 function showtimeRangeFilterBoolQuery(queryParams, boolQuery) {
-    let showTimeFilter = queryParams.showTimeFilter;
+    const showTimeFilter = queryParams.showTimeFilter;
     if (
         typeof showTimeFilter !== 'undefined' &&
         showTimeFilter !== ('null' || '') &&
         showTimeFilter.trim() !== ''
     ) {
-        let showTimeRange = showTimeFilter.split(',');
-        let showTimeFrom = showTimeRange[0];
-        let showTimeTo = showTimeRange[1];
+        const showTimeRange = showTimeFilter.split(',');
+        const showTimeFrom = showTimeRange[0];
+        const showTimeTo = showTimeRange[1];
 
         boolQuery.must(
             esb.rangeQuery('show_time').gte(showTimeFrom).lte(showTimeTo)
@@ -215,15 +228,15 @@ function showtimeRangeFilterBoolQuery(queryParams, boolQuery) {
     }
 }
 function openDateRangeFilter(queryParams, boolQuery) {
-    let openDateFilter = queryParams.openDateFilter;
+    const openDateFilter = queryParams.openDateFilter;
     if (
         typeof openDateFilter !== 'undefined' &&
         openDateFilter !== (null || '') &&
         openDateFilter.trim() !== ''
     ) {
-        let openDateRange = openDateFilter.split(',');
-        let openDateFrom = openDateRange[0];
-        let openDateTo = openDateRange[1];
+        const openDateRange = openDateFilter.split(',');
+        const openDateFrom = openDateRange[0];
+        const openDateTo = openDateRange[1];
 
         boolQuery.must(
             esb.rangeQuery('opening_date').gte(openDateFrom).lte(openDateTo)
@@ -256,6 +269,7 @@ async function mainMovieSearch(queryParams, requestBody, boolQuery) {
     const bodyData = requestBody
         .query(boolQuery)
         .agg(esb.termsAggregation('genre', 'genre'))
+        .agg(esb.statsAggregation('show_time', 'show_time'))
         .size(10000)
         .sort(sortScript)
         .sort(esb.sort(sort, 'desc'))
@@ -268,4 +282,21 @@ async function mainMovieSearch(queryParams, requestBody, boolQuery) {
     });
 
     return response;
+}
+
+function roundToNextNumber(number, n) {
+    const abs = n < 0 ? Math.abs(n) : n;
+    let num = 0;
+    for (let i = 0; i < abs; i++) {
+        if (number * i < abs && abs <= number * (i + 1)) {
+            num = i + 1;
+        }
+    }
+    return n % number === 0 ? n : n < 0 ? -number * (num - 1) : number * num;
+}
+
+function showTimeRangeAdjustment(showTime, flag) {
+    return flag
+        ? roundToNextNumber(30, showTime)
+        : roundToNextNumber(30, showTime) - 30;
 }
