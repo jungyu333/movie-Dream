@@ -23,22 +23,37 @@ export default async function getMovie(queryParams, callback) {
 
     //graph
     const movieMap = hit._source;
+    const genreFlag = typeof movieMap['genre'] === 'undefined' ? false : true;
+    const nationFlag = typeof movieMap['nation'] === 'undefined' ? false : true;
+    const actorFlag =
+        typeof movieMap['movie_actor']['name'] === 'undefined' ? false : true;
+    const directorFlag =
+        typeof movieMap['movie_director'] === 'undefined' ? false : true;
+
     const groupNodeList = [
-        { key: 'genre', field: 'genre', nested: false, type: 'Array' },
-        { key: 'nation', field: 'nation', nested: false, type: 'Array' },
-        {
-            key: 'actor',
-            field: 'movie_actor.name',
-            nested: true,
-            nested_field: 'movie_actor',
-            type: 'Array'
-        },
-        {
-            key: 'director',
-            field: 'movie_director',
-            nested: false,
-            type: 'String'
-        }
+        genreFlag
+            ? { key: 'genre', field: 'genre', nested: false, type: 'Array' }
+            : null,
+        nationFlag
+            ? { key: 'nation', field: 'nation', nested: false, type: 'Array' }
+            : null,
+        actorFlag
+            ? {
+                  key: 'actor',
+                  field: 'movie_actor.name',
+                  nested: true,
+                  nested_field: 'movie_actor',
+                  type: 'Array'
+              }
+            : null,
+        directorFlag
+            ? {
+                  key: 'director',
+                  field: 'movie_director',
+                  nested: false,
+                  type: 'String'
+              }
+            : null
     ];
     const graph = await getMovieGraph(movieMap, groupNodeList);
     const wordCloud = await movieWordCloud(queryParams);
@@ -63,6 +78,9 @@ async function getMovieGraph(movieMap, groupNodeList) {
 
     for (const groupNode of groupNodeList) {
         //2depth
+        if (!groupNode) {
+            continue;
+        }
         nodes.push({
             id: groupNode['key'],
             label: groupNode['key'],
