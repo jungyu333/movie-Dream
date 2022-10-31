@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import SearchInput from '../components/main/SearchInput';
 import Layout from '../components/common/Layout';
+import SearchInput from '../components/common/SearchInput';
 
 const Wrapper = styled.div`
   display: flex;
