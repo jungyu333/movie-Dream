@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import highlightedText from '../../hooks/highlightedText';
 
 const Wrapper = styled.div`
   display: flex;
@@ -39,7 +40,7 @@ const Poster = styled.img`
   margin-right: 10px;
 `;
 
-function AutoItem({ autoItem, index }) {
+function AutoItem({ autoItem, index, searchContent }) {
   return (
     <Wrapper>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -47,7 +48,11 @@ function AutoItem({ autoItem, index }) {
       </svg>
       {autoItem.movie_poster && <Poster src={autoItem.movie_poster} />}
       <Title>
-        <h1>{autoItem.h_movie ? autoItem.h_movie : autoItem}</h1>
+        <h1>
+          {autoItem.h_movie
+            ? highlightedText(autoItem.h_movie, searchContent)
+            : autoItem}
+        </h1>
         {index !== 0 ? (
           <h2>{autoItem.h_movie2 ? autoItem.h_movie2 : null}</h2>
         ) : (
