@@ -104,6 +104,43 @@ function Search() {
         let movies = [...searchData.movieData.movie];
         movies = movies.concat(res.data.movies);
 
+        setSearchData({
+          movieData: {
+            movie: [...movies],
+            genre: [...res.data.genre],
+          },
+          isLoading: false,
+          hasMoreMovies: res.data.movies.length === 5,
+        });
+      })
+      .catch(err => console.error(err));
+    if (genreFilter) {
+      setClickedGenre(genreFilter.split(',').filter(genre => genre !== 'null'));
+    }
+  }, [page, sortType, nationFlag, genreFilter, showTimeFilter, openDateFilter]);
+
+  useEffect(() => {
+    if (inView && !searchData.isLoading) {
+      setPage(prev => prev + 1);
+    }
+  }, [inView, searchData.isLoading]);
+
+  useEffect(() => {
+    setPage(1);
+    setSearchData({
+      movieData: {
+        movie: [],
+        genre: [],
+      },
+      isLoading: true,
+      hasMoreMovies: true,
+    });
+
+    axios
+      .get(
+        `/api/search?query=${query}&page=${page}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&openDateFilter=${openDateFilter}&size=${5}`,
+      )
+      .then(res => {
         if (localStorage.openMovie === undefined) {
           localStorage.setItem('openMovie', JSON.stringify([]));
         } else {
@@ -123,7 +160,7 @@ function Search() {
 
         setSearchData({
           movieData: {
-            movie: [...movies],
+            movie: [...res.data.movies],
             genre: [...res.data.genre],
           },
           isLoading: false,
@@ -131,28 +168,11 @@ function Search() {
         });
       })
       .catch(err => console.error(err));
-    if (genreFilter) {
-      setClickedGenre(genreFilter.split(',').filter(genre => genre !== 'null'));
-    }
-  }, [
-    query,
-    page,
-    sortType,
-    nationFlag,
-    genreFilter,
-    showTimeFilter,
-    openDateFilter,
-  ]);
-
-  useEffect(() => {
-    if (inView && !searchData.isLoading) {
-      setPage(prev => prev + 1);
-    }
-  }, [inView, searchData.isLoading]);
+  }, [query]);
 
   return (
     <>
-      <Layout isNavSearch={true} isMain={false}>
+      <Layout isNavSearch={true} isMain={false} setSearchData={setSearchData}>
         <Wrapper>
           <Header>
             <SearchHead>

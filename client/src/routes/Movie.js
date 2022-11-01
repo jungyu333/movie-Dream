@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Container } from '@mui/material';
 import styled from 'styled-components';
-import ReviewBox from '../components/movie/Reviewbox';
+import ReviewBox from '../components/movie/ReviewBox';
 import ImageBox from '../components/movie/ImageBox';
 import WordCloudBox from '../components/movie/WordCloudBox';
 import Layout from '../components/common/Layout';

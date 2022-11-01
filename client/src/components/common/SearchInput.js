@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { InputBase, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import axios from 'axios';
-import AutoItem from '../common/AutoItem';
+import AutoItem from './AutoItem';
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,11 +12,15 @@ const Wrapper = styled.div`
   width: 60%;
 `;
 
-const Title = styled.h1`
-  font-size: 2rem;
-  font-weight: 600;
-  text-align: center;
-  margin-right: 1rem;
+const HomeLink = styled.div`
+  display: flex;
+  width: 6vw;
+  align-items: center;
+  margin-right: 20px;
+  & img {
+    width: 100%;
+    filter: invert();
+  }
 `;
 
 const Input = styled(TextField)`
@@ -41,25 +45,30 @@ const LayoutSearch = styled.form`
   padding: 5px;
 `;
 
-const CustomInputBase = styled(InputBase)`
+const LayoutSearchInput = styled.input`
   color: white;
+  background-color: transparent;
+  border: none;
   font-size: 0.8rem;
-
-  & .MuiInputBase-input {
-    padding: 5px;
+  &:focus {
+    outline: none;
   }
 `;
 
 const DropDownList = styled.ul`
   position: absolute;
-  margin: 5px 0;
+  background-color: white;
+
+  right: ${props => (props.isNavSearch ? '15px' : '0')};
+  margin: ${props => (props.isNavSearch ? '15px 0' : '5px 0')};
+  min-width: ${props => (props.isNavSearch ? '400px' : null)};
   display: flex;
   flex-direction: column;
   width: 100%;
-
   border: 1px solid lightgray;
   box-shadow: 2px 2px 2px solid lightgray;
   border-radius: 10px;
+  width: ${props => (props.isNavSearch ? '30%' : '100%')};
 `;
 
 const DropDownItem = styled.li`
@@ -76,9 +85,9 @@ const DropDownItem = styled.li`
     border-bottom-right-radius: 10px;
   }
   &:hover {
-    background-color: #f0f0f0;
+    background-color: lightgray;
   }
-  background-color: ${props => props.selected && '#f0f0f0'};
+  background-color: ${props => props.selected && 'lightgray'};
 `;
 
 function SearchInput({ isNavSearch, isMain }) {
@@ -87,11 +96,13 @@ function SearchInput({ isNavSearch, isMain }) {
   const [content, setContent] = useState('');
   const [autoContent, setAutoContent] = useState([]);
   const [cursor, setCursor] = useState(0);
+  const [searchContent, setSearchContent] = useState('');
 
   const navigation = useNavigate();
   const onChange = event => {
     const searchInput = [];
     searchInput.push(event.target.value);
+    setSearchContent(event.target.value);
     axios
       .get(`/api/auto?query=${event.target.value}&size=${6}`)
       .then(res => {
@@ -101,10 +112,12 @@ function SearchInput({ isNavSearch, isMain }) {
       .catch(err => console.error(err));
     setCursor(0);
     setIsOpen(true);
+    setAutoContent([]);
   };
 
-  const onClickAutoItem = useCallback(item => {
-    const content = item.h_movie ? item.h_movie : item;
+  const onClickAutoItem = useCallback((item, index) => {
+    setCursor(index);
+    const content = item.movie_id ? item.movie_id : item;
     setContent(content);
   }, []);
 
@@ -117,21 +130,21 @@ function SearchInput({ isNavSearch, isMain }) {
       switch (e.key) {
         case ArrowDown:
           setCursor(cursor + 1);
-          if (autoRef.current?.childElementCount === cursor + 1) setCursor(1);
+          if (autoRef.current?.childElementCount === cursor + 1) setCursor(0);
           break;
         case ArrowUp:
           setCursor(cursor - 1);
           if (cursor <= 0) {
-            setCursor(0);
+            setCursor(autoContent.length - 1);
           }
           break;
         case Escape:
-          setAutoContent([]);
-          setCursor(0);
+          setIsOpen(false);
+
           break;
         case Enter:
-          const enterContent = autoContent[cursor].h_movie
-            ? autoContent[cursor].h_movie
+          const enterContent = autoContent[cursor].movie_id
+            ? autoContent[cursor].movie_id
             : autoContent[cursor];
           setContent(enterContent);
 
@@ -144,13 +157,27 @@ function SearchInput({ isNavSearch, isMain }) {
 
   const onSubmit = e => {
     e.preventDefault();
+    setSearchContent('');
   };
+
+  const onClickInput = useCallback(e => {
+    e.stopPropagation();
+    setIsOpen(true);
+  }, []);
 
   useEffect(() => {
     if (content) {
-      navigation(
-        `/search?query=${content}&nationFlag=${null}&sort=${'opening_date'}&genreFilter=${null}&showTimeFilter=${'0,180'}&openDateFilter=${''}&size=${5}`,
-      );
+      if (cursor === 0) {
+        navigation(
+          `/search?query=${content}&page=${1}&nationFlag=${null}&sort=${'opening_date'}&genreFilter=${null}&showTimeFilter=${'0,180'}&openDateFilter=${''}&size=${5}`,
+        );
+      } else {
+        navigation(`/movie/${content}`);
+      }
+
+      setAutoContent([]);
+
+      setCursor(0);
     }
   }, [content, navigation]);
 
@@ -174,15 +201,33 @@ function SearchInput({ isNavSearch, isMain }) {
         <>
           {isNavSearch ? (
             <LayoutSearch onSubmit={onSubmit} autoComplete="off">
-              <CustomInputBase
+              <LayoutSearchInput
+                placeholder="Search"
                 onChange={onChange}
-                placeholder="Search…"
-                inputProps={{ 'aria-label': 'search' }}
+                onKeyDown={handleKeyArrow}
+                value={
+                  cursor !== 0 ? autoContent[cursor].h_movie : searchContent
+                }
               />
+              {isOpen && autoContent.length > 1 ? (
+                <DropDownList isNavSearch={true} ref={autoRef}>
+                  {autoContent.map((item, index) => (
+                    <DropDownItem
+                      key={index}
+                      selected={cursor === index}
+                      onClick={() => onClickAutoItem(item, index)}
+                    >
+                      <AutoItem autoItem={item} index={index} />
+                    </DropDownItem>
+                  ))}
+                </DropDownList>
+              ) : null}
             </LayoutSearch>
           ) : (
             <>
-              <Title>Title</Title>
+              <HomeLink>
+                <img src={'/Moviedream.png'} alt="logo" />
+              </HomeLink>
               <Wrapper>
                 <SearchForm onSubmit={onSubmit} autoComplete="off">
                   <Input
@@ -190,8 +235,9 @@ function SearchInput({ isNavSearch, isMain }) {
                     label="영화 검색하기"
                     onChange={onChange}
                     onKeyDown={handleKeyArrow}
+                    onClick={onClickInput}
                     value={
-                      cursor !== 0 ? autoContent[cursor].h_movie : undefined
+                      cursor !== 0 ? autoContent[cursor].h_movie : searchContent
                     }
                   />
                   {isOpen && autoContent.length > 1 ? (
@@ -200,7 +246,7 @@ function SearchInput({ isNavSearch, isMain }) {
                         <DropDownItem
                           key={index}
                           selected={cursor === index}
-                          onClick={() => onClickAutoItem(item)}
+                          onClick={() => onClickAutoItem(item, index)}
                         >
                           <AutoItem autoItem={item} index={index} />
                         </DropDownItem>
