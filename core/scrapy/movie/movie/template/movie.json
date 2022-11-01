@@ -76,6 +76,9 @@
         "nation": {
           "type": "keyword"
         },
+        "movie_poster": {
+          "type": "keyword"
+        },
         "state": {
           "type": "keyword"
         },
