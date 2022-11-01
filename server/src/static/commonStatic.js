@@ -1,6 +1,6 @@
 class CommonStatic {
-    static ES_MOVIE_INDEX = 'movie02';
-    static ES_REVIEW_INDEX = 'review01';
+    static ES_MOVIE_INDEX = 'movie';
+    static ES_REVIEW_INDEX = 'review';
     static ES_REVIEW_SENTIMENT_INDEX = 'review_sentiment';
     static ES_WORDCLOUD_INDEX = 'movie_word_cloud';
     static ES_KEYWORD_INDEX = 'review_keyword';
