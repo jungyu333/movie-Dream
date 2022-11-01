@@ -55,6 +55,7 @@ export default async function getMovie(queryParams, callback) {
               }
             : null
     ];
+
     const graph = await getMovieGraph(movieMap, groupNodeList);
     const wordCloud = await movieWordCloud(queryParams);
 
@@ -106,13 +107,17 @@ async function getMovieGraph(movieMap, groupNodeList) {
                 ? [movieMap[mapField]]
                 : movieMap[mapField];
 
-        const result = await findMovieByGroup(
-            groupNode['key'],
-            groupList,
-            groupNode['field'],
-            groupNode['nested'],
-            groupNode['nested_field']
-        );
+        let result = [];
+
+        if (groupList.length > 0) {
+            result = await findMovieByGroup(
+                groupNode['key'],
+                groupList,
+                groupNode['field'],
+                groupNode['nested'],
+                groupNode['nested_field']
+            );
+        }
 
         for (const group of result) {
             //3depth
@@ -147,7 +152,6 @@ async function findMovieByGroup(
     nestedField
 ) {
     const groupKeyList = [];
-
     for (const group of groupList) {
         if (groupName === 'actor') {
             if (group['part'] === '주연') {
@@ -188,16 +192,11 @@ async function groupListSearchByMultiSearch(
             .query(requestQuery)
             .agg(
                 esb
-                    .termsAggregation(group, 'h_movie3.keyword')
+                    .termsAggregation(group, 'h_movie3')
                     .agg(
                         esb
-                            .termsAggregation(group, 'movie_id.keyword')
-                            .agg(
-                                esb.termsAggregation(
-                                    group,
-                                    'movie_poster.keyword'
-                                )
-                            )
+                            .termsAggregation(group, 'movie_id')
+                            .agg(esb.termsAggregation(group, 'movie_poster'))
                     )
             )
             .toJSON();

@@ -68,7 +68,7 @@ async function getTopMovies(query) {
             .script()
             .lang('painless')
             .inline(
-                'int poster = doc["movie_poster.keyword"].value.length();return poster > 0;'
+                'int poster = doc["movie_poster"].value.length();return poster > 0;'
             )
     );
 
@@ -259,7 +259,7 @@ async function mainMovieSearch(queryParams, requestBody, boolQuery) {
                 .script()
                 .lang('painless')
                 .inline(
-                    'if(doc["h_movie3.keyword"].size() != 0){if(params.movie_name == doc["h_movie3.keyword"].value) { return 0;}} return 100000;'
+                    'if(doc["h_movie3"].size() != 0){if(params.movie_name == doc["h_movie3"].value) { return 0;}} return 100000;'
                 )
                 .params({ movie_name: query })
         )
