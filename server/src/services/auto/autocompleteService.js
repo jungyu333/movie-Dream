@@ -29,38 +29,15 @@ async function autoSearch(queryParams) {
     var koPattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
     const requestBody = new esb.requestBodySearch();
-    const sortScript = esb.sort().type('number').order('asc');
     const boolQuery = esb.boolQuery();
 
     if (koPattern.test(query)) {
-        boolQuery.must(esb.matchQuery('h_movie', query));
-        sortScript.script(
-            esb
-                .script()
-                .lang('painless')
-                .inline(
-                    'if(doc["h_movie3.keyword"].size() != 0){if(params.movie_name == doc["h_movie3.keyword"].value) { return 0;}} return 100000;'
-                )
-                .params({ movie_name: query })
-        );
+        boolQuery.must(esb.matchQuery('h_movie', query).operator('and'));
     }
     if (enPattern.test(query)) {
-        boolQuery.must(esb.matchQuery('h_movie2', query));
-        sortScript.script(
-            esb
-                .script()
-                .lang('painless')
-                .inline(
-                    'if(doc["h_movie4.keyword"].size() != 0){if(params.movie_name == doc["h_movie4.keyword"].value) { return 0;}} return 100000;'
-                )
-                .params({ movie_name: query })
-        );
+        boolQuery.must(esb.matchQuery('h_movie2', query).operator('and'));
     }
-    const bodyData = requestBody
-        .query(boolQuery)
-        .size(parseInt(size))
-        .sort(sortScript)
-        .toJSON();
+    const bodyData = requestBody.query(boolQuery).size(parseInt(size)).toJSON();
 
     const response = await es.search({
         index: common.ES_MOVIE_AUTO_INDEX,
