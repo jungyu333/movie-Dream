@@ -248,7 +248,11 @@ function SearchInput({ isNavSearch, isMain }) {
                           selected={cursor === index}
                           onClick={() => onClickAutoItem(item, index)}
                         >
-                          <AutoItem autoItem={item} index={index} />
+                          <AutoItem
+                            autoItem={item}
+                            index={index}
+                            searchContent={searchContent}
+                          />
                         </DropDownItem>
                       ))}
                     </DropDownList>
