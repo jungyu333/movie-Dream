@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   margin: 1rem 0;
+  width: 100%;
 `;
 
 const CustomSlicer = styled(Slider)`
