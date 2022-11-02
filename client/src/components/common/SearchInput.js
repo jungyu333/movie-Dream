@@ -168,16 +168,15 @@ function SearchInput({ isNavSearch, isMain }) {
 
   useEffect(() => {
     if (content) {
-      if (cursor === 0) {
+      if (content === searchContent) {
         navigation(
           `/search?query=${content}&page=${1}&nationFlag=${null}&sort=${'opening_date'}&genreFilter=${null}&showTimeFilter=${'0,180'}&openDateFilter=${''}&size=${5}`,
         );
       } else {
         navigation(`/movie/${content}`);
+        setSearchContent('');
       }
-
       setAutoContent([]);
-
       setCursor(0);
     }
   }, [content, navigation]);
