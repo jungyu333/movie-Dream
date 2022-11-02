@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../components/common/Layout';
-import Carousel from '../components/search/Carousel';
+import Carousel from '../components/common/Carousel';
 import FloatingButton from '../components/search/FloatingButton';
 import FloatingGenre from '../components/search/FloatingGenre';
 import Genre from '../components/search/Genre';
