@@ -3,8 +3,8 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styled from 'styled-components';
-import PrevArrow from './PrevArrow';
-import NextArrow from './NextArrow';
+import PrevArrow from '../common/PrevArrow';
+import NextArrow from '../common/NextArrow';
 import { Link } from 'react-router-dom';
 
 const Wrapper = styled.div`
