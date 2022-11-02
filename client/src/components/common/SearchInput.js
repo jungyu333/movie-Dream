@@ -58,7 +58,7 @@ const LayoutSearchInput = styled.input`
 const DropDownList = styled.ul`
   position: absolute;
   background-color: white;
-
+  z-index: 4;
   right: ${props => (props.isNavSearch ? '15px' : '0')};
   margin: ${props => (props.isNavSearch ? '15px 0' : '5px 0')};
   min-width: ${props => (props.isNavSearch ? '400px' : null)};
@@ -248,7 +248,11 @@ function SearchInput({ isNavSearch, isMain }) {
                           selected={cursor === index}
                           onClick={() => onClickAutoItem(item, index)}
                         >
-                          <AutoItem autoItem={item} index={index} />
+                          <AutoItem
+                            autoItem={item}
+                            index={index}
+                            searchContent={searchContent}
+                          />
                         </DropDownItem>
                       ))}
                     </DropDownList>
