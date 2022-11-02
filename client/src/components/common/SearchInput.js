@@ -16,7 +16,9 @@ const HomeLink = styled.div`
   display: flex;
   width: 6vw;
   align-items: center;
-  margin-right: 20px;
+  min-width: 60px;
+  min-height: 20px;
+  margin-right: 10px;
   & img {
     width: 100%;
     filter: invert();
@@ -28,7 +30,6 @@ const Input = styled(TextField)`
   & label {
     color: lightgray;
   }
-
   & div {
     border-radius: 15px;
   }
@@ -217,7 +218,11 @@ function SearchInput({ isNavSearch, isMain }) {
                       selected={cursor === index}
                       onClick={() => onClickAutoItem(item, index)}
                     >
-                      <AutoItem autoItem={item} index={index} />
+                      <AutoItem
+                        autoItem={item}
+                        index={index}
+                        searchContent={searchContent}
+                      />
                     </DropDownItem>
                   ))}
                 </DropDownList>
