@@ -21,10 +21,15 @@ const CustomToolbar = styled(Toolbar)`
 const HomeLink = styled.div`
   display: flex;
   width: 6vw;
+  min-width: 50px;
+  min-height: 20px;
   align-items: center;
 
   & img {
     width: 100%;
+    height: 100%;
+    min-width: 50px;
+    min-height: 20px;
     &:hover {
       filter: invert(20%);
     }
