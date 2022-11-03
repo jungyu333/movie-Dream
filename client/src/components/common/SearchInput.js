@@ -175,6 +175,7 @@ function SearchInput({ isNavSearch, isMain }) {
       } else {
         navigation(`/movie/${content}`);
         setSearchContent('');
+        setContent('');
       }
       setAutoContent([]);
       setCursor(0);
