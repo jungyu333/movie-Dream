@@ -16,6 +16,36 @@ import {
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 
+const CustomList = styled(List)`
+  margin: 1rem 0;
+`;
+
+const CustomAvatarItem = styled(ListItemAvatar)`
+  margin: 0;
+  margin-right: 10px;
+  & div {
+    width: 100%;
+    height: 12vh;
+    min-height: 100px;
+  }
+`;
+
+const CustomListItem = styled(ListItem)`
+  padding: 10px 0;
+  &:hover {
+    background-color: #cdcfd4;
+  }
+`;
+
+const CustomAvatar = styled(Avatar)`
+  & img {
+    max-width: 80px;
+  }
+`;
+
+const CustomDivider = styled(Divider)`
+  border-color: lightgray;
+`;
 
 const Wrapper = styled(Container)`
   width:100%;
@@ -43,11 +73,16 @@ const NicnameContainer = styled.div`
   font-size: 1rem;
   margin: 5px 0;
   & h1 {
+    display: inline-block;
     font-weight: 600;
     margin-right: 10px;
+    display: flex;
   }
 
   & div {
+    display: inline-block;
+    font-size: 0.9rem;
+    vertical-align: center;
     margin-left : 13px;
     color: gray;
     margin-right: 5px;
@@ -66,6 +101,9 @@ const CommentContainer = styled.div`
 
   }
   & div {
+    display: inline-block;
+    font-size: 0.9rem;
+    vertical-align: center;
     margin-left : 10px;
     color: gray;
     margin-right: 5px;
@@ -83,6 +121,8 @@ const TimeContainer = styled.div`
 
   }
   & div {
+    font-size: 0.9rem;
+    vertical-align: center;
     margin-left : 10px;
     color: gray;
     margin-right: 5px;
@@ -90,11 +130,13 @@ const TimeContainer = styled.div`
 `;
 
 const ReviewInfo = styled.div`
-  margin-top: 0.3rem;
+  margin : 0.3rem 0 0 0.3rem
+  &h1 {
+    position:absolute;
+  }
 `;
 
 const array1 = [0,1,2,3,4];
-const map1 = array1.map();
 
 function ReviewTable() {
   const params = useParams();
@@ -102,42 +144,48 @@ function ReviewTable() {
     positive: [],
     negative: [],
     isLoading : true,
+    hasMoreReviews: true,
   });
 
   useEffect(() => {
-    axios.get(`/api/search/review?movie_id=${params.id}&sentimentFlag=true`).then(res =>
+    axios
+    .get(`/api/search/review?movie_id=${params.id}&sentimentFlag=true`)
+    .then(res =>
       setReviewData({
         positive: [...res.data.review.data.positive] ,
         negative: [...res.data.review.data.negative],
         isLoading : false,
+        hasMoreReviews: res.data.review.data.positive === 5,
       }),
-    );
+    )
+    .catch(err => console.error(err));
   }, [params.id]);
  
   console.log(reviewData.positive);
 
   
   return (
-
-    <ReviewInfo>
-    {!reviewData.isLoading ? <NicnameContainer>
-        <h1>닉네임</h1>
-        <div>{ reviewData.positive[map1.get()].review_id}</div>
-      </NicnameContainer> : null
-    }
-   {!reviewData.isLoading ?   <CommentContainer>
-        <h1>댓글내용</h1>
-        <div>{ reviewData.positive[map1.get()].review_txt}</div>
-      </CommentContainer> : null
-    }
-    {!reviewData.isLoading ? <TimeContainer>
-        <h1>작성시간</h1>
-        <div>{reviewData.positive[map1.get()].review_date}</div>
-      </TimeContainer> : null
-    }
-      <Divider />
-    </ReviewInfo>
+    <>
     
+      <ReviewInfo>
+        {!reviewData.isLoading ? <NicnameContainer>
+        <h1>닉네임</h1>
+        <div>{ reviewData.positive[0].review_id}</div>
+      </NicnameContainer> : null
+      }
+      {!reviewData.isLoading ?   <CommentContainer>
+            <h1>댓글내용</h1>
+            <div>{ reviewData.positive[0].review_txt}</div>
+          </CommentContainer> : null
+        }
+        {!reviewData.isLoading ? <TimeContainer>
+            <h1>작성시간</h1>
+            <div>{reviewData.positive[0].review_date}</div>
+          </TimeContainer> : null
+        }
+        </ReviewInfo>
+        <Divider/>
+    </>
 );
 }
 
