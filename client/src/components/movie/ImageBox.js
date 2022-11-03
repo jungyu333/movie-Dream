@@ -6,7 +6,9 @@ const Wrapper = styled.div`
   border-radius: 10px;
   justify-content: center;
   min-height: 290px;
+  min-width: 200px;
   align-items: center;
+
   background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
     url(${props => props.url});
   background-position: center center;

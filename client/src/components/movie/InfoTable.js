@@ -122,7 +122,7 @@ const DescriptionContainer = styled.div`
     margin-right: 10px;
   }
   & div {
-    height: 90%;
+    height: 80%;
     margin-top: 5px;
     color: gray;
     overflow-y: auto;
