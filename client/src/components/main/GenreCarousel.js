@@ -17,8 +17,8 @@ function GenreCarousel({ movies, isLoading }) {
     <Wrapper>
       {!isLoading && (
         <>
-          {movies.map(movie => (
-            <Carousel title={movie.genre} movies={movie.movies} />
+          {movies.map((movie, index) => (
+            <Carousel key={index} title={movie.genre} movies={movie.movies} />
           ))}
         </>
       )}
