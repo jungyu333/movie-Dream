@@ -54,6 +54,7 @@ const FilterContainer = styled(Container)`
     display: flex;
     justify-content: center;
     height: 15vh;
+    min-height: 100px;
     width: 100%;
     align-items: center;
     position: static;
@@ -62,12 +63,13 @@ const FilterContainer = styled(Container)`
   @media ${({ theme }) => theme.device.mobile} {
     display: flex;
     height: 20vh;
+    min-height: 200px;
     flex-direction: column;
     justify-content: center;
     width: 100%;
     align-items: center;
     position: static;
-    margin-top: 1rem;
+    margin-top: 20px;
   }
 `;
 

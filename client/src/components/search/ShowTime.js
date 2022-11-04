@@ -8,6 +8,7 @@ const Wrapper = styled.div`
   border-radius: 10px;
   box-shadow: 2px 2px 2px lightgray;
   min-width: 200px;
+  min-height: 80px;
   width: 100%;
   padding: 1rem;
   margin: 1rem 0;
@@ -54,7 +55,7 @@ const Wrapper = styled.div`
     width: 100%;
     height: 50%;
     margin: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 10px;
     padding: 1rem 1.5rem;
     & h1 {
       display: none;

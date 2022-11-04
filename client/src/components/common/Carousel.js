@@ -32,7 +32,7 @@ const ImageBox = styled.div`
   height: 25vh;
   width: 100%;
   min-width: 90px;
-
+  min-height: 230px;
   & a {
     position: relative;
     &:hover {
