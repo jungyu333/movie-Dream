@@ -143,22 +143,15 @@ function Search() {
         `/api/search?query=${query}&page=${page}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&openDateFilter=${openDateFilter}&size=${5}`,
       )
       .then(res => {
-        if (localStorage.openMovie === undefined) {
-          localStorage.setItem('openMovie', JSON.stringify([]));
-        } else {
-          localStorage.setItem(
-            'openMovie',
-            JSON.stringify([...res.data.top_open_movie]),
-          );
-        }
-        if (localStorage.scoreMovie === undefined) {
-          localStorage.setItem('scoreMovie', JSON.stringify([]));
-        } else {
-          localStorage.setItem(
-            'scoreMovie',
-            JSON.stringify([...res.data.top_score_movie]),
-          );
-        }
+        localStorage.setItem(
+          'openMovie',
+          JSON.stringify([...res.data.top_open_movie]),
+        );
+
+        localStorage.setItem(
+          'scoreMovie',
+          JSON.stringify([...res.data.top_score_movie]),
+        );
 
         setSearchData({
           movieData: {
