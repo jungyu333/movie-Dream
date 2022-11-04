@@ -1,53 +1,72 @@
-import * as React from 'react';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import { Button, ButtonGroup } from '@mui/material';
+import React from 'react';
 import styled from 'styled-components';
-
-const buttons = [
-    <Button key="positive">Positive</Button>,
-    <Button key="negative">Negative</Button>,
-  ];
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   background-color: white;
   @media ${({ theme }) => theme.device.smallTablet} {
     width: 100%;
-    margin-top: 6rem;
+    margin-top: 1rem;
   }
   & h1 {
-    font-size: 1.8rem;
+    font-size: 1.2rem;
     font-weight: 600;
-    text-align: center;
   }
 `;
 
+const CustomButtonGroup = styled(ButtonGroup)`
+  display: none;
+  @media ${({ theme }) => theme.device.smallTablet} {
+    display: flex;
+  }
+`;
 
-export default function GroupSizesColors() {
+const CustomButton = styled(Button)`
+  color: ${props =>
+    parseInt(props.isnegative) === parseInt(props.value) ? '#6459e7' : 'gray'};
+  border-color: gray;
+  font-size: 0.6rem;
+  font-family: SUIT;
+  font-weight: 600;
+  &:hover {
+    color: #6459e7;
+    border-color: #6459e7;
+  }
+`;
+
+function ClassifyButton({ isNegative, setIsNegative }) {
+  const onClick = e => {
+    setIsNegative(parseInt(e.target.value));
+  };
+
   return (
     <Wrapper>
-      <h1>리뷰</h1>
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        
-        '& > *': {
-          m: 1.5,
-        },
+      <h1>리뷰 모아보기</h1>
 
-      }}
-    >
-
-      <ButtonGroup color="inherit" aria-label="medium secondary button group">
-        {buttons}
-      </ButtonGroup>
-      
-    </Box>
+      <CustomButtonGroup>
+        <CustomButton
+          isnegative={isNegative}
+          onClick={onClick}
+          value={0}
+          key="positive"
+        >
+          Positive
+        </CustomButton>
+        <CustomButton
+          isnegative={isNegative}
+          onClick={onClick}
+          value={1}
+          key="negative"
+        >
+          Negative
+        </CustomButton>
+      </CustomButtonGroup>
     </Wrapper>
-    
   );
 }
+
+export default ClassifyButton;
