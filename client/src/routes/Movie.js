@@ -10,8 +10,7 @@ import InfoBox from '../components/movie/InfoBox';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
-import ReviewBox from '../components/movie/ReviewBox';
-import ClassifyButton from '../components/movie/ClassifyButton';
+import Review from '../components/movie/Review';
 
 const Wrapper = styled(Container)`
   display: flex;
@@ -23,23 +22,9 @@ const Header = styled(Container)`
   display: flex;
   align-items: center;
   margin: 2rem 0;
-  // height: 30vh;
 
   @media ${({ theme }) => theme.device.smallTablet} {
     flex-direction: column;
-    // height: 60vh;
-  }
-`;
-
-const Body = styled(Container)`
-  flex-direction: column;
-  align-items: center;
-  // height: 30vh;
-
-  @media ${({ theme }) => theme.device.smallTablet} {
-    flex-direction: column;
-    // height: 60vh;
-    margin-top: 1rem;
   }
 `;
 
@@ -52,9 +37,7 @@ function Movie() {
   });
 
   useEffect(() => {
-    axios
-    .get(`/api/search/movie?movie_id=${id}`)
-    .then(res =>
+    axios.get(`/api/search/movie?movie_id=${id}`).then(res =>
       setMovieData({
         movie: { ...res.data.movie },
         wordCloud: [...res.data.word_cloud],
@@ -71,14 +54,11 @@ function Movie() {
             <ImageBox url={movieData.movie.movie_poster} />
             <InfoBox movie={movieData.movie} />
           </Header>
-          
-          <Body>
-            <ClassifyButton />
-            <ReviewBox />
-            <WordCloudBox wordCloud={movieData.wordCloud} /> 
-          </Body>
-          
-          {/* <FloatingButton /> */}
+
+          <Review />
+          <WordCloudBox wordCloud={movieData.wordCloud} />
+
+          <FloatingButton />
         </Wrapper>
       </Layout>
     </>
