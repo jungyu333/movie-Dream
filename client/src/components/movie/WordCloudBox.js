@@ -1,17 +1,13 @@
-import styled from 'styled-components';
 import { Container } from '@mui/material';
+import styled from 'styled-components';
 import WordCloudCanvas from './WordCloudCanvas';
 
-const Wrapper = styled.div`
+const Wrapper = styled(Container)`
   width: 100%;
-  height: 100%;
-  min-height: 290px;
-  margin-left: 1rem;
+  min-height: 100px;
   background-color: white;
+  margin-top: 2rem;
   @media ${({ theme }) => theme.device.smallTablet} {
-    width: 100%;
-    margin: 0;
-    margin-top: 8rem;
   }
 `;
 function WordCloudBox({ wordCloud }) {

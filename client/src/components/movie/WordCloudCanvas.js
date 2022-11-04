@@ -4,12 +4,9 @@ import Wordcloud from 'wordcloud';
 
 function WordCloudCanvas({ wordCloud }) {
   const words = [];
-  for (const word of wordCloud) {
-    if (word['word'] === '영화') {
-      continue;
-    }
-    words.push([word['word'], word['value']]);
-  }
+  wordCloud.map(word => {
+    words.push([word.word, word.value]);
+  });
 
   const canvasRef = useRef(null);
 
@@ -27,8 +24,8 @@ function WordCloudCanvas({ wordCloud }) {
 
   return (
     <canvas
-      width="1920"
-      height="1080"
+      width="3000"
+      height="400"
       style={{ width: '100%', height: '100%' }}
       ref={canvasRef}
     />
