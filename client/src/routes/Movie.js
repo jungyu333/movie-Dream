@@ -56,7 +56,9 @@ function Movie() {
           </Header>
 
           <Review />
-          <WordCloudBox wordCloud={movieData.wordCloud} />
+          {movieData.wordCloud ? (
+            <WordCloudBox wordCloud={movieData.wordCloud} />
+          ) : null}
 
           <FloatingButton />
         </Wrapper>
