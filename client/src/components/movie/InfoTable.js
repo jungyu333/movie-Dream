@@ -56,6 +56,8 @@ const Genre = styled.div`
 
 const MainInfo = styled.div`
   margin-top: 0.8rem;
+  height: 20vh;
+  max-height: 180px;
 `;
 
 const Director = styled.div`
@@ -70,12 +72,16 @@ const Director = styled.div`
 
   & div {
     color: gray;
-
     opacity: 0.8;
     margin-right: 5px;
     cursor: pointer;
     :hover {
       opacity: 1;
+    }
+    max-height: 50px;
+    overflow: auto;
+    ::-webkit-scrollbar {
+      display: none;
     }
   }
 `;
@@ -83,7 +89,7 @@ const Director = styled.div`
 const Actor = styled.div`
   display: flex;
   width: 100%;
-  align-items: center;
+  align-items: flex-start;
 
   font-size: 1rem;
   margin: 5px 0;
@@ -100,7 +106,11 @@ const Actor = styled.div`
     color: gray;
     opacity: 0.8;
     margin-right: 5px;
-
+    max-height: 60px;
+    overflow: auto;
+    ::-webkit-scrollbar {
+      display: none;
+    }
     cursor: pointer;
     & div {
       min-width: max-content;
@@ -113,7 +123,7 @@ const Actor = styled.div`
 
 const DescriptionContainer = styled.div`
   height: 8vh;
-  min-height: 100px;
+  min-height: 80px;
 
   margin: 5px 0;
   & h1 {
