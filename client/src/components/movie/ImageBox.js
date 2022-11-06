@@ -21,19 +21,10 @@ const Wrapper = styled.div`
   }
 `;
 
-const NoPoster = styled.img`
-  height: 20vh;
-  max-width: 173px;
-  min-height: 250px;
-  @media ${({ theme }) => theme.device.smallTablet} {
-    width: 100%;
-  }
-`;
-
-function ImageBox({ url }) {
+function ImageBox({ url, isLoading }) {
   return (
     <Wrapper url={url}>
-      {url ? <PosterImage poster={url} /> : <NoPoster src="/Noimage.jpeg" />}
+      {!isLoading ? <PosterImage poster={url} /> : null}
     </Wrapper>
   );
 }

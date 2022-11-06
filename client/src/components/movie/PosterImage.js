@@ -12,8 +12,26 @@ const Image = styled.img`
   }
 `;
 
+const NoPoster = styled.img`
+  height: 20vh;
+  max-width: 173px;
+  min-height: 250px;
+  @media ${({ theme }) => theme.device.smallTablet} {
+    width: 100%;
+  }
+`;
+
 function PosterImage({ poster }) {
-  return <Image src={poster} alt="poster" />;
+  console.log(poster);
+  return (
+    <>
+      {poster ? (
+        <Image src={poster} alt="poster" />
+      ) : (
+        <NoPoster src="/Noimage.jpeg" alt="poster" />
+      )}
+    </>
+  );
 }
 
 export default PosterImage;

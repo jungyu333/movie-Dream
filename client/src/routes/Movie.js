@@ -51,7 +51,10 @@ function Movie() {
       <Layout isNavSearch={true} isMain={false}>
         <Wrapper>
           <Header>
-            <ImageBox url={movieData.movie.movie_poster} />
+            <ImageBox
+              url={movieData.movie.movie_poster}
+              isLoading={movieData.isLoading}
+            />
             <InfoBox movie={movieData.movie} />
           </Header>
 
