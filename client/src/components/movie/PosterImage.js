@@ -22,7 +22,6 @@ const NoPoster = styled.img`
 `;
 
 function PosterImage({ poster }) {
-  console.log(poster);
   return (
     <>
       {poster ? (
