@@ -18,9 +18,9 @@ function MultiReview({ negative, positive }) {
     <Wrapper>
       {positive.length > 0 || negative.length > 0 ? (
         <>
-          <MultiReviewItem reviewData={positive} />
+          <MultiReviewItem reviewData={positive} title="Positive" />
           <CustomDivider orientation="vertical" flexItem />
-          <MultiReviewItem reviewData={negative} />
+          <MultiReviewItem reviewData={negative} title="Negative" />
         </>
       ) : (
         <ReviewNoResult />
