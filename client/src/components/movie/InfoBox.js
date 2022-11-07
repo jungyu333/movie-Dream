@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import InfoSkeleton from './InfoSkeleton';
 import InfoTable from './InfoTable';
 
 const Wrapper = styled.div`
@@ -18,10 +19,10 @@ const Wrapper = styled.div`
   }
 `;
 
-function InfoBox({ movie }) {
+function InfoBox({ movie, isLoading }) {
   return (
     <Wrapper>
-      <InfoTable movie={movie} />
+      {!isLoading ? <InfoTable movie={movie} /> : <InfoSkeleton />}
     </Wrapper>
   );
 }

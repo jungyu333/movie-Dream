@@ -55,7 +55,7 @@ function Movie() {
               url={movieData.movie.movie_poster}
               isLoading={movieData.isLoading}
             />
-            <InfoBox movie={movieData.movie} />
+            <InfoBox movie={movieData.movie} isLoading={movieData.isLoading} />
           </Header>
 
           <Review />
