@@ -2,10 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import Layout from '../components/common/Layout';
 import SearchInput from '../components/common/SearchInput';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import randomNum from '../hooks/randomNum';
+import { useEffect } from 'react';
 import GenreCarousel from '../components/main/GenreCarousel';
+import { useSelector } from 'react-redux';
+import { loadGenreMovies } from '../action/main';
+import { RootState, useAppDispatch } from '../store/store';
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,36 +24,26 @@ const Header = styled.div`
 `;
 
 function Home() {
-  const [movieDatas, setMovieDatas] = useState({
-    movieData: [],
-    isLoading: true,
-  });
-
+  const dispatch = useAppDispatch();
+  const { genreMoviesLoading, genreMovies, genreMoviesDone } = useSelector(
+    (state: RootState) => state.main,
+  );
   useEffect(() => {
-    const nums = randomNum();
-
-    axios.get('api/search/genre').then(res => {
-      const movies = [];
-      nums.map(num => movies.push(res.data[num]));
-      setMovieDatas({
-        movieData: [...movies],
-        isLoading: false,
-      });
-    });
-  }, []);
+    dispatch(loadGenreMovies());
+  }, [dispatch]);
 
   return (
     <>
       <Layout isNavSearch={true} isMain={true}>
         <Wrapper>
-          <Header>
-            <SearchInput />
-          </Header>
+          <Header>{/* <SearchInput /> */}</Header>
 
-          <GenreCarousel
-            movies={movieDatas.movieData}
-            isLoading={movieDatas.isLoading}
-          />
+          {genreMoviesDone && (
+            <GenreCarousel
+              movies={genreMovies}
+              isLoading={genreMoviesLoading}
+            />
+          )}
         </Wrapper>
       </Layout>
     </>

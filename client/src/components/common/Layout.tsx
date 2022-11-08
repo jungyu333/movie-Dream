@@ -2,6 +2,7 @@ import { AppBar, Slide, Toolbar, useScrollTrigger } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { ILayoutProps } from '../../@types/common';
 import SearchInput from './SearchInput';
 
 const CustomAppBar = styled(AppBar)`
@@ -36,7 +37,7 @@ const HomeLink = styled.div`
   }
 `;
 
-function Layout(props) {
+function Layout(props: ILayoutProps) {
   const { window, isNavSearch, isMain, children } = props;
 
   const trigger = useScrollTrigger({
