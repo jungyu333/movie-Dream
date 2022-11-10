@@ -1,9 +1,20 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  FormEvent,
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { TextField } from '@mui/material';
-import axios from 'axios';
 import AutoItem from './AutoItem';
+import { IAutoMovie, ISearchInputProps } from '../../@types/common';
+import { RootState, useAppDispatch } from '../../store/store';
+import { useSelector } from 'react-redux';
+import { setSearchInput } from '../../reducer/auto';
+import { loadAutoSearch } from '../../action/auto';
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,7 +67,7 @@ const LayoutSearchInput = styled.input`
   }
 `;
 
-const DropDownList = styled.ul`
+const DropDownList = styled.ul<{ isNavSearch?: boolean }>`
   position: absolute;
   background-color: white;
   z-index: 4;
@@ -72,7 +83,7 @@ const DropDownList = styled.ul`
   width: ${props => (props.isNavSearch ? '30%' : '100%')};
 `;
 
-const DropDownItem = styled.li`
+const DropDownItem = styled.li<{ selected: boolean }>`
   width: 100%;
   padding: 13px 10px;
   cursor: pointer;
@@ -91,44 +102,41 @@ const DropDownItem = styled.li`
   background-color: ${props => props.selected && 'lightgray'};
 `;
 
-function SearchInput({ isNavSearch, isMain }) {
-  const autoRef = useRef(null);
+function SearchInput({ isNavSearch, isMain }: ISearchInputProps) {
+  const autoRef = useRef<HTMLUListElement>(null);
+  const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState('');
-  const [autoContent, setAutoContent] = useState([]);
-  const [cursor, setCursor] = useState(0);
-  const [searchContent, setSearchContent] = useState('');
+  const [cursor, setCursor] = useState(-1);
+  const { searchInput, autoMovies } = useSelector(
+    (state: RootState) => state.auto,
+  );
 
   const navigation = useNavigate();
-  const onChange = event => {
-    const searchInput = [];
-    searchInput.push(event.target.value);
-    setSearchContent(event.target.value);
-    axios
-      .get(`/api/auto?query=${event.target.value}&size=${6}`)
-      .then(res => {
-        searchInput.push(...res.data);
-        setAutoContent([...searchInput]);
-      })
-      .catch(err => console.error(err));
-    setCursor(0);
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSearchInput(event.target.value));
+    dispatch(loadAutoSearch({ query: event.target.value }));
+
+    setCursor(-1);
     setIsOpen(true);
-    setAutoContent([]);
   };
 
-  const onClickAutoItem = useCallback((item, index) => {
-    setCursor(index);
-    const content = item.movie_id ? item.movie_id : item;
-    setContent(content);
-  }, []);
+  const onClickAutoItem = useCallback(
+    (item: IAutoMovie, index: number) => {
+      setCursor(index);
+      const content = index !== -1 ? item.movie_id : searchInput;
+      setContent(content);
+    },
+    [searchInput],
+  );
 
   const ArrowDown = 'ArrowDown';
   const ArrowUp = 'ArrowUp';
   const Escape = 'Escape';
   const Enter = 'Enter';
-  const handleKeyArrow = e => {
-    if (autoContent.length > 0) {
-      switch (e.key) {
+  const handleKeyArrow = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (autoMovies && autoMovies.length > 0) {
+      switch (event.key) {
         case ArrowDown:
           setCursor(cursor + 1);
           if (autoRef.current?.childElementCount === cursor + 1) setCursor(0);
@@ -136,7 +144,7 @@ function SearchInput({ isNavSearch, isMain }) {
         case ArrowUp:
           setCursor(cursor - 1);
           if (cursor <= 0) {
-            setCursor(autoContent.length - 1);
+            setCursor(autoMovies.length - 1);
           }
           break;
         case Escape:
@@ -144,10 +152,9 @@ function SearchInput({ isNavSearch, isMain }) {
 
           break;
         case Enter:
-          const enterContent = autoContent[cursor].movie_id
-            ? autoContent[cursor].movie_id
-            : autoContent[cursor];
-          setContent(enterContent);
+          cursor !== -1
+            ? setContent(autoMovies[cursor].movie_id)
+            : setContent(searchInput);
 
           break;
         default:
@@ -156,37 +163,42 @@ function SearchInput({ isNavSearch, isMain }) {
     }
   };
 
-  const onSubmit = e => {
-    e.preventDefault();
-    setSearchContent('');
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
   };
 
-  const onClickInput = useCallback(e => {
-    e.stopPropagation();
-    setIsOpen(true);
-  }, []);
+  const onClickInput = useCallback(
+    (event: React.MouseEvent<HTMLInputElement>) => {
+      event.stopPropagation();
+      setIsOpen(true);
+    },
+    [],
+  );
 
   useEffect(() => {
     if (content) {
-      if (content === searchContent) {
+      if (cursor === -1) {
         navigation(
           `/search?query=${content}&page=${1}&nationFlag=${null}&sort=${'opening_date'}&genreFilter=${null}&showTimeFilter=${'0,180'}&openDateFilter=${''}&size=${5}`,
         );
       } else {
         navigation(`/movie/${content}`);
-        setSearchContent('');
+
         setContent('');
       }
-      setAutoContent([]);
-      setCursor(0);
+
+      setCursor(-1);
     }
-  }, [content, navigation]);
+  }, [content, navigation, cursor]);
 
   useEffect(() => {
-    const handleCloseSearch = e => {
-      if (autoRef.current && !autoRef.current.contains(e.target)) {
+    const handleCloseSearch = (event: MouseEvent) => {
+      if (
+        autoRef.current &&
+        !autoRef.current.contains(event.target as HTMLElement)
+      ) {
         setIsOpen(false);
-        setCursor(0);
+        setCursor(-1);
       }
     };
 
@@ -207,22 +219,18 @@ function SearchInput({ isNavSearch, isMain }) {
                 onChange={onChange}
                 onKeyDown={handleKeyArrow}
                 value={
-                  cursor !== 0 ? autoContent[cursor].h_movie : searchContent
+                  cursor === -1 ? searchInput : autoMovies![cursor].h_movie
                 }
               />
-              {isOpen && autoContent.length > 1 ? (
+              {isOpen && autoMovies!.length > 0 ? (
                 <DropDownList isNavSearch={true} ref={autoRef}>
-                  {autoContent.map((item, index) => (
+                  {autoMovies!.map((movie, index) => (
                     <DropDownItem
                       key={index}
                       selected={cursor === index}
-                      onClick={() => onClickAutoItem(item, index)}
+                      onClick={() => onClickAutoItem(movie, index)}
                     >
-                      <AutoItem
-                        autoItem={item}
-                        index={index}
-                        searchContent={searchContent}
-                      />
+                      <AutoItem autoMovie={movie} searchInput={searchInput} />
                     </DropDownItem>
                   ))}
                 </DropDownList>
@@ -242,21 +250,20 @@ function SearchInput({ isNavSearch, isMain }) {
                     onKeyDown={handleKeyArrow}
                     onClick={onClickInput}
                     value={
-                      cursor !== 0 ? autoContent[cursor].h_movie : searchContent
+                      cursor === -1 ? searchInput : autoMovies![cursor].h_movie
                     }
                   />
-                  {isOpen && autoContent.length > 1 ? (
+                  {isOpen && autoMovies && autoMovies.length > 0 ? (
                     <DropDownList ref={autoRef}>
-                      {autoContent.map((item, index) => (
+                      {autoMovies!.map((movie, index) => (
                         <DropDownItem
                           key={index}
                           selected={cursor === index}
-                          onClick={() => onClickAutoItem(item, index)}
+                          onClick={() => onClickAutoItem(movie, index)}
                         >
                           <AutoItem
-                            autoItem={item}
-                            index={index}
-                            searchContent={searchContent}
+                            autoMovie={movie}
+                            searchInput={searchInput}
                           />
                         </DropDownItem>
                       ))}

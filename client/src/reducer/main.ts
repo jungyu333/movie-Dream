@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IGenreMovie } from '../@types/main';
 import { loadGenreMovies } from '../action/main';
-import randomNum from '../hooks/randomNum';
+import useRandomNum from '../hooks/useRandomNum';
 
 interface mainState {
   genreMovies: IGenreMovie[] | null;
@@ -29,7 +29,7 @@ const mainSlice = createSlice({
         state.genreMovieError = null;
       })
       .addCase(loadGenreMovies.fulfilled, (state, action) => {
-        const nums = randomNum();
+        const nums = useRandomNum();
         const movies: IGenreMovie[] = [];
         nums.map(num => movies.push(action.payload[num]));
         state.genreMoviesLoading = false;

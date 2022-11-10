@@ -1,4 +1,4 @@
-function createRex(query) {
+function useCreateRex(query: string) {
   const length = query.length;
 
   let resultStr = '';
@@ -16,4 +16,4 @@ function createRex(query) {
   return resultStr;
 }
 
-export default createRex;
+export default useCreateRex;
