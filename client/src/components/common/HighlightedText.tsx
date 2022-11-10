@@ -1,11 +1,13 @@
 import styled from 'styled-components';
-import createRex from './createRex';
+import React from 'react';
+import useCreateRex from '../../hooks/useCreateRex';
 
 const Highlight = styled.span`
   color: red;
 `;
 
-const highlightedText = (text, query) => {
+function HighlightedText(text: string, query: string) {
+  const rexQuery = useCreateRex(query);
   if (
     query !== '' &&
     text
@@ -14,22 +16,21 @@ const highlightedText = (text, query) => {
       .join('')
       .includes(query.toLowerCase().split(' ').join(''))
   ) {
-    const rexQuery = createRex(query);
     const rex = new RegExp(rexQuery);
     const highlighted = text.match(rex);
-    const nonHighlighted = text.replace(text.match(rex), '');
+    const nonHighlighted = text.replace(String(text.match(rex)), '');
 
     return (
       <>
-        {highlighted.index === 0 ? (
+        {highlighted!.index === 0 ? (
           <>
-            <Highlight>{highlighted[0]}</Highlight>
+            <Highlight>{highlighted![0]}</Highlight>
             {nonHighlighted}
           </>
         ) : (
           <>
             {nonHighlighted}
-            <Highlight>{highlighted[0]}</Highlight>
+            <Highlight>{highlighted![0]}</Highlight>
           </>
         )}
       </>
@@ -37,6 +38,6 @@ const highlightedText = (text, query) => {
   }
 
   return text;
-};
+}
 
-export default highlightedText;
+export default HighlightedText;

@@ -36,7 +36,9 @@ function Home() {
     <>
       <Layout isNavSearch={true} isMain={true}>
         <Wrapper>
-          <Header>{/* <SearchInput /> */}</Header>
+          <Header>
+            <SearchInput />
+          </Header>
 
           {genreMoviesDone && (
             <GenreCarousel
