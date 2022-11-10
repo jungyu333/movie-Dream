@@ -1,6 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+
 import Carousel from '../common/Carousel';
+import { IGenreMovie } from '../../@types/main';
+import { RootState } from '../../store/store';
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,12 +16,15 @@ const Wrapper = styled.div`
   z-index: 3;
 `;
 
-function GenreCarousel({ movies, isLoading }) {
+function GenreCarousel() {
+  const { genreMoviesLoading, genreMovies } = useSelector(
+    (state: RootState) => state.main,
+  );
   return (
     <Wrapper>
-      {!isLoading && (
+      {!genreMoviesLoading && (
         <>
-          {movies.map((movie, index) => (
+          {genreMovies!.map((movie: IGenreMovie, index: number) => (
             <Carousel key={index} title={movie.genre} movies={movie.movies} />
           ))}
         </>
