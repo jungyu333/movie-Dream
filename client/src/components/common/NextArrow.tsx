@@ -1,4 +1,5 @@
 import React from 'react';
+import { CustomArrowProps } from 'react-slick';
 import styled from 'styled-components';
 
 const CustomArror = styled.div`
@@ -28,7 +29,7 @@ const CustomArror = styled.div`
   }
 `;
 
-function NextArrow(props) {
+function NextArrow(props: CustomArrowProps) {
   const { onClick } = props;
   return (
     <CustomArror onClick={onClick}>

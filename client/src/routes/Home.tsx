@@ -40,12 +40,7 @@ function Home() {
             <SearchInput />
           </Header>
 
-          {genreMoviesDone && (
-            <GenreCarousel
-              movies={genreMovies}
-              isLoading={genreMoviesLoading}
-            />
-          )}
+          {genreMoviesDone && <GenreCarousel />}
         </Wrapper>
       </Layout>
     </>

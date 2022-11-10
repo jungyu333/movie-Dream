@@ -3,9 +3,11 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styled from 'styled-components';
-import PrevArrow from '../common/PrevArrow';
-import NextArrow from '../common/NextArrow';
+import PrevArrow from './PrevArrow';
+import NextArrow from './NextArrow';
 import { Link } from 'react-router-dom';
+import { IGenreMovieData } from '../../@types/main';
+import { ICarouselProps } from '../../@types/common';
 
 const Wrapper = styled.div`
   display: flex;
@@ -64,7 +66,7 @@ const MovieTitle = styled.div`
   transform: translate(-50%, -50%);
 `;
 
-function Carousel({ title, movies }) {
+function Carousel({ title, movies }: ICarouselProps) {
   const settings = {
     dots: false,
     infinite: true,
@@ -119,18 +121,18 @@ function Carousel({ title, movies }) {
       <Wrapper>
         <Header>{title}</Header>
         <CustomSlicer {...settings}>
-          {movies.map(item => (
-            <ImageBox key={item.movie_id}>
-              <Link to={`/movie/${item.movie_id}`}>
+          {movies.map(movie => (
+            <ImageBox key={movie.movie_id}>
+              <Link to={`/movie/${movie.movie_id}`}>
                 <Image
                   src={
-                    item.movie_poster !== ''
-                      ? item.movie_poster
+                    movie.movie_poster !== ''
+                      ? movie.movie_poster
                       : '/Noimage.jpeg'
                   }
                   alt="poster"
                 />
-                <MovieTitle>{item.h_movie}</MovieTitle>
+                <MovieTitle>{movie.h_movie}</MovieTitle>
               </Link>
             </ImageBox>
           ))}

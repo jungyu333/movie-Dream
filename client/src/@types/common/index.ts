@@ -1,3 +1,5 @@
+import { IGenreMovieData } from '../main';
+
 export interface ILayoutProps {
   isNavSearch: boolean;
   isMain: boolean;
@@ -27,4 +29,9 @@ export interface IloadAutoSearchData {
 export interface IAutoItemProps {
   autoMovie: IAutoMovie;
   searchInput: string;
+}
+
+export interface ICarouselProps {
+  title: string;
+  movies: IGenreMovieData[];
 }
