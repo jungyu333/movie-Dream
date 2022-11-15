@@ -1,32 +1,33 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { ISearchResults } from '../@types/search';
 import { loadMainMovies } from '../action/search';
 
 interface searchState {
   moviesLoading: boolean;
   moviesDone: boolean;
   moviesError: string | null;
-  movies: any;
+  searchResults: ISearchResults | null;
   page: number;
   nationFlag: string | null;
   query: string;
-  sort: string | null;
+  sort: string;
   genreFilter: string | null;
-  showTimeFilter: string | null;
-  openDateFilter: string | null;
+  showTimeFilter: string;
+  openDateFilter: string;
 }
 
 export const initialState: searchState = {
   moviesLoading: false,
   moviesDone: false,
   moviesError: null,
-  movies: null,
+  searchResults: null,
   page: 1,
   nationFlag: null,
   query: '',
-  sort: null,
+  sort: 'opening_date',
   genreFilter: null,
-  showTimeFilter: null,
-  openDateFilter: null,
+  showTimeFilter: '0,180',
+  openDateFilter: '',
 };
 
 const searchSlice = createSlice({
@@ -47,7 +48,7 @@ const searchSlice = createSlice({
       .addCase(loadMainMovies.fulfilled, (state, action) => {
         state.moviesLoading = false;
         state.moviesDone = true;
-        state.movies = action.payload;
+        state.searchResults = action.payload;
       })
       .addCase(loadMainMovies.rejected, (state, action) => {
         state.moviesLoading = false;
