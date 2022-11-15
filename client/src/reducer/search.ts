@@ -14,6 +14,7 @@ interface searchState {
   genreFilter: string | null;
   showTimeFilter: string;
   openDateFilter: string;
+  clickedGenre: string[];
 }
 
 export const initialState: searchState = {
@@ -28,6 +29,7 @@ export const initialState: searchState = {
   genreFilter: null,
   showTimeFilter: '0,180',
   openDateFilter: '',
+  clickedGenre: [],
 };
 
 const searchSlice = createSlice({
@@ -36,6 +38,16 @@ const searchSlice = createSlice({
   reducers: {
     setQuery: (state, action) => {
       state.query = action.payload;
+    },
+    setClickedGenre: (state, action) => {
+      state.clickedGenre.includes(action.payload)
+        ? (state.clickedGenre = state.clickedGenre.filter(
+            gen => action.payload !== gen,
+          ))
+        : state.clickedGenre.push(action.payload);
+    },
+    setGenreFilter: state => {
+      state.genreFilter = state.clickedGenre.join(',');
     },
   },
   extraReducers: builder =>
@@ -56,5 +68,6 @@ const searchSlice = createSlice({
         state.moviesError = action.payload as string;
       }),
 });
-export const { setQuery } = searchSlice.actions;
+export const { setQuery, setClickedGenre, setGenreFilter } =
+  searchSlice.actions;
 export default searchSlice;

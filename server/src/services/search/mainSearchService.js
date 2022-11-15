@@ -103,35 +103,6 @@ async function getTopMovies(query) {
 
     topResultData['top_score_movie'] = topScoreMovies;
 
-    //개봉순
-    const requestTopOpenBody = new esb.requestBodySearch();
-    const openBoolQuery = esb.boolQuery();
-    openBoolQuery
-        .must(esb.rangeQuery('opening_date').gte(recentDay).lte(today))
-        .must(topBoolQuery);
-    const topOpenData = requestTopOpenBody
-        .query(openBoolQuery)
-        .sort(esb.sort('opening_date', 'desc'))
-        .size(10)
-        .toJSON();
-
-    const topOpenResponse = await es.search({
-        index: common.ES_MOVIE_INDEX,
-        body: topOpenData
-    });
-
-    const topOpenMovies = [];
-    for (const hit of topOpenResponse.body.hits.hits) {
-        const sourceData = {};
-        sourceData['movie_id'] = hit._source.movie_id;
-        sourceData['h_movie'] = hit._source.h_movie;
-        sourceData['movie_poster'] = hit._source.movie_poster;
-        sourceData['opening_date'] = hit._source.opening_date;
-        topOpenMovies.push(sourceData);
-    }
-
-    topResultData['top_open_movie'] = topOpenMovies;
-
     //개봉예정
     const requestTopToBeOpenBody = new esb.requestBodySearch();
     const toBeopenBoolQuery = esb.boolQuery();

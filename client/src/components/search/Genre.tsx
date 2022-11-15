@@ -1,5 +1,7 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { RootState } from '../../store/store';
 import GenreButton from './GenreButton';
 import GenreSkeleton from './GenreSkeleton';
 
@@ -28,17 +30,13 @@ const FilterContainer = styled.div`
   }
 `;
 
-function Genre({
-  genre,
-  clickedGenre,
-  setClickedGenre,
-  setSearchData,
-  setPage,
-  isLoading,
-}) {
+function Genre() {
+  const { searchResults, moviesLoading } = useSelector(
+    (state: RootState) => state.search,
+  );
   return (
     <>
-      {isLoading ? (
+      {moviesLoading ? (
         <FilterContainer>
           {new Array(5).fill(1).map((_, index) => (
             <GenreSkeleton key={index} />
@@ -46,15 +44,8 @@ function Genre({
         </FilterContainer>
       ) : (
         <FilterContainer>
-          {genre.map((item, index) => (
-            <GenreButton
-              clickedGenre={clickedGenre}
-              setClickedGenre={setClickedGenre}
-              key={index}
-              item={item.key}
-              setSearchData={setSearchData}
-              setPage={setPage}
-            />
+          {searchResults?.genre.map((gen, index) => (
+            <GenreButton key={index} genre={gen.key} />
           ))}
         </FilterContainer>
       )}

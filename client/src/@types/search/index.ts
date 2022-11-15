@@ -56,3 +56,7 @@ export interface IMovieActors {
   part: string;
   thumb: string;
 }
+
+export interface IGenreButtonProps {
+  genre: string;
+}
