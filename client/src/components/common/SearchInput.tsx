@@ -15,7 +15,7 @@ import { RootState, useAppDispatch } from '../../store/store';
 import { useSelector } from 'react-redux';
 import { resetSearchInput, setSearchInput } from '../../reducer/auto';
 import { loadAutoSearch } from '../../action/auto';
-import { setQuery } from '../../reducer/search';
+import { resetFilters, setQuery } from '../../reducer/search';
 
 const Wrapper = styled.div`
   display: flex;
@@ -179,15 +179,12 @@ function SearchInput({ isNavSearch, isMain }: ISearchInputProps) {
   useEffect(() => {
     if (content) {
       if (cursor === -1) {
-        // navigation(
-        //   `/search?query=${content}&page=${1}&nationFlag=${null}&sort=${'opening_date'}&genreFilter=${null}&showTimeFilter=${'0,180'}&openDateFilter=${null}&size=${5}`,
-        // );
         dispatch(setQuery(content));
         navigation(`/search?query=${content}`);
         dispatch(resetSearchInput());
+        dispatch(resetFilters(content));
       } else {
         navigation(`/movie/${content}`);
-
         setContent('');
       }
 
@@ -214,7 +211,7 @@ function SearchInput({ isNavSearch, isMain }: ISearchInputProps) {
 
   useEffect(() => {
     dispatch(resetSearchInput());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
