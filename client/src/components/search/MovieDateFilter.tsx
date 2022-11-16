@@ -1,9 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import RadioControlItem from './RadioControlItem';
 import moment from 'moment';
 import { Grid } from '@mui/material';
+import { useAppDispatch } from '../../store/store';
+import { setOpenDateFilter } from '../../reducer/search';
 
 const Wrapper = styled.div`
   border: 1px solid lightgray;
@@ -50,64 +52,26 @@ const Header = styled.h1`
   }
 `;
 
-function MovieDateFilter({ setSearchData, setPage }) {
+function MovieDateFilter() {
+  const dispatch = useAppDispatch();
   const [selected, setSelected] = useState('0');
-  const [date, setDate] = useState('');
-  const [searchParams] = useSearchParams();
-  const query = searchParams.get('query');
-  const sortType = searchParams.get('sort');
-  const nationFlag = searchParams.get('nationFlag');
-  const showTimeFilter = searchParams.get('showTimeFilter');
-  const genreFilter = searchParams.get('genreFilter');
-  const navigation = useNavigate();
+
   const handleChange = useCallback(
-    value => {
+    (value: string) => {
       if (value === '0') {
         setSelected(value);
-        setDate('');
-        setSearchData({
-          movieData: {
-            movie: [],
-            genre: [],
-          },
-          isLoading: true,
-          hasMoreMovies: true,
-        });
-        setPage(1);
+        dispatch(setOpenDateFilter(''));
       } else {
         const today = moment().format('YYYY.MM.DD');
         const calculatedDate = moment()
           .subtract(value, 'M')
           .format('YYYY.MM.DD');
         setSelected(value);
-        setDate(`${calculatedDate},${today}`);
-        setSearchData({
-          movieData: {
-            movie: [],
-            genre: [],
-          },
-          isLoading: true,
-          hasMoreMovies: true,
-        });
-        setPage(1);
+        dispatch(setOpenDateFilter(`${calculatedDate},${today}`));
       }
     },
-    [setSearchData, setPage],
+    [dispatch],
   );
-
-  useEffect(() => {
-    navigation(
-      `/search?query=${query}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&openDateFilter=${date}&size=${5}`,
-    );
-  }, [
-    navigation,
-    query,
-    nationFlag,
-    sortType,
-    genreFilter,
-    showTimeFilter,
-    date,
-  ]);
 
   return (
     <Wrapper>

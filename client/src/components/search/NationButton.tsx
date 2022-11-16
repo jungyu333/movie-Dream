@@ -10,7 +10,9 @@ import {
   Popper,
 } from '@mui/material';
 import styled from 'styled-components';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { RootState, useAppDispatch } from '../../store/store';
+import { setNationFlag } from '../../reducer/search';
+import { useSelector } from 'react-redux';
 
 const CustomButton = styled(Button)`
   background-color: #6459e7;
@@ -23,58 +25,30 @@ const CustomButton = styled(Button)`
 `;
 
 const CustomPopper = styled(Popper)`
-  z-index: 10;
+  z-index: 50;
 `;
 
 const CustomGrow = styled(Grow)`
   transform-origin: center top;
 `;
 
-function NationButton({ setPage, setSearchData }) {
-  const [searchParams] = useSearchParams();
-  const navigation = useNavigate();
+function NationButton() {
   const [open, setOpen] = useState(false);
-  const anchorRef = useRef(null);
-
+  const { nationFlag } = useSelector((state: RootState) => state.search);
+  const dispatch = useAppDispatch();
+  const anchorRef = useRef<HTMLDivElement>(null);
   const options = ['전체영화', '국내영화', '해외영화'];
-  const query = searchParams.get('query');
-  const sortType = searchParams.get('sort');
-  const genreFilter = searchParams.get('genreFilter');
-  let nationFlag = searchParams.get('nationFlag');
-  const showTimeFilter = searchParams.get('showTimeFilter');
-  const openDateFilter = searchParams.get('openDateFilter');
 
-  const handleMenuItemClick = event => {
+  const handleMenuItemClick = (index: number) => {
     setOpen(false);
-    setSearchData({
-      movieData: {
-        movie: [],
-        genre: [],
-      },
-      isLoading: true,
-      hasMoreMovies: true,
-    });
-    setPage(1);
-    if (event.target.innerText === '전체영화') {
-      navigation(
-        `/search?query=${query}&nationFlag=${'null'}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&openDateFilter=${openDateFilter}&size=${5}`,
-      );
-    } else {
-      nationFlag = event.target.innerText === '국내영화' ? 'True' : 'False';
-      navigation(
-        `/search?query=${query}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${showTimeFilter}&openDateFilter=${openDateFilter}&size=${5}`,
-      );
-    }
+    dispatch(setNationFlag(index));
   };
 
   const handleToggle = () => {
     setOpen(prevOpen => !prevOpen);
   };
 
-  const handleClose = event => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
+  const handleClose = () => {
     setOpen(false);
   };
 
@@ -86,7 +60,7 @@ function NationButton({ setPage, setSearchData }) {
         aria-label="split button"
       >
         <CustomButton onClick={handleToggle}>
-          {nationFlag === null || nationFlag === 'null'
+          {nationFlag === null
             ? '전체영화'
             : nationFlag === 'True'
             ? '국내영화'
@@ -107,7 +81,7 @@ function NationButton({ setPage, setSearchData }) {
                   {options.map((option, index) => (
                     <MenuItem
                       key={option}
-                      onClick={event => handleMenuItemClick(event, index)}
+                      onClick={() => handleMenuItemClick(index)}
                     >
                       {option}
                     </MenuItem>
