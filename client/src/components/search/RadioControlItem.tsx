@@ -20,8 +20,22 @@ const RadioItem = styled.div`
   }
 `;
 
-function RadioControlItem({ label, id, value, selected, handleChange }) {
-  const onChange = event => {
+interface IRadioControlItem {
+  label: string;
+  id: string;
+  value: string;
+  selected: string;
+  handleChange: any;
+}
+
+function RadioControlItem({
+  label,
+  id,
+  value,
+  selected,
+  handleChange,
+}: IRadioControlItem) {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(event.target.value);
   };
 

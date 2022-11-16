@@ -53,6 +53,21 @@ const searchSlice = createSlice({
       state.showTimeFilter =
         String(action.payload[0]) + ',' + String(action.payload[1]);
     },
+    setOpenDateFilter: (state, action) => {
+      state.openDateFilter = action.payload;
+    },
+    setSort: (state, action) => {
+      state.sort = action.payload;
+    },
+    setNationFlag: (state, action) => {
+      if (action.payload === 0) {
+        state.nationFlag = null;
+      } else if (action.payload === 1) {
+        state.nationFlag = 'True';
+      } else {
+        state.nationFlag = 'False';
+      }
+    },
   },
   extraReducers: builder =>
     builder
@@ -72,6 +87,13 @@ const searchSlice = createSlice({
         state.moviesError = action.payload as string;
       }),
 });
-export const { setQuery, setClickedGenre, setGenreFilter, setShowTimeFilter } =
-  searchSlice.actions;
+export const {
+  setQuery,
+  setClickedGenre,
+  setGenreFilter,
+  setOpenDateFilter,
+  setShowTimeFilter,
+  setSort,
+  setNationFlag,
+} = searchSlice.actions;
 export default searchSlice;
