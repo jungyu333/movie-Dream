@@ -121,21 +121,22 @@ function Carousel({ title, movies }: ICarouselProps) {
       <Wrapper>
         <Header>{title}</Header>
         <CustomSlicer {...settings}>
-          {movies.map(movie => (
-            <ImageBox key={movie.movie_id}>
-              <Link to={`/movie/${movie.movie_id}`}>
-                <Image
-                  src={
-                    movie.movie_poster !== ''
-                      ? movie.movie_poster
-                      : '/Noimage.jpeg'
-                  }
-                  alt="poster"
-                />
-                <MovieTitle>{movie.h_movie}</MovieTitle>
-              </Link>
-            </ImageBox>
-          ))}
+          {movies &&
+            movies.map(movie => (
+              <ImageBox key={movie.movie_id}>
+                <Link to={`/movie/${movie.movie_id}`}>
+                  <Image
+                    src={
+                      movie.movie_poster !== ''
+                        ? movie.movie_poster
+                        : '/Noimage.jpeg'
+                    }
+                    alt="poster"
+                  />
+                  <MovieTitle>{movie.h_movie}</MovieTitle>
+                </Link>
+              </ImageBox>
+            ))}
         </CustomSlicer>
       </Wrapper>
     </>
