@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Slider } from '@mui/material';
 import styled from 'styled-components';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useAppDispatch } from '../../store/store';
+import { setShowTimeFilter } from '../../reducer/search';
 
 const Wrapper = styled.div`
   border: 1px solid lightgray;
@@ -63,53 +64,24 @@ const Wrapper = styled.div`
   }
 `;
 
-function ShowTime({ setSearchData, setPage }) {
-  const [searchParams] = useSearchParams();
-  const [value, setValue] = useState([0, 180]);
+function ShowTime() {
+  const dispatch = useAppDispatch();
+  const [value, setValue] = useState<number[] | number>([0, 180]);
 
-  const query = searchParams.get('query');
-  const sortType = searchParams.get('sort');
-  const genreFilter = searchParams.get('genreFilter');
-  const nationFlag = searchParams.get('nationFlag');
-  const openDateFilter = searchParams.get('openDateFilter');
-
-  const navigation = useNavigate();
   const onChangeValue = useCallback(
-    (event, newValue) => {
+    (event: Event, newValue: number[] | number) => {
       setValue(newValue);
-      setSearchData({
-        movieData: {
-          movie: [],
-          genre: [],
-        },
-        isLoading: true,
-        hasMoreMovies: true,
-      });
-      setPage(1);
+      dispatch(setShowTimeFilter(newValue));
     },
-    [setValue, setSearchData, setPage],
+    [dispatch],
   );
-
-  useEffect(() => {
-    navigation(
-      `/search?query=${query}&nationFlag=${nationFlag}&sort=${sortType}&genreFilter=${genreFilter}&showTimeFilter=${value}&openDateFilter=${openDateFilter}&size=${5}`,
-    );
-  }, [
-    query,
-    nationFlag,
-    sortType,
-    genreFilter,
-    value,
-    navigation,
-    openDateFilter,
-  ]);
 
   return (
     <Wrapper>
       <h1>Select Time</h1>
       <Slider
         defaultValue={0}
-        step={30}
+        step={20}
         max={180}
         valueLabelDisplay="auto"
         value={value}

@@ -1,9 +1,11 @@
 import { Container, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { RootState } from '../../store/store';
 import GenreButton from './GenreButton';
 
-const Wrapper = styled(Container)`
+const Wrapper = styled(Container)<{ scroll: boolean }>`
   min-width: 200px;
   margin-bottom: 1rem;
   height: fit-content;
@@ -40,13 +42,8 @@ const CustomGridItem = styled(Grid)`
   height: 15%;
 `;
 
-function FloatingGenre({
-  genre,
-  clickedGenre,
-  setClickedGenre,
-  setSearchData,
-  setPage,
-}) {
+function FloatingGenre() {
+  const { searchResults } = useSelector((state: RootState) => state.search);
   const [scroll, setScroll] = useState(false);
 
   useEffect(() => {
@@ -68,16 +65,9 @@ function FloatingGenre({
   return (
     <Wrapper scroll={scroll}>
       <CustomGridContainer container rowSpacing={1}>
-        {genre.map((item, index) => (
+        {searchResults?.genre.map((gen, index) => (
           <CustomGridItem key={index} item md={12}>
-            <GenreButton
-              clickedGenre={clickedGenre}
-              setClickedGenre={setClickedGenre}
-              key={index}
-              item={item.key}
-              setSearchData={setSearchData}
-              setPage={setPage}
-            />
+            <GenreButton key={index} genre={gen.key} />
           </CustomGridItem>
         ))}
       </CustomGridContainer>

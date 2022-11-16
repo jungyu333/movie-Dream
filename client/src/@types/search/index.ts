@@ -60,3 +60,7 @@ export interface IMovieActors {
 export interface IGenreButtonProps {
   genre: string;
 }
+
+export interface ISearchItemProps {
+  movie: ISearchMovies;
+}
