@@ -68,6 +68,13 @@ const searchSlice = createSlice({
         state.nationFlag = 'False';
       }
     },
+    resetSearch: state => {
+      Object.assign(state, initialState);
+    },
+    resetFilters: (state, action) => {
+      Object.assign(state, initialState);
+      state.query = action.payload;
+    },
   },
   extraReducers: builder =>
     builder
@@ -95,5 +102,7 @@ export const {
   setShowTimeFilter,
   setSort,
   setNationFlag,
+  resetSearch,
+  resetFilters,
 } = searchSlice.actions;
 export default searchSlice;
