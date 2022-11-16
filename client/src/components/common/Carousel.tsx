@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import PrevArrow from './PrevArrow';
 import NextArrow from './NextArrow';
 import { Link } from 'react-router-dom';
-import { IGenreMovieData } from '../../@types/main';
 import { ICarouselProps } from '../../@types/common';
 
 const Wrapper = styled.div`
