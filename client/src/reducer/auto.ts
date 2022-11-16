@@ -25,6 +25,9 @@ const autoSlice = createSlice({
     setSearchInput: (state, action) => {
       state.searchInput = action.payload;
     },
+    resetSearchInput: state => {
+      state.searchInput = '';
+    },
   },
   extraReducers: builder =>
     builder
@@ -45,6 +48,6 @@ const autoSlice = createSlice({
       }),
 });
 
-export const { setSearchInput } = autoSlice.actions;
+export const { setSearchInput, resetSearchInput } = autoSlice.actions;
 
 export default autoSlice;

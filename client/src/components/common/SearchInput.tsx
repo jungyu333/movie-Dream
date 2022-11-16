@@ -13,8 +13,9 @@ import AutoItem from './AutoItem';
 import { IAutoMovie, ISearchInputProps } from '../../@types/common';
 import { RootState, useAppDispatch } from '../../store/store';
 import { useSelector } from 'react-redux';
-import { setSearchInput } from '../../reducer/auto';
+import { resetSearchInput, setSearchInput } from '../../reducer/auto';
 import { loadAutoSearch } from '../../action/auto';
+import { setQuery } from '../../reducer/search';
 
 const Wrapper = styled.div`
   display: flex;
@@ -155,7 +156,7 @@ function SearchInput({ isNavSearch, isMain }: ISearchInputProps) {
           cursor !== -1
             ? setContent(autoMovies[cursor].movie_id)
             : setContent(searchInput);
-
+          setIsOpen(false);
           break;
         default:
           break;
@@ -178,9 +179,12 @@ function SearchInput({ isNavSearch, isMain }: ISearchInputProps) {
   useEffect(() => {
     if (content) {
       if (cursor === -1) {
-        navigation(
-          `/search?query=${content}&page=${1}&nationFlag=${null}&sort=${'opening_date'}&genreFilter=${null}&showTimeFilter=${'0,180'}&openDateFilter=${''}&size=${5}`,
-        );
+        // navigation(
+        //   `/search?query=${content}&page=${1}&nationFlag=${null}&sort=${'opening_date'}&genreFilter=${null}&showTimeFilter=${'0,180'}&openDateFilter=${null}&size=${5}`,
+        // );
+        dispatch(setQuery(content));
+        navigation(`/search?query=${content}`);
+        dispatch(resetSearchInput());
       } else {
         navigation(`/movie/${content}`);
 
@@ -189,7 +193,7 @@ function SearchInput({ isNavSearch, isMain }: ISearchInputProps) {
 
       setCursor(-1);
     }
-  }, [content, navigation, cursor]);
+  }, [content, navigation, cursor, dispatch]);
 
   useEffect(() => {
     const handleCloseSearch = (event: MouseEvent) => {
@@ -207,6 +211,10 @@ function SearchInput({ isNavSearch, isMain }: ISearchInputProps) {
       window.addEventListener('click', handleCloseSearch);
     };
   }, [autoRef, isOpen]);
+
+  useEffect(() => {
+    dispatch(resetSearchInput());
+  }, []);
 
   return (
     <>
