@@ -49,6 +49,10 @@ const searchSlice = createSlice({
     setGenreFilter: state => {
       state.genreFilter = state.clickedGenre.join(',');
     },
+    setShowTimeFilter: (state, action) => {
+      state.showTimeFilter =
+        String(action.payload[0]) + ',' + String(action.payload[1]);
+    },
   },
   extraReducers: builder =>
     builder
@@ -68,6 +72,6 @@ const searchSlice = createSlice({
         state.moviesError = action.payload as string;
       }),
 });
-export const { setQuery, setClickedGenre, setGenreFilter } =
+export const { setQuery, setClickedGenre, setGenreFilter, setShowTimeFilter } =
   searchSlice.actions;
 export default searchSlice;

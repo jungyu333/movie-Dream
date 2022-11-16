@@ -11,6 +11,7 @@ import {
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { ISearchItemProps } from '../../@types/search';
 
 const CustomList = styled(List)`
   margin: 1rem 0;
@@ -53,7 +54,7 @@ const ListGenre = styled.span`
   }
 `;
 
-function SearchItem({ movie }) {
+function SearchItem({ movie }: ISearchItemProps) {
   return (
     <Grid item xl={12} md={6} xs={12}>
       <CustomList>
@@ -87,7 +88,7 @@ function SearchItem({ movie }) {
           </CustomListItem>
         </Link>
 
-        <CustomDivider component="div" />
+        <CustomDivider />
       </CustomList>
     </Grid>
   );
