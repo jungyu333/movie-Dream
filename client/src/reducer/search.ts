@@ -15,6 +15,7 @@ interface searchState {
   showTimeFilter: string;
   openDateFilter: string;
   clickedGenre: string[];
+  hasMoreMovies: boolean;
 }
 
 export const initialState: searchState = {
@@ -30,6 +31,7 @@ export const initialState: searchState = {
   showTimeFilter: '0,180',
   openDateFilter: '',
   clickedGenre: [],
+  hasMoreMovies: true,
 };
 
 const searchSlice = createSlice({
@@ -40,6 +42,7 @@ const searchSlice = createSlice({
       state.query = action.payload;
     },
     setClickedGenre: (state, action) => {
+      state.page = 1;
       state.clickedGenre.includes(action.payload)
         ? (state.clickedGenre = state.clickedGenre.filter(
             gen => action.payload !== gen,
@@ -47,19 +50,24 @@ const searchSlice = createSlice({
         : state.clickedGenre.push(action.payload);
     },
     setGenreFilter: state => {
+      state.page = 1;
       state.genreFilter = state.clickedGenre.join(',');
     },
     setShowTimeFilter: (state, action) => {
+      state.page = 1;
       state.showTimeFilter =
         String(action.payload[0]) + ',' + String(action.payload[1]);
     },
     setOpenDateFilter: (state, action) => {
+      state.page = 1;
       state.openDateFilter = action.payload;
     },
     setSort: (state, action) => {
+      state.page = 1;
       state.sort = action.payload;
     },
     setNationFlag: (state, action) => {
+      state.page = 1;
       if (action.payload === 0) {
         state.nationFlag = null;
       } else if (action.payload === 1) {
@@ -75,18 +83,33 @@ const searchSlice = createSlice({
       Object.assign(state, initialState);
       state.query = action.payload;
     },
+    setPage: state => {
+      state.page++;
+    },
   },
   extraReducers: builder =>
     builder
       .addCase(loadMainMovies.pending, state => {
-        state.moviesLoading = true;
+        state.page === 1
+          ? (state.moviesLoading = true)
+          : (state.moviesLoading = false);
         state.moviesDone = false;
         state.moviesError = null;
       })
       .addCase(loadMainMovies.fulfilled, (state, action) => {
         state.moviesLoading = false;
         state.moviesDone = true;
-        state.searchResults = action.payload;
+        if (state.page === 1) {
+          state.searchResults = action.payload;
+        }
+
+        if (state.page > 1) {
+          state.searchResults!.movies = [...state.searchResults!.movies].concat(
+            action.payload.movies,
+          );
+        }
+
+        state.hasMoreMovies = action.payload.movies.length === 5;
       })
       .addCase(loadMainMovies.rejected, (state, action) => {
         state.moviesLoading = false;
@@ -104,5 +127,6 @@ export const {
   setNationFlag,
   resetSearch,
   resetFilters,
+  setPage,
 } = searchSlice.actions;
 export default searchSlice;
