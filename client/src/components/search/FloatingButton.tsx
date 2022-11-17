@@ -9,7 +9,7 @@ const CustomBox = styled(Box)`
   bottom: 6%;
 `;
 
-const CustomFab = styled(Fab)`
+const CustomFab = styled(Fab)<{ scroll: boolean }>`
   background-color: #6459e7;
   opacity: ${props => (props.scroll ? '1' : '0')};
   visibility: ${props => (props.scroll ? '' : 'hidden')};

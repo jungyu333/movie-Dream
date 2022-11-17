@@ -7,6 +7,7 @@ import GenreCarousel from '../components/main/GenreCarousel';
 import { useSelector } from 'react-redux';
 import { loadGenreMovies } from '../action/main';
 import { RootState, useAppDispatch } from '../store/store';
+import { resetSearch } from '../reducer/search';
 
 const Wrapper = styled.div`
   display: flex;
@@ -25,11 +26,10 @@ const Header = styled.div`
 
 function Home() {
   const dispatch = useAppDispatch();
-  const { genreMoviesLoading, genreMovies, genreMoviesDone } = useSelector(
-    (state: RootState) => state.main,
-  );
+  const { genreMoviesDone } = useSelector((state: RootState) => state.main);
   useEffect(() => {
     dispatch(loadGenreMovies());
+    dispatch(resetSearch());
   }, [dispatch]);
 
   return (
