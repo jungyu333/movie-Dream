@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -14,11 +16,12 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-export function GenreChart({ genre }) {
-  let labels = [];
-  let docCount = [];
+export function GenreChart() {
+  const { anotherMovie } = useSelector((state: RootState) => state.movie);
+  const labels: string[] = [];
+  const docCount: number[] = [];
 
-  genre.forEach(gen => {
+  anotherMovie?.genre.forEach(gen => {
     labels.push(gen.key);
     docCount.push(gen.doc_count);
   });
