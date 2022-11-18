@@ -1,3 +1,5 @@
+import { IGenre } from '../search';
+
 export interface ILoadMovieData {
   id: string;
 }
@@ -27,4 +29,27 @@ export interface IMovieActor {
   name: string;
   part: string;
   thumb: string;
+}
+
+export interface IAnotherMovies {
+  group: string;
+  genre: IGenre[];
+  movie: IAnotherMovie[];
+}
+
+export interface IAnotherMovie {
+  h_movie: string;
+  movie_id: string;
+  movie_poster: string;
+}
+
+export interface IAnotherMovieData {
+  group: string;
+  name: string;
+  movieId: string;
+}
+
+export interface IModalMovieProps {
+  handleClose: () => void;
+  open: boolean;
 }

@@ -1,13 +1,16 @@
 import { Box, Modal, Grid } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import axios from 'axios';
 import GenreChart from './GenreChart';
 import NoResult from './NoResult';
 import LoadingSpinner from '../common/LoadingSpinner';
+import { RootState, useAppDispatch } from '../../store/store';
+import { loadAnotherMovies } from '../../action/movie';
+import { useSelector } from 'react-redux';
+import { IModalMovieProps } from '../../@types/movie';
 
-const Image = styled.img`
+const Image = styled.img<{ url: string }>`
   height: 90%;
   width: 100%;
   min-width: max-content;
@@ -105,62 +108,46 @@ const CustomGridItem = styled(Grid)`
   }
 `;
 
-function ModalMovie({ handleClose, open, clickedData }) {
+function ModalMovie({ handleClose, open }: IModalMovieProps) {
   const params = useParams();
-  const [modalData, setModalData] = useState({
-    genre: [],
-    movie: [],
-    isLoading: true,
-  });
+  const dispatch = useAppDispatch();
+  const { group, name, anotherMovie, anotherMoviesLoading } = useSelector(
+    (state: RootState) => state.movie,
+  );
+
   useEffect(() => {
     if (open) {
-      axios
-        .post('/api/search/group', {
-          group: clickedData.group,
-          name: clickedData.name,
-          movie_id: params.id,
-        })
-        .then(res => {
-          const movies = res.data.movie.filter(
-            movie => movie.movie_id !== params.id,
-          );
-
-          setModalData({
-            genre: [...res.data.genre],
-            movie: [...movies],
-            isLoading: false,
-          });
-        });
-    } else {
-      setModalData({
-        genre: [],
-        movie: [],
-        isLoading: true,
-      });
+      dispatch(
+        loadAnotherMovies({
+          group: group,
+          name: name,
+          movieId: String(params.id),
+        }),
+      );
     }
-  }, [clickedData, open]);
+  }, [dispatch, group, name, params.id, open]);
 
   return (
     <>
       <Modal open={open} onClose={handleClose}>
         <CustomBox>
           <Title>
-            <h1>{clickedData.name}</h1>
+            <h1>{name}</h1>
             <div>의 다른 영화</div>
           </Title>
-          {!modalData.isLoading ? (
+          {!anotherMoviesLoading ? (
             <>
-              {modalData.movie.length > 0 ? (
+              {anotherMovie && anotherMovie.movie.length > 0 ? (
                 <CustomGridContainer container spacing={1}>
-                  {modalData.movie.map(item => (
-                    <CustomGridItem key={item.movie_id} item xs={6} md={4}>
-                      <Link to={`/movie/${item.movie_id}`}>
+                  {anotherMovie!.movie.map(movie => (
+                    <CustomGridItem key={movie.movie_id} item xs={6} md={4}>
+                      <Link to={`/movie/${movie.movie_id}`}>
                         <div>
                           <Image
-                            src={item.movie_poster}
-                            url={item.movie_poster}
+                            src={movie.movie_poster}
+                            url={movie.movie_poster}
                           />
-                          <p>{item.h_movie}</p>
+                          <p>{movie.h_movie}</p>
                         </div>
                       </Link>
                     </CustomGridItem>
@@ -169,8 +156,8 @@ function ModalMovie({ handleClose, open, clickedData }) {
               ) : (
                 <NoResult />
               )}
-              {modalData.movie.length > 0 ? (
-                <GenreChart genre={modalData.genre} />
+              {anotherMovie && anotherMovie.movie.length > 0 ? (
+                <GenreChart />
               ) : null}
             </>
           ) : (

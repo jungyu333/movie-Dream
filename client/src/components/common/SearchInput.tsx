@@ -157,6 +157,7 @@ function SearchInput({ isNavSearch, isMain }: ISearchInputProps) {
             ? setContent(autoMovies[cursor].movie_id)
             : setContent(searchInput);
           setIsOpen(false);
+          dispatch(resetSearchInput());
           break;
         default:
           break;
@@ -227,7 +228,7 @@ function SearchInput({ isNavSearch, isMain }: ISearchInputProps) {
                   cursor === -1 ? searchInput : autoMovies![cursor].h_movie
                 }
               />
-              {isOpen && autoMovies!.length > 0 ? (
+              {isOpen && autoMovies && autoMovies!.length > 0 ? (
                 <DropDownList isNavSearch={true} ref={autoRef}>
                   {autoMovies!.map((movie, index) => (
                     <DropDownItem

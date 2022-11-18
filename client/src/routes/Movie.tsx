@@ -3,14 +3,15 @@ import { useParams } from 'react-router-dom';
 import { Container } from '@mui/material';
 import styled from 'styled-components';
 import ImageBox from '../components/movie/ImageBox';
-import WordCloudBox from '../components/movie/WordCloudBox';
 import Layout from '../components/common/Layout';
 import FloatingButton from '../components/search/FloatingButton';
-import InfoBox from '../components/movie/InfoBox';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 import Review from '../components/movie/Review';
+import { useAppDispatch } from '../store/store';
+import { loadMovie } from '../action/movie';
+import InfoBox from '../components/movie/InfoBox';
 
 const Wrapper = styled(Container)`
   display: flex;
@@ -29,39 +30,25 @@ const Header = styled(Container)`
 `;
 
 function Movie() {
+  const dispatch = useAppDispatch();
   const { id } = useParams();
-  const [movieData, setMovieData] = useState({
-    movie: {},
-    wordCloud: [],
-    isLoading: true,
-  });
 
   useEffect(() => {
-    axios.get(`/api/search/movie?movie_id=${id}`).then(res =>
-      setMovieData({
-        movie: { ...res.data.movie },
-        wordCloud: [...res.data.word_cloud],
-        isLoading: false,
-      }),
-    );
-  }, [id]);
+    if (id) {
+      dispatch(loadMovie({ id }));
+    }
+  }, [dispatch, id]);
 
   return (
     <>
       <Layout isNavSearch={true} isMain={false}>
         <Wrapper>
           <Header>
-            <ImageBox
-              url={movieData.movie.movie_poster}
-              isLoading={movieData.isLoading}
-            />
-            <InfoBox movie={movieData.movie} isLoading={movieData.isLoading} />
+            <ImageBox />
+            <InfoBox />
           </Header>
 
-          <Review />
-          {movieData.wordCloud ? (
-            <WordCloudBox wordCloud={movieData.wordCloud} />
-          ) : null}
+          {/* <Review /> */}
 
           <FloatingButton />
         </Wrapper>

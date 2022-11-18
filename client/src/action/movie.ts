@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ILoadMovieData, IMovie } from '../@types/movie';
+import {
+  IAnotherMovieData,
+  IAnotherMovies,
+  ILoadMovieData,
+  IMovie,
+} from '../@types/movie';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 
@@ -15,3 +20,19 @@ export const loadMovie = createAsyncThunk<IMovie, ILoadMovieData>(
     }
   },
 );
+
+export const loadAnotherMovies = createAsyncThunk<
+  IAnotherMovies,
+  IAnotherMovieData
+>('search/another', async (data, thunkApi) => {
+  try {
+    const response = await axios.post('/api/search/group', {
+      group: data.group,
+      name: data.name,
+      movie_id: data.movieId,
+    });
+    return response.data;
+  } catch (error: any) {
+    return thunkApi.rejectWithValue(error.response.data);
+  }
+});
