@@ -7,6 +7,8 @@ interface movieState {
   movieDone: boolean;
   movieError: string | null;
   movie: IMovie | null;
+  group: string | null;
+  name: string | null;
 }
 
 export const initialState: movieState = {
@@ -14,12 +16,19 @@ export const initialState: movieState = {
   movieDone: false,
   movieError: null,
   movie: null,
+  group: null,
+  name: null,
 };
 
 const movieSlice = createSlice({
   name: 'movie',
   initialState,
-  reducers: {},
+  reducers: {
+    setCastInfo: (state, action) => {
+      state.group = action.payload.group;
+      state.name = action.payload.name;
+    },
+  },
   extraReducers: builder =>
     builder
       .addCase(loadMovie.pending, state => {
@@ -38,5 +47,7 @@ const movieSlice = createSlice({
         state.movieError = action.payload as string;
       }),
 });
+
+export const { setCastInfo } = movieSlice.actions;
 
 export default movieSlice;

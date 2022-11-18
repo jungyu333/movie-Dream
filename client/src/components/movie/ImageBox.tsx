@@ -1,7 +1,10 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { RootState } from '../../store/store';
 import PosterImage from './PosterImage';
+import React from 'react';
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ url: string }>`
   display: flex;
   border-radius: 10px;
   justify-content: center;
@@ -21,10 +24,14 @@ const Wrapper = styled.div`
   }
 `;
 
-function ImageBox({ url, isLoading }) {
+function ImageBox() {
+  const { movie, movieLoading } = useSelector(
+    (state: RootState) => state.movie,
+  );
+
   return (
-    <Wrapper url={url}>
-      {!isLoading ? <PosterImage poster={url} /> : null}
+    <Wrapper url={movie?.movie.movie_poster!}>
+      {!movieLoading ? <PosterImage /> : null}
     </Wrapper>
   );
 }
