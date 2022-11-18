@@ -1,4 +1,7 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { RootState } from '../../store/store';
+import React from 'react';
 
 const Image = styled.img`
   object-fit: cover;
@@ -21,11 +24,13 @@ const NoPoster = styled.img`
   }
 `;
 
-function PosterImage({ poster }) {
+function PosterImage() {
+  const { movie } = useSelector((state: RootState) => state.movie);
+
   return (
     <>
-      {poster ? (
-        <Image src={poster} alt="poster" />
+      {movie?.movie.movie_poster ? (
+        <Image src={movie.movie.movie_poster} alt="poster" />
       ) : (
         <NoPoster src="/Noimage.jpeg" alt="poster" />
       )}

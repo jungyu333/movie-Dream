@@ -1,6 +1,9 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { RootState } from '../../store/store';
 import InfoSkeleton from './InfoSkeleton';
 import InfoTable from './InfoTable';
+import React from 'react';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -19,12 +22,9 @@ const Wrapper = styled.div`
   }
 `;
 
-function InfoBox({ movie, isLoading }) {
-  return (
-    <Wrapper>
-      {!isLoading ? <InfoTable movie={movie} /> : <InfoSkeleton />}
-    </Wrapper>
-  );
+function InfoBox() {
+  const { movieLoading } = useSelector((state: RootState) => state.movie);
+  return <Wrapper>{!movieLoading ? <InfoTable /> : <InfoSkeleton />}</Wrapper>;
 }
 
 export default InfoBox;
