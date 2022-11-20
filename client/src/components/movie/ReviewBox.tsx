@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import ReviewTable from './ReviewTable';
 import ReviewLoading from './ReviewLoading';
+import React from 'react';
+import { IReviewBoxProps } from '../../@types/movie';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 const Wrapper = styled.div`
   min-height: 290px;
@@ -12,19 +16,11 @@ const Wrapper = styled.div`
   margin-top: 1rem;
 `;
 
-function ReviewBox({ positive, negative, isLoading, isNegative, isMobile }) {
+function ReviewBox({ isMobile }: IReviewBoxProps) {
+  const { reviewLoading } = useSelector((state: RootState) => state.review);
   return (
     <Wrapper>
-      {isLoading ? (
-        <ReviewLoading />
-      ) : (
-        <ReviewTable
-          positive={positive}
-          negative={negative}
-          isNegative={isNegative}
-          isMobile={isMobile}
-        />
-      )}
+      {reviewLoading ? <ReviewLoading /> : <ReviewTable isMobile={isMobile} />}
     </Wrapper>
   );
 }

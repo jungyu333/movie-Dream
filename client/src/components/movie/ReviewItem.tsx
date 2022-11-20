@@ -1,6 +1,7 @@
 import { Divider } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
+import { IReviewItemProps } from '../../@types/movie';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -65,7 +66,7 @@ const ScoreContainer = styled.div`
   }
 `;
 
-function ReviewItem({ review }) {
+function ReviewItem({ review }: IReviewItemProps) {
   const reviewId = review.review_id.split('__')[1];
   const date = review.review_date.split(' ')[0];
   return (
