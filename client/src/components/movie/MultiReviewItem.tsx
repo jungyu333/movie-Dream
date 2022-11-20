@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { IMultiReviewItemProps } from '../../@types/movie';
 import ReviewItem from './ReviewItem';
 
 const Wrapper = styled.div`
@@ -20,7 +21,7 @@ const ReviewContainer = styled.div`
   }
 `;
 
-function MultiReviewItem({ reviewData, title }) {
+function MultiReviewItem({ title, reviewData }: IMultiReviewItemProps) {
   return (
     <Wrapper>
       <span>{title}</span>

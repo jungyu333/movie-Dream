@@ -5,13 +5,11 @@ import styled from 'styled-components';
 import ImageBox from '../components/movie/ImageBox';
 import Layout from '../components/common/Layout';
 import FloatingButton from '../components/search/FloatingButton';
-import { useState } from 'react';
 import { useEffect } from 'react';
-import axios from 'axios';
-import Review from '../components/movie/Review';
 import { useAppDispatch } from '../store/store';
 import { loadMovie } from '../action/movie';
 import InfoBox from '../components/movie/InfoBox';
+import Review from '../components/movie/Review';
 
 const Wrapper = styled(Container)`
   display: flex;
@@ -48,7 +46,7 @@ function Movie() {
             <InfoBox />
           </Header>
 
-          {/* <Review /> */}
+          <Review />
 
           <FloatingButton />
         </Wrapper>

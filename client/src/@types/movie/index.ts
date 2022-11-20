@@ -59,10 +59,13 @@ export interface ILoadReviewsData {
 }
 
 export interface ILoadReviews {
-  data: {
-    positive: IReview[];
-    negative: IReview[];
+  review: {
+    data: {
+      positive: IReview[];
+      negative: IReview[];
+    };
   };
+
   sentiment: boolean;
 }
 
@@ -75,4 +78,21 @@ export interface IReview {
   review_score: number;
   review_sentiment_score: number;
   review_txt: string;
+}
+
+export interface IReviewBoxProps {
+  isMobile: number;
+}
+
+export interface IReviewTableProps {
+  isMobile: number;
+}
+
+export interface IMultiReviewItemProps {
+  reviewData: IReview[];
+  title: string;
+}
+
+export interface IReviewItemProps {
+  review: IReview;
 }

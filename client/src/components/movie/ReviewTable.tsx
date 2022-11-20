@@ -1,7 +1,11 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { IReviewTableProps } from '../../@types/movie';
+import { RootState } from '../../store/store';
 import MultiReview from './MultiReview';
 import ReviewItem from './ReviewItem';
 import ReviewNoResult from './ReviewNoResult';
+import React from 'react';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -16,18 +20,22 @@ const Container = styled.div`
   }
 `;
 
-function ReviewTable({ negative, positive, isNegative, isMobile }) {
+function ReviewTable({ isMobile }: IReviewTableProps) {
+  const { isNegative, reviews } = useSelector(
+    (state: RootState) => state.review,
+  );
+
   return (
     <Wrapper>
       {isMobile === 1 ? (
-        <MultiReview positive={positive} negative={negative} />
+        <MultiReview />
       ) : (
         <>
-          {isNegative === 0 ? (
+          {!isNegative && reviews ? (
             <>
-              {positive.length > 0 ? (
+              {reviews.review.data.positive.length > 0 ? (
                 <Container>
-                  {positive.map((review, index) => (
+                  {reviews!.review.data.positive!.map((review, index) => (
                     <ReviewItem key={index} review={review} />
                   ))}
                 </Container>
@@ -37,11 +45,11 @@ function ReviewTable({ negative, positive, isNegative, isMobile }) {
             </>
           ) : null}
 
-          {isNegative === 1 ? (
+          {isNegative && reviews ? (
             <>
-              {negative.length > 0 ? (
+              {reviews.review.data.negative.length > 0 ? (
                 <Container>
-                  {negative.map((review, index) => (
+                  {reviews!.review.data!.negative!.map((review, index) => (
                     <ReviewItem key={index} review={review} />
                   ))}
                 </Container>
