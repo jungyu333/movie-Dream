@@ -1,9 +1,18 @@
 import { combineReducers } from 'redux';
+import storage from 'redux-persist/lib/storage';
+import { persistReducer } from 'redux-persist';
 import autoSlice from './auto';
 import mainSlice from './main';
 import searchSlice from './search';
 import movieSlice from './movie';
 import reviewSlice from './review';
+
+const persistConfig = {
+  key: 'root',
+  version: 1,
+  storage,
+  whitelist: ['search'],
+};
 
 const rootReducer = combineReducers({
   main: mainSlice.reducer,
@@ -13,4 +22,6 @@ const rootReducer = combineReducers({
   review: reviewSlice.reducer,
 });
 
-export default rootReducer;
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export default persistedReducer;
