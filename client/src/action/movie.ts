@@ -7,8 +7,6 @@ import {
   IMovie,
 } from '../@types/movie';
 
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
-
 export const loadMovie = createAsyncThunk<IMovie, ILoadMovieData>(
   'search/movie',
   async (data, thunkApi) => {
