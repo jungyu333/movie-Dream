@@ -2,8 +2,6 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ISearchMoviesData, ISearchResults } from '../@types/search';
 
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
-
 export const loadMainMovies = createAsyncThunk<
   ISearchResults,
   ISearchMoviesData

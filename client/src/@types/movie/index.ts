@@ -53,3 +53,26 @@ export interface IModalMovieProps {
   handleClose: () => void;
   open: boolean;
 }
+
+export interface ILoadReviewsData {
+  id: string;
+}
+
+export interface ILoadReviews {
+  data: {
+    positive: IReview[];
+    negative: IReview[];
+  };
+  sentiment: boolean;
+}
+
+export interface IReview {
+  movie_avg_score: number;
+  movie_id: string;
+  review_date: string;
+  review_id: string;
+  review_positive: boolean;
+  review_score: number;
+  review_sentiment_score: number;
+  review_txt: string;
+}

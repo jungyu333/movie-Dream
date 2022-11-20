@@ -1,6 +1,9 @@
 import { Button, ButtonGroup } from '@mui/material';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { setIsNegative } from '../../reducer/review';
+import { RootState, useAppDispatch } from '../../store/store';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -25,9 +28,8 @@ const CustomButtonGroup = styled(ButtonGroup)`
   }
 `;
 
-const CustomButton = styled(Button)`
-  color: ${props =>
-    parseInt(props.isnegative) === parseInt(props.value) ? '#6459e7' : 'gray'};
+const CustomButton = styled(Button)<{ isnegative: string }>`
+  color: ${props => (props.isnegative === 'false' ? '#6459e7' : 'gray')};
   border-color: gray;
   font-size: 0.6rem;
   font-family: SUIT;
@@ -36,11 +38,18 @@ const CustomButton = styled(Button)`
     color: #6459e7;
     border-color: #6459e7;
   }
+  &:last-child {
+    color: ${props => (props.isnegative === 'true' ? '#6459e7' : 'gray')};
+  }
 `;
 
-function ClassifyButton({ isNegative, setIsNegative }) {
-  const onClick = e => {
-    setIsNegative(parseInt(e.target.value));
+function ClassifyButton() {
+  const { isNegative } = useSelector((state: RootState) => state.review);
+  const dispatch = useAppDispatch();
+  const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const { target } = event;
+    console.log((target as HTMLButtonElement).value);
+    dispatch(setIsNegative(parseInt((target as HTMLButtonElement).value)));
   };
 
   return (
@@ -49,7 +58,7 @@ function ClassifyButton({ isNegative, setIsNegative }) {
 
       <CustomButtonGroup>
         <CustomButton
-          isnegative={isNegative}
+          isnegative={isNegative.toString()}
           onClick={onClick}
           value={0}
           key="positive"
@@ -57,7 +66,7 @@ function ClassifyButton({ isNegative, setIsNegative }) {
           Positive
         </CustomButton>
         <CustomButton
-          isnegative={isNegative}
+          isnegative={isNegative.toString()}
           onClick={onClick}
           value={1}
           key="negative"

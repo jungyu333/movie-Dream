@@ -2,8 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { IAutoMovie, IloadAutoSearchData } from '../@types/common';
 
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
-
 export const loadAutoSearch = createAsyncThunk<
   IAutoMovie[],
   IloadAutoSearchData
