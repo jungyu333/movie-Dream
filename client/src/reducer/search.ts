@@ -16,6 +16,7 @@ interface searchState {
   openDateFilter: string;
   clickedGenre: string[];
   hasMoreMovies: boolean;
+  selected: string;
 }
 
 export const initialState: searchState = {
@@ -32,6 +33,7 @@ export const initialState: searchState = {
   openDateFilter: '',
   clickedGenre: [],
   hasMoreMovies: true,
+  selected: '0',
 };
 
 const searchSlice = createSlice({
@@ -86,6 +88,9 @@ const searchSlice = createSlice({
     setPage: state => {
       state.page++;
     },
+    setSelected: (state, action) => {
+      state.selected = action.payload;
+    },
   },
   extraReducers: builder =>
     builder
@@ -128,5 +133,6 @@ export const {
   resetSearch,
   resetFilters,
   setPage,
+  setSelected,
 } = searchSlice.actions;
 export default searchSlice;
