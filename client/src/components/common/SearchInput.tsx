@@ -167,6 +167,7 @@ function SearchInput({ isNavSearch, isMain }: ISearchInputProps) {
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setContent(searchInput);
   };
 
   const onClickInput = useCallback(

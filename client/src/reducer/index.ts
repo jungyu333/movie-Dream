@@ -11,13 +11,19 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  whitelist: ['search'],
+  blacklist: ['search', 'main', 'review', 'auto', 'movie'],
+};
+
+const queryPersistConfig = {
+  key: 'search',
+  storage,
+  whitelist: ['query'],
 };
 
 const rootReducer = combineReducers({
   main: mainSlice.reducer,
   auto: autoSlice.reducer,
-  search: searchSlice.reducer,
+  search: persistReducer(queryPersistConfig, searchSlice.reducer),
   movie: movieSlice.reducer,
   review: reviewSlice.reducer,
 });

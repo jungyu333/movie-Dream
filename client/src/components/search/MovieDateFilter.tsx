@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import RadioControlItem from './RadioControlItem';
 import moment from 'moment';
 import { Grid } from '@mui/material';
 import { useAppDispatch } from '../../store/store';
-import { setOpenDateFilter } from '../../reducer/search';
+import { setOpenDateFilter, setSelected } from '../../reducer/search';
 
 const Wrapper = styled.div`
   border: 1px solid lightgray;
@@ -53,19 +53,18 @@ const Header = styled.h1`
 
 function MovieDateFilter() {
   const dispatch = useAppDispatch();
-  const [selected, setSelected] = useState('0');
 
   const handleChange = useCallback(
     (value: string) => {
       if (value === '0') {
-        setSelected(value);
+        dispatch(setSelected(value));
         dispatch(setOpenDateFilter(''));
       } else {
         const today = moment().format('YYYY.MM.DD');
         const calculatedDate = moment()
           .subtract(value, 'M')
           .format('YYYY.MM.DD');
-        setSelected(value);
+        dispatch(setSelected(value));
         dispatch(setOpenDateFilter(`${calculatedDate},${today}`));
       }
     },
@@ -82,7 +81,6 @@ function MovieDateFilter() {
             label="전체 영화"
             id="0"
             value="0"
-            selected={selected}
             handleChange={handleChange}
           />
         </Grid>
@@ -91,7 +89,6 @@ function MovieDateFilter() {
             label="1개월 이내"
             id="1"
             value="1"
-            selected={selected}
             handleChange={handleChange}
           />
         </Grid>
@@ -101,7 +98,6 @@ function MovieDateFilter() {
             label="3개월 이내"
             id="2"
             value="3"
-            selected={selected}
             handleChange={handleChange}
           />
         </Grid>
@@ -110,7 +106,6 @@ function MovieDateFilter() {
             label="5개월 이내"
             id="3"
             value="5"
-            selected={selected}
             handleChange={handleChange}
           />
         </Grid>

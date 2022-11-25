@@ -1,5 +1,7 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { RootState } from '../../store/store';
 
 const RadioItem = styled.div`
   display: flex;
@@ -24,7 +26,6 @@ interface IRadioControlItem {
   label: string;
   id: string;
   value: string;
-  selected: string;
   handleChange: any;
 }
 
@@ -32,12 +33,12 @@ function RadioControlItem({
   label,
   id,
   value,
-  selected,
   handleChange,
 }: IRadioControlItem) {
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(event.target.value);
   };
+  const { selected } = useSelector((state: RootState) => state.search);
 
   return (
     <RadioItem>

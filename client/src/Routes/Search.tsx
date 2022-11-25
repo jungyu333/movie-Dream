@@ -77,19 +77,19 @@ function Search() {
         <Wrapper>
           <Header />
           <Genre />
-          {!moviesLoading ? <FilterContainer /> : null}
-          {!moviesLoading ? (
-            <>
-              <Carousel
-                title="Hot Movies!"
-                movies={searchResults?.top_score_movie!}
-              />
-              <Carousel
-                title="New Movies!"
-                movies={searchResults?.top_to_be_open_movie!}
-              />
-            </>
-          ) : null}
+          <FilterContainer />
+
+          <>
+            <Carousel
+              title="Hot Movies!"
+              movies={searchResults?.top_score_movie!}
+            />
+            <Carousel
+              title="New Movies!"
+              movies={searchResults?.top_to_be_open_movie!}
+            />
+          </>
+
           <SortBox />
           <SearchList />
           <Observer ref={hasMoreMovies ? ref : undefined} />
